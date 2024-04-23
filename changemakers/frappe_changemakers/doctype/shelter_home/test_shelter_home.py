@@ -43,8 +43,4 @@ class TestShelterHome(FrappeTestCase):
 
 	@classmethod
 	def tearDown(cls):
-		frappe.delete_doc("shelter_test", force=True)
-		frappe.delete_doc("shelter_test_ward", force=True)
-		frappe.delete_doc("shelter_test_zone", force=True)
-		frappe.delete_doc("shelter_test_district", force=True)
-		frappe.delete_doc("shelter_test_state", force=True)
+		frappe.db.rollback()
