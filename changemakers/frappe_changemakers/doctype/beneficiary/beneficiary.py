@@ -14,7 +14,7 @@ class Beneficiary(Document):
 
 	def validate(self):
 		self.validate_age()
-		self.validate_phone_number_fields()
+		# self.validate_phone_number_fields()
 
 	def validate_age(self):
 		if not (self.age < 120):
