@@ -34,38 +34,44 @@ frappe.ui.form.on("Recruitment Phase", {
 	},
 
 	validate_available_slots(frm) {
-		frappe.call({
-			method: "changemakers.frappe_changemakers.doctype.recruitment_phase.recruitment_phase.check_available_slots",
-			args: {
-				phase_name: frm.doc.name,
-			},
-			callback: function (response) {
-				if (response.message) {
-					const available_slots = response.message;
-					let total_active_beneficiaries = 0;
-					let is_valid = true;
+		if (!frm.is_new()) {
+			frappe.call({
+				method: "changemakers.frappe_changemakers.doctype.recruitment_phase.recruitment_phase.check_available_slots",
+				args: {
+					phase_name: frm.doc.name,
+				},
+				callback: function (response) {
+					if (response.message) {
+						const available_slots = response.message;
+						let total_active_beneficiaries = 0;
+						let is_valid = true;
 
-					frm.doc.slots.forEach((row) => {
-						const branch = row.branch;
-						if (available_slots[branch]) {
-							row.available_slots =
-								available_slots[branch].available_slots;
-							total_active_beneficiaries +=
-								available_slots[branch].active_beneficiaries;
+						frm.doc.slots.forEach((row) => {
+							const branch = row.branch;
+							if (available_slots[branch]) {
+								row.available_slots =
+									available_slots[branch].available_slots;
+								total_active_beneficiaries +=
+									available_slots[branch]
+										.active_beneficiaries;
+							}
+						});
+						if (!is_valid) {
+							frappe.validated = false;
 						}
-					});
-					if (!is_valid) {
-						frappe.validated = false;
-					}
-					const total_slots = parseInt(frm.doc.total_slots) || 0;
-					const overall_available_slots =
-						total_slots - total_active_beneficiaries;
+						const total_slots = parseInt(frm.doc.total_slots) || 0;
+						const overall_available_slots =
+							total_slots - total_active_beneficiaries;
 
-					frm.set_value("available_slots", overall_available_slots);
-					frm.refresh_field("slots");
-				}
-			},
-		});
+						frm.set_value(
+							"available_slots",
+							overall_available_slots
+						);
+						frm.refresh_field("slots");
+					}
+				},
+			});
+		}
 	},
 });
 
