@@ -6,4 +6,4 @@ from frappe.tests.utils import FrappeTestCase
 
 
 class TestAwarenessCampRecord(FrappeTestCase):
-	pass
+    pass

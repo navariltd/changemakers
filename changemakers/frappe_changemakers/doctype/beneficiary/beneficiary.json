@@ -19,6 +19,7 @@
   "gender",
   "date_of_birth",
   "age",
+  "donor",
   "column_break_4",
   "religion",
   "social_category",
@@ -467,7 +468,8 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Status",
-   "options": "Waitlist\nActive\nDisqualified\nDeceased\nDiscontinued\nRelocated\nArchived",
+   "no_copy": 1,
+   "options": "Waitlist\nEndorsed\nApproved\nActive\nInactive\nDiscontinued\nBereavement Pending\nDeceased\nArchived",
    "read_only": 1
   },
   {
@@ -610,6 +612,13 @@
    "fieldname": "previous_beneficiary_details",
    "fieldtype": "Small Text",
    "label": "Previous beneficiary details"
+  },
+  {
+   "fieldname": "donor",
+   "fieldtype": "Link",
+   "label": "Donor",
+   "options": "Donor",
+   "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
   }
  ],
  "image_field": "image",
@@ -634,9 +643,14 @@
    "group": "Health",
    "link_doctype": "Health Camp Record",
    "link_fieldname": "beneficiary"
+  },
+  {
+   "group": "Cases",
+   "link_doctype": "Case",
+   "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-11-14 09:40:13.882784",
+ "modified": "2024-11-14 16:33:21.417963",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",

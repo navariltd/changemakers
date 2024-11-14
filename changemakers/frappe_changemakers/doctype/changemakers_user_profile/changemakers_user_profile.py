@@ -6,18 +6,18 @@ from frappe.model.document import Document
 
 
 class ChangemakersUserProfile(Document):
-	pass
+    pass
 
 
 def create_user_profile(doc, method=None):
-	if not frappe.db.exists("Changemakers User Profile", {"user": doc.name}):
-		frappe.get_doc(doctype="Changemakers User Profile", user=doc.name).insert(
-			ignore_permissions=True
-		)
-		frappe.db.commit()
+    if not frappe.db.exists("Changemakers User Profile", {"user": doc.name}):
+        frappe.get_doc(doctype="Changemakers User Profile", user=doc.name).insert(
+            ignore_permissions=True
+        )
+        frappe.db.commit()
 
 
 def delete_user_profile(doc, method=None):
-	exists = frappe.db.exists("Changemakers User Profile", {"user": doc.name})
-	if exists:
-		return frappe.get_doc("Changemakers User Profile", {"user": doc.name}).delete()
+    exists = frappe.db.exists("Changemakers User Profile", {"user": doc.name})
+    if exists:
+        return frappe.get_doc("Changemakers User Profile", {"user": doc.name}).delete()

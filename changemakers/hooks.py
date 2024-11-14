@@ -9,31 +9,30 @@ app_license = "AGPL"
 
 
 fixtures = [
-	"Custom HTML Block",
-	"Case Type",
-	"State",
-     "Payment Type",
-	{"dt": "Client Script", "filters": {"name": "Action: Create User Profile"}},
-	{
-		"dt": "Role",
-		"filters": {
-			"role_name": (
-				"in",
-				[
-					"Social Worker",
-					"Shelter Team Member",
-					"Healthcare Team Member",
-					"Food Team Member",
-					"SMT(NGO)-Field Co-ordinator",
-					"Medical Co-ordinator",
-					"Program Manager",
-					"Partner SMT",
-					"Data MIS/Documentation (Admin)",
-				],
-			)
-		},
-	},
-
+    "Custom HTML Block",
+    "Case Type",
+    "State",
+    "Payment Type",
+    {"dt": "Client Script", "filters": {"name": "Action: Create User Profile"}},
+    {
+        "dt": "Role",
+        "filters": {
+            "role_name": (
+                "in",
+                [
+                    "Social Worker",
+                    "Shelter Team Member",
+                    "Healthcare Team Member",
+                    "Food Team Member",
+                    "SMT(NGO)-Field Co-ordinator",
+                    "Medical Co-ordinator",
+                    "Program Manager",
+                    "Partner SMT",
+                    "Data MIS/Documentation (Admin)",
+                ],
+            )
+        },
+    },
 ]
 
 # Includes in <head>
@@ -44,7 +43,7 @@ fixtures = [
 app_include_js = "/assets/changemakers/js/changemakers.js"
 
 website_route_rules = [
-	{"from_route": "/c/<path:app_path>", "to_route": "c"},
+    {"from_route": "/c/<path:app_path>", "to_route": "c"},
 ]
 
 # include js, css files in header of web template
@@ -136,12 +135,12 @@ after_install = "changemakers.install.after_install"
 # Hook on document methods and events
 
 doc_events = {
-	"User": {
-		"after_insert": "changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.create_user_profile",
-		"on_trash": [
-			"changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.delete_user_profile",
-		],
-	}
+    "User": {
+        "after_insert": "changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.create_user_profile",
+        "on_trash": [
+            "changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.delete_user_profile",
+        ],
+    }
 }
 
 # Scheduled Tasks
