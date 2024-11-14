@@ -4,6 +4,8 @@
 import frappe
 from frappe.model.document import Document
 
+from frappe.contacts.address_and_contact import load_address_and_contact
+
 from changemakers.utils.data import is_valid_indian_phone_number
 
 
@@ -33,3 +35,6 @@ class Beneficiary(Document):
 		if not self.created_by:
 			owner = frappe.db.get_value("User", self.owner, "full_name")
 			self.created_by = owner
+   
+	def onload(self):
+		load_address_and_contact(self)
