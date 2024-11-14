@@ -6,4 +6,4 @@ from frappe.tests.utils import FrappeTestCase
 
 
 class TestShelterHomeServiceRecord(FrappeTestCase):
-	pass
+    pass

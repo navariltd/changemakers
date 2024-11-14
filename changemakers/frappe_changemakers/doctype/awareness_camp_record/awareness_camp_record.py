@@ -8,12 +8,14 @@ from changemakers.utils.form import get_coordinates_from_geolocation_string
 
 
 class AwarenessCampRecord(Document):
-	def validate(self):
-		self.set_location_coordinates()
+    def validate(self):
+        self.set_location_coordinates()
 
-	def set_location_coordinates(self):
-		if self.geolocation:
-			try:
-				self.coordinates = str(get_coordinates_from_geolocation_string(self.geolocation))
-			except Exception:
-				frappe.log_error("Error parsing geolocation field")
+    def set_location_coordinates(self):
+        if self.geolocation:
+            try:
+                self.coordinates = str(
+                    get_coordinates_from_geolocation_string(self.geolocation)
+                )
+            except Exception:
+                frappe.log_error("Error parsing geolocation field")

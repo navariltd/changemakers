@@ -6,4 +6,4 @@ from frappe.model.document import Document
 
 
 class DisabilityCondition(Document):
-	pass
+    pass
