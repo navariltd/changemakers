@@ -9,6 +9,8 @@ class Case(Document):
     def before_save(self):
         self.set_created_by()
         self.set_total_amount()
+        if self.beneficiary:
+            update_beneficiary_status(self)
 
     def set_created_by(self):
         if not self.created_by:
@@ -16,7 +18,26 @@ class Case(Document):
             self.created_by = owner
 
     def set_total_amount(self):
-        total_amount = 0
-        for row in self.payment_details:
-            total_amount += row.amount
-        self.total_amount = total_amount
+        self.total_amount = sum(row.amount for row in self.payment_details)
+
+
+def update_beneficiary_status(case_doc):
+    case_status_to_beneficiary_status = {
+        "Closed": {
+            "Bereavement": "Deceased",
+            "Relocation": "Relocated",
+            "Disqualification": "Disqualified",
+            "Suspension": "Suspended",
+            "Local Administration Acknowledgement": "Endorsed",
+        },
+    }
+    
+    status_map = case_status_to_beneficiary_status.get(case_doc.status)
+    if not status_map:
+        return 
+
+    new_beneficiary_status = status_map.get(case_doc.type)
+    if not new_beneficiary_status:
+        return 
+    
+    frappe.db.set_value("Beneficiary", case_doc.beneficiary, "status", new_beneficiary_status)

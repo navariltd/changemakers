@@ -16,7 +16,7 @@
   "column_break_3",
   "phone_number",
   "gender",
-  "date_of_birth",
+  "dob",
   "age",
   "column_break_4",
   "religion",
@@ -472,7 +472,7 @@
    "in_standard_filter": 1,
    "label": "Status",
    "no_copy": 1,
-   "options": "Waitlist\nEndorsed\nApproved\nActive\nInactive\nDiscontinued\nBereavement Pending\nDeceased\nArchived",
+   "options": "Waitlist\nEndorsed\nApproved\nActive\nInactive\nSuspended\nRelocated\nBereavement Pending\nDeceased\nDisqualified\nArchived",
    "read_only": 1
   },
   {
@@ -506,12 +506,6 @@
    "fieldname": "nhif_number_if_any",
    "fieldtype": "Data",
    "label": "NHIF Number (If Any)"
-  },
-  {
-   "fieldname": "date_of_birth",
-   "fieldtype": "Date",
-   "label": "Date of Birth",
-   "reqd": 1
   },
   {
    "fieldname": "address_html",
@@ -642,6 +636,12 @@
   {
    "fieldname": "dimension_col_break",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dob",
+   "fieldtype": "Date",
+   "label": "Date of Birth",
+   "reqd": 1
   }
  ],
  "image_field": "image",
@@ -673,7 +673,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-11-15 12:20:45.848724",
+ "modified": "2024-11-15 13:43:23.243298",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
