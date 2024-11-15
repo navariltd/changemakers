@@ -13,17 +13,20 @@
   "last_name",
   "full_name",
   "recruitment_phase",
-  "branch",
   "column_break_3",
   "phone_number",
   "gender",
   "date_of_birth",
   "age",
-  "donor",
   "column_break_4",
   "religion",
   "social_category",
   "languages_known",
+  "accounting_dimensions_section",
+  "cost_center",
+  "donor",
+  "dimension_col_break",
+  "branch",
   "section_break_vzck",
   "created_by",
   "section_break_uwdz",
@@ -619,6 +622,26 @@
    "label": "Donor",
    "options": "Donor",
    "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "accounting_dimensions_section",
+   "fieldtype": "Section Break",
+   "label": "Accounting Dimensions"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "dimension_col_break",
+   "fieldtype": "Column Break"
   }
  ],
  "image_field": "image",
@@ -650,7 +673,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-11-14 16:33:21.417963",
+ "modified": "2024-11-15 12:20:45.848724",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",

@@ -33,6 +33,25 @@ fixtures = [
             )
         },
     },
+    {
+        "doctype": "Custom Field",
+        "filters": [
+            [
+                "dt",
+                "in",
+                (
+                    "Stock Entry",
+                ),
+            ],
+            ["is_system_generated", "=", 0],
+            ["module", "=", "Frappe Changemakers"],
+        ],
+    },
+]
+
+accounting_dimension_doctypes = [
+    "Beneficiary",
+    "Donor"
 ]
 
 # Includes in <head>
