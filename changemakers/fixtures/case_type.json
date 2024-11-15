@@ -38,5 +38,21 @@
   "modified": "2023-06-18 01:26:14.586694",
   "name": "Hygiene",
   "type": "Hygiene"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Case Type",
+  "is_enabled": 1,
+  "modified": "2024-11-14 15:49:14.354275",
+  "name": "Bereavement",
+  "type": "Bereavement"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Case Type",
+  "is_enabled": 1,
+  "modified": "2024-11-14 11:28:18.772667",
+  "name": "Local Administration Acknowledgement",
+  "type": "Local Administration Acknowledgement"
  }
 ]
