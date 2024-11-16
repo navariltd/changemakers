@@ -13,6 +13,7 @@
   "last_name",
   "full_name",
   "recruitment_phase",
+  "beneficiary_no",
   "column_break_3",
   "phone_number",
   "gender",
@@ -50,14 +51,11 @@
   "image",
   "identity_tab",
   "identity_section",
-  "national_id_number",
   "ethnicity",
   "nationality",
-  "is_identity_proof_available",
   "column_break_17",
   "place_of_birth",
-  "nssf_number_if_any",
-  "nhif_number_if_any",
+  "is_identity_proof_available",
   "section_break_glmz",
   "identity_proofs",
   "tab_4_tab",
@@ -153,7 +151,7 @@
    "default": "No",
    "fieldname": "is_identity_proof_available",
    "fieldtype": "Select",
-   "label": "Is Identitity Proof Available?",
+   "label": "Documents Available?",
    "options": "Yes\nNo\nCan't Say"
   },
   {
@@ -487,25 +485,9 @@
    "options": "Beneficiary Dependent"
   },
   {
-   "fieldname": "nssf_number_if_any",
-   "fieldtype": "Data",
-   "label": "NSSF Number (If Any)"
-  },
-  {
-   "fieldname": "national_id_number",
-   "fieldtype": "Data",
-   "label": "National ID Number",
-   "reqd": 1
-  },
-  {
    "fieldname": "ethnicity",
    "fieldtype": "Data",
    "label": "Ethnicity"
-  },
-  {
-   "fieldname": "nhif_number_if_any",
-   "fieldtype": "Data",
-   "label": "NHIF Number (If Any)"
   },
   {
    "fieldname": "address_html",
@@ -642,6 +624,19 @@
    "fieldtype": "Date",
    "label": "Date of Birth",
    "reqd": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "beneficiary_no",
+   "fieldtype": "Data",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Beneficiary No",
+   "non_negative": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "image_field": "image",
@@ -673,7 +668,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-11-15 13:43:23.243298",
+ "modified": "2024-11-15 14:20:07.313367",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",

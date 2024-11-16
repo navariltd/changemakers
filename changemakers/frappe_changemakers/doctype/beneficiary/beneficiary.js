@@ -41,9 +41,11 @@ frappe.ui.form.on("Beneficiary", {
 
 		calculate_and_set_age(frm);
 	},
+
 	dob: (frm) => {
 		calculate_and_set_age(frm);
 	},
+
 	setup(frm) {
 		changemakers.utils.set_query_for_district(frm);
 		changemakers.utils.set_query_for_zone(frm);

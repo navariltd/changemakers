@@ -6,7 +6,9 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "title"
+  "title",
+  "column_break_tcct",
+  "series"
  ],
  "fields": [
   {
@@ -16,11 +18,21 @@
    "label": "Title",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "column_break_tcct",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "series",
+   "fieldtype": "Data",
+   "label": "Series",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-13 07:30:39.066808",
+ "modified": "2024-11-15 14:14:15.949081",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Funding Pool",
