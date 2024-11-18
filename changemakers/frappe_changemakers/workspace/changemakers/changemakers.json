@@ -1,6 +1,11 @@
 {
- "charts": [],
- "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"I9e4OurK7Y\",\"type\":\"paragraph\",\"data\":{\"text\":\"&nbsp;Manage Beneficiaries\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Beneficiary\",\"col\":3}},{\"id\":\"PMA7sL0zHl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"All Beneficiaries\",\"col\":3}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"Daily Visit Update\",\"col\":12}},{\"id\":\"arnB4anEZl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Daily Visit Update\",\"col\":3}},{\"id\":\"lB7YAlkP4m\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"All Daily Visit Update List\",\"col\":3}},{\"id\":\"K20J6BDf9I\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Daily Visit Report View\",\"col\":3}},{\"id\":\"GlS-4ygjkT\",\"type\":\"paragraph\",\"data\":{\"text\":\"Rescues\",\"col\":12}},{\"id\":\"W7ZBgFg0CJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Rescue\",\"col\":3}},{\"id\":\"TEcaVdnIhr\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"All Rescues\",\"col\":3}},{\"id\":\"g2frCR54Gw\",\"type\":\"paragraph\",\"data\":{\"text\":\"Cases\",\"col\":12}},{\"id\":\"YY4UpDO22w\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"My Cases\",\"col\":3}},{\"id\":\"o-NQxJOqB9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Case\",\"col\":3}},{\"id\":\"1X_H_JUulh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Open Cases\",\"col\":3}},{\"id\":\"2faOuV0vIj\",\"type\":\"paragraph\",\"data\":{\"text\":\"Entitlements\",\"col\":12}},{\"id\":\"xllISW0jRt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Entitlements\",\"col\":3}},{\"id\":\"wjYeZ-C3Yj\",\"type\":\"paragraph\",\"data\":{\"text\":\"Food\",\"col\":12}},{\"id\":\"mB90BbrugG\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Distribution\",\"col\":3}},{\"id\":\"2Dxn3AA-OY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"All Distributions\",\"col\":3}},{\"id\":\"2qZW9NgrCQ\",\"type\":\"paragraph\",\"data\":{\"text\":\"Healthcare\",\"col\":12}},{\"id\":\"JYx1hK5EYf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Hospitalisation Record\",\"col\":3}},{\"id\":\"aGZflLrU8F\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Healthcare Providers\",\"col\":3}},{\"id\":\"cAplmOLdjf\",\"type\":\"paragraph\",\"data\":{\"text\":\"Care Centre\",\"col\":12}},{\"id\":\"ObebyzwyH1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Care Centre\",\"col\":3}},{\"id\":\"scHLTq6_3v\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Care Centre Admission\",\"col\":3}},{\"id\":\"SMiDbH7oHO\",\"type\":\"paragraph\",\"data\":{\"text\":\"Shelter Services\",\"col\":12}},{\"id\":\"_zTFcA698A\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Shelter Homes\",\"col\":4}},{\"id\":\"ZMLz_em53Q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Entry Record\",\"col\":3}},{\"id\":\"j51o5hQMDV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Exit Record\",\"col\":3}},{\"id\":\"hIEZu5hDaF\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"2QJ1oA29Tv\",\"type\":\"paragraph\",\"data\":{\"text\":\"Others\",\"col\":12}},{\"id\":\"a3oRewN8WJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Family Reintegrations\",\"col\":3}},{\"id\":\"AtcrGpwYkn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Awareness Camps\",\"col\":3}},{\"id\":\"vOv18I4R0A\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Health Camps\",\"col\":3}}]",
+ "charts": [
+  {
+   "chart_name": "Cases Per Week",
+   "label": "Cases Per Week"
+  }
+ ],
+ "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"zBCrzD8d6w\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Cases Per Week\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":3}},{\"id\":\"MgGYu_4ow3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Case\",\"col\":3}},{\"id\":\"cF4ncCc8K7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Phase\",\"col\":3}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"7DQJ2fjmW0\",\"type\":\"card\",\"data\":{\"card_name\":\"Services & Programs\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Healthcare\",\"col\":4}},{\"id\":\"jxARUZ8geY\",\"type\":\"card\",\"data\":{\"card_name\":\"Care Centres & Shelters\",\"col\":4}},{\"id\":\"PYlp0anXDn\",\"type\":\"card\",\"data\":{\"card_name\":\"Location & Demographic\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2022-10-13 13:51:43.725589",
  "custom_blocks": [],
  "docstatus": 0,
@@ -11,8 +16,554 @@
  "idx": 0,
  "is_hidden": 0,
  "label": "Changemakers",
- "links": [],
- "modified": "2023-10-27 19:23:52.631875",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Care Centres & Shelters",
+   "link_count": 9,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Care Centre",
+   "link_count": 0,
+   "link_to": "Care Centre",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Care Centre Admission",
+   "link_count": 0,
+   "link_to": "Care Centre Admission",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Shelter Home",
+   "link_count": 0,
+   "link_to": "Shelter Home",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Shelter Home Admission Criterion",
+   "link_count": 0,
+   "link_to": "Shelter Home Admission Criterion",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Shelter Home Admission Record",
+   "link_count": 0,
+   "link_to": "Shelter Home Admission Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Shelter Home Exit Record",
+   "link_count": 0,
+   "link_to": "Shelter Home Exit Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Shelter Home Service Record",
+   "link_count": 0,
+   "link_to": "Shelter Home Service Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Shelter Home Support Type",
+   "link_count": 0,
+   "link_to": "Shelter Home Support Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Shelter Home Type",
+   "link_count": 0,
+   "link_to": "Shelter Home Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Healthcare",
+   "link_count": 9,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Awareness Camp Record",
+   "link_count": 0,
+   "link_to": "Awareness Camp Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Chronic Illness Type",
+   "link_count": 0,
+   "link_to": "Chronic Illness Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Disability Condition",
+   "link_count": 0,
+   "link_to": "Disability Condition",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Health Condition",
+   "link_count": 0,
+   "link_to": "Health Condition",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Health Camp Record",
+   "link_count": 0,
+   "link_to": "Health Camp Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Healthcare Provider",
+   "link_count": 0,
+   "link_to": "Healthcare Provider",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Health Camp Record",
+   "link_count": 0,
+   "link_to": "Health Camp Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Hospitalisation Record",
+   "link_count": 0,
+   "link_to": "Hospitalisation Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Medical Case Sheet",
+   "link_count": 0,
+   "link_to": "Medical Case Sheet",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Location & Demographic",
+   "link_count": 8,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "District",
+   "link_count": 0,
+   "link_to": "District",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Education Level",
+   "link_count": 0,
+   "link_to": "Education Level",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Habitation",
+   "link_count": 0,
+   "link_to": "Habitation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Languages Known",
+   "link_count": 0,
+   "link_to": "Languages Known",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Religion",
+   "link_count": 0,
+   "link_to": "Religion",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "State",
+   "link_count": 0,
+   "link_to": "State",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Ward",
+   "link_count": 0,
+   "link_to": "Ward",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Zone",
+   "link_count": 0,
+   "link_to": "Zone",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Beneficiary",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Beneficiary",
+   "link_count": 0,
+   "link_to": "Beneficiary",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Case",
+   "link_count": 0,
+   "link_to": "Case",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Collector",
+   "link_count": 0,
+   "link_to": "Collector",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Entitlement Request",
+   "link_count": 0,
+   "link_to": "Entitlement Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Funding Pool",
+   "link_count": 0,
+   "link_to": "Funding Pool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Recruitment Phase",
+   "link_count": 0,
+   "link_to": "Recruitment Phase",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Settings",
+   "link_count": 7,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Case Type",
+   "link_count": 0,
+   "link_to": "Case Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Changemakers Settings",
+   "link_count": 0,
+   "link_to": "Changemakers Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Changemakers User Profile",
+   "link_count": 0,
+   "link_to": "Changemakers User Profile",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Designation",
+   "link_count": 0,
+   "link_to": "Designation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Income Source Type",
+   "link_count": 0,
+   "link_to": "Income Source Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Organisation",
+   "link_count": 0,
+   "link_to": "Organisation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payment Type",
+   "link_count": 0,
+   "link_to": "Payment Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Services & Programs",
+   "link_count": 7,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Daily Visit Update",
+   "link_count": 0,
+   "link_to": "Daily Visit Update",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Entitlement Request",
+   "link_count": 0,
+   "link_to": "Entitlement Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Entitlement Type",
+   "link_count": 0,
+   "link_to": "Entitlement Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Food Distribution Record",
+   "link_count": 0,
+   "link_to": "Food Distribution Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Family Reintegration",
+   "link_count": 0,
+   "link_to": "Family Reintegration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rescue",
+   "link_count": 0,
+   "link_to": "Rescue",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Learning Centre",
+   "link_count": 0,
+   "link_to": "Learning Centre",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "My Cases",
+   "link_count": 0,
+   "link_to": "My Cases",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Case",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Daily Visit Update Report View",
+   "link_count": 0,
+   "link_to": "Daily Visit Update Report View",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Daily Visit Update",
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-11-18 13:35:45.484883",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers",
@@ -20,182 +571,32 @@
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
- "quick_lists": [
-  {
-   "document_type": "Shelter Home",
-   "label": "Shelter Homes"
-  }
- ],
+ "quick_lists": [],
  "roles": [],
  "sequence_id": 1.0,
  "shortcuts": [
   {
    "color": "Grey",
-   "doc_view": "New",
-   "label": "New Daily Visit Update",
-   "link_to": "Daily Visit Update",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
    "doc_view": "List",
-   "label": "Care Centre",
-   "link_to": "Care Centre",
+   "label": "Beneficiary",
+   "link_to": "Beneficiary",
    "stats_filter": "[]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Care Centre Admission",
-   "link_to": "Care Centre Admission",
+   "label": "Recruitment Phase",
+   "link_to": "Recruitment Phase",
    "stats_filter": "[]",
    "type": "DocType"
   },
   {
    "color": "Grey",
-   "doc_view": "New",
-   "label": "New Case",
+   "doc_view": "List",
+   "label": "Case",
    "link_to": "Case",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Daily Visit Report View",
-   "link_to": "Daily Visit Update Report View",
-   "type": "Report"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "All Daily Visit Update List",
-   "link_to": "Daily Visit Update",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "New",
-   "label": "New Beneficiary",
-   "link_to": "Beneficiary",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "My Cases",
-   "link_to": "My Cases",
-   "type": "Report"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "format": "{}",
-   "label": "All Beneficiaries",
-   "link_to": "Beneficiary",
-   "stats_filter": "{\"name\":[\"is\",\"set\"]}",
-   "type": "DocType"
-  },
-  {
-   "color": "Cyan",
-   "doc_view": "List",
-   "format": "{}",
-   "label": "Healthcare Providers",
-   "link_to": "Healthcare Provider",
-   "stats_filter": "{\"name\":[\"is\",\"set\"]}",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "format": "{}",
-   "label": "Hospitalisation Record",
-   "link_to": "Hospitalisation Record",
-   "stats_filter": "{\"name\":[\"is\",\"set\"]}",
-   "type": "DocType"
-  },
-  {
-   "color": "Cyan",
-   "doc_view": "New",
-   "label": "Create Entry Record",
-   "link_to": "Shelter Home Admission Record",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "New",
-   "label": "New Rescue",
-   "link_to": "Rescue",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "format": "{} Requests",
-   "label": "Entitlements",
-   "link_to": "Entitlement Request",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "label": "Family Reintegrations",
-   "link_to": "Family Reintegration",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "format": "{}",
-   "label": "All Distributions",
-   "link_to": "Food Distribution Record",
-   "stats_filter": "{\"name\":[\"is\",\"set\"]}",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "format": "{}",
-   "label": "All Rescues",
-   "link_to": "Rescue",
-   "stats_filter": "{\"name\":[\"is\",\"set\"]}",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "label": "Awareness Camps",
-   "link_to": "Awareness Camp Record",
-   "type": "DocType"
-  },
-  {
-   "color": "Yellow",
-   "doc_view": "New",
-   "label": "Create Exit Record",
-   "link_to": "Shelter Home Exit Record",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "New",
-   "label": "New Distribution",
-   "link_to": "Food Distribution Record",
-   "type": "DocType"
-  },
-  {
-   "color": "Yellow",
-   "doc_view": "List",
-   "format": "{} Open",
-   "label": "Open Cases",
-   "link_to": "Case",
-   "stats_filter": "{\"docstatus\":[\"=\",\"0\"]}",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "label": "Health Camps",
-   "link_to": "Health Camp Record",
+   "stats_filter": "[]",
    "type": "DocType"
   }
  ],
