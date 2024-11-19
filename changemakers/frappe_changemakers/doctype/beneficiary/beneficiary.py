@@ -92,6 +92,6 @@ def generate_beneficiary_no(doc):
     new_number = last_number + 1
     formatted_number = f"{new_number:04}"
 
-    beneficiary_no = f"{funding_pool.series}-{formatted_number}"
+    beneficiary_no = f"{funding_pool.series}{formatted_number}"
 
     return beneficiary_no

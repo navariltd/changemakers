@@ -22,6 +22,23 @@ frappe.ui.form.on("Beneficiary", {
 				);
 			}
 
+			const requiresReplacement = [
+				"Relocated",
+				"Suspended",
+				"Deceased",
+				"Disqualified",
+			];
+			if (
+				requiresReplacement.includes(frm.doc.status) &&
+				!frm.doc.replaced_by
+			) {
+				frm.add_custom_button(
+					"Replacement",
+					() => open_replacement_form(frm),
+					"Create"
+				);
+			}
+
 			if (frm.doc.status === "Active") {
 				const cases = [
 					"Disqualification",
@@ -83,4 +100,36 @@ function calculate_and_set_age(frm) {
 	} else {
 		frm.set_value("age", null);
 	}
+}
+
+function open_replacement_form(frm) {
+	const dialog = new frappe.ui.Dialog({
+		title: "Select Replacement Beneficiary",
+		fields: [
+			{
+				fieldtype: "Link",
+				fieldname: "replaced_by",
+				label: "Replaced By",
+				options: "Beneficiary",
+				reqd: 1,
+				filters: {
+					status: "Waitlist",
+					name: ["!=", frm.doc.name],
+				},
+			},
+		],
+		primary_action_label: "Save",
+		primary_action: function () {
+			const replacedBy = dialog.get_values().replaced_by;
+			if (replacedBy) {
+				frm.set_value("replaced_by", replacedBy);
+				frm.save();
+				dialog.hide();
+			} else {
+				frappe.msgprint("Please select a replacement beneficiary.");
+			}
+		},
+	});
+
+	dialog.show();
 }
