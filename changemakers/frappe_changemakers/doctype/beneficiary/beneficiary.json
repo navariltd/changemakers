@@ -63,7 +63,6 @@
   "disability_condition",
   "column_break_24",
   "chronic_illness",
-  "other_chronic_illness",
   "history_section",
   "has_history",
   "previous_beneficiary_details",
@@ -290,18 +289,10 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "None",
    "fieldname": "chronic_illness",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Chronic Illness",
-   "options": "None\nTB\nAsthma\nHIV\nCancer\nOther"
-  },
-  {
-   "depends_on": "eval:doc.chronic_illness==\"Other\"",
-   "fieldname": "other_chronic_illness",
-   "fieldtype": "Data",
-   "label": "Please Specify",
-   "mandatory_depends_on": "eval:doc.chronic_illness==\"Other\""
+   "options": "Chronic Illness Type"
   },
   {
    "fieldname": "education_section",
@@ -665,7 +656,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-11-19 15:46:18.003611",
+ "modified": "2024-11-19 16:37:28.834735",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
@@ -789,6 +780,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "first_name",
+ "title_field": "full_name",
  "track_changes": 1
 }
