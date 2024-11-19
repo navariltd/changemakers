@@ -13,21 +13,21 @@
   "last_name",
   "full_name",
   "recruitment_phase",
-  "beneficiary_no",
+  "branch",
   "column_break_3",
-  "phone_number",
+  "beneficiary_no",
   "gender",
   "dob",
   "age",
+  "donor",
   "column_break_4",
+  "phone_number",
   "religion",
   "social_category",
   "languages_known",
   "accounting_dimensions_section",
   "cost_center",
-  "donor",
   "dimension_col_break",
-  "branch",
   "section_break_vzck",
   "created_by",
   "section_break_uwdz",
@@ -84,10 +84,10 @@
   "housing_description",
   "tab_6_tab",
   "status",
+  "replaced_by",
   "activation_date",
   "archive_date",
   "column_break_tvlz",
-  "can_collect",
   "archive_reason",
   "native_place_section",
   "native_state",
@@ -470,7 +470,7 @@
    "in_standard_filter": 1,
    "label": "Status",
    "no_copy": 1,
-   "options": "Waitlist\nEndorsed\nApproved\nActive\nInactive\nSuspended\nRelocated\nBereavement Pending\nDeceased\nDisqualified\nArchived",
+   "options": "Waitlist\nEndorsed\nApproved\nActive\nSuspended\nRelocated\nDeceased\nDisqualified\nArchived",
    "read_only": 1
   },
   {
@@ -506,12 +506,6 @@
   {
    "fieldname": "column_break_tvlz",
    "fieldtype": "Column Break"
-  },
-  {
-   "default": "0",
-   "fieldname": "can_collect",
-   "fieldtype": "Check",
-   "label": "Can Collect"
   },
   {
    "fieldname": "place_of_birth",
@@ -607,13 +601,10 @@
   },
   {
    "fieldname": "cost_center",
-   "fieldtype": "Link",
-   "in_filter": 1,
-   "in_list_view": 1,
+   "fieldtype": "Table MultiSelect",
    "in_preview": 1,
-   "in_standard_filter": 1,
    "label": "Cost Center",
-   "options": "Cost Center"
+   "options": "Beneficiary Program"
   },
   {
    "fieldname": "dimension_col_break",
@@ -637,6 +628,12 @@
    "non_negative": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "replaced_by",
+   "fieldtype": "Link",
+   "label": "Replaced by",
+   "options": "Beneficiary"
   }
  ],
  "image_field": "image",
@@ -668,7 +665,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-11-15 14:20:07.313367",
+ "modified": "2024-11-19 15:46:18.003611",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
