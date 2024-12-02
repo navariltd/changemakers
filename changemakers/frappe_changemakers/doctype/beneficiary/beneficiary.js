@@ -123,8 +123,25 @@ function open_replacement_form(frm) {
 			const replacedBy = dialog.get_values().replaced_by;
 			if (replacedBy) {
 				frm.set_value("replaced_by", replacedBy);
-				frm.save();
-				dialog.hide();
+
+				frappe.db.get_doc("Beneficiary", replacedBy).then((doc) => {
+					frappe.call({
+						method: "frappe.client.set_value",
+						args: {
+							doctype: "Beneficiary",
+							name: replacedBy,
+							fieldname: {
+								recruitment_phase: frm.doc.recruitment_phase,
+								branch: frm.doc.branch,
+								beneficiary_no: frm.doc.beneficiary_no,
+							},
+						},
+						callback: function () {
+							frm.save();
+							dialog.hide();
+						},
+					});
+				});
 			} else {
 				frappe.msgprint("Please select a replacement beneficiary.");
 			}

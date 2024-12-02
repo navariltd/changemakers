@@ -119,105 +119,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Healthcare",
-   "link_count": 9,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Awareness Camp Record",
-   "link_count": 0,
-   "link_to": "Awareness Camp Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Chronic Illness Type",
-   "link_count": 0,
-   "link_to": "Chronic Illness Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Disability Condition",
-   "link_count": 0,
-   "link_to": "Disability Condition",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Health Condition",
-   "link_count": 0,
-   "link_to": "Health Condition",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Health Camp Record",
-   "link_count": 0,
-   "link_to": "Health Camp Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Healthcare Provider",
-   "link_count": 0,
-   "link_to": "Healthcare Provider",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Health Camp Record",
-   "link_count": 0,
-   "link_to": "Health Camp Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Hospitalisation Record",
-   "link_count": 0,
-   "link_to": "Hospitalisation Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Medical Case Sheet",
-   "link_count": 0,
-   "link_to": "Medical Case Sheet",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Location & Demographic",
    "link_count": 8,
    "link_type": "DocType",
@@ -561,9 +462,98 @@
    "onboard": 0,
    "report_ref_doctype": "Daily Visit Update",
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Healthcare",
+   "link_count": 8,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Awareness Camp Record",
+   "link_count": 0,
+   "link_to": "Awareness Camp Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Chronic Illness Type",
+   "link_count": 0,
+   "link_to": "Chronic Illness Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Disability Condition",
+   "link_count": 0,
+   "link_to": "Disability Condition",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Health Condition",
+   "link_count": 0,
+   "link_to": "Health Condition",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Health Camp Record",
+   "link_count": 0,
+   "link_to": "Health Camp Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Healthcare Provider",
+   "link_count": 0,
+   "link_to": "Healthcare Provider",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Hospitalisation Record",
+   "link_count": 0,
+   "link_to": "Hospitalisation Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Medical Case Sheet",
+   "link_count": 0,
+   "link_to": "Medical Case Sheet",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-11-18 13:35:45.484883",
+ "modified": "2024-12-02 12:12:28.211275",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers",
