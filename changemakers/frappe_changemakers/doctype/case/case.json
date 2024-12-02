@@ -52,7 +52,29 @@
   "created_by",
   "section_break_yuho",
   "bottom_save_button",
-  "column_break_qfjk"
+  "column_break_qfjk",
+  "assessment_tab",
+  "housing_assessed",
+  "column_break_qzux",
+  "food_assessed",
+  "section_break_gyac",
+  "housing_type",
+  "no_of_rooms",
+  "home_ownedrented",
+  "column_break_goqn",
+  "washroom_present",
+  "water_accessible",
+  "electricity_accessible",
+  "lighting_accessible",
+  "section_break_ksqi",
+  "how_many_weeks_do_the_rations_last",
+  "reason_for_run_out",
+  "comments",
+  "column_break_uxrn",
+  "food_item_to_be_changed",
+  "items_that_run_out_first",
+  "food_item_to_be_included",
+  "food_item_to_be_increased"
  ],
  "fields": [
   {
@@ -192,6 +214,7 @@
   {
    "fieldname": "location_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Location"
   },
   {
@@ -233,6 +256,7 @@
   {
    "fieldname": "updates_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Updates"
   },
   {
@@ -308,7 +332,8 @@
   },
   {
    "fieldname": "section_break_grcq",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "fetch_from": "beneficiary.full_name",
@@ -319,6 +344,7 @@
   {
    "fieldname": "payment_details_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Payment Details"
   },
   {
@@ -333,11 +359,132 @@
    "label": "Total Amount",
    "non_negative": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "assessment_tab",
+   "fieldtype": "Tab Break",
+   "label": "Assessment"
+  },
+  {
+   "default": "0",
+   "fieldname": "housing_assessed",
+   "fieldtype": "Check",
+   "label": "Housing has been assessed"
+  },
+  {
+   "default": "0",
+   "fieldname": "food_assessed",
+   "fieldtype": "Check",
+   "label": "Food  has been assessed"
+  },
+  {
+   "depends_on": "eval: doc.food_assessed == 1",
+   "fieldname": "section_break_ksqi",
+   "fieldtype": "Section Break",
+   "label": "Food"
+  },
+  {
+   "fieldname": "how_many_weeks_do_the_rations_last",
+   "fieldtype": "Int",
+   "label": "How many weeks do the rations last?"
+  },
+  {
+   "fieldname": "column_break_uxrn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "food_item_to_be_increased",
+   "fieldtype": "Table MultiSelect",
+   "label": "Food Item to be increased",
+   "options": "Assessment Item"
+  },
+  {
+   "fieldname": "reason_for_run_out",
+   "fieldtype": "Small Text",
+   "label": "Reason for run out"
+  },
+  {
+   "fieldname": "comments",
+   "fieldtype": "Small Text",
+   "label": "Comments"
+  },
+  {
+   "fieldname": "food_item_to_be_changed",
+   "fieldtype": "Table MultiSelect",
+   "label": "Food Item to be changed",
+   "options": "Assessment Item"
+  },
+  {
+   "fieldname": "items_that_run_out_first",
+   "fieldtype": "Table MultiSelect",
+   "label": "Items that run out first",
+   "options": "Assessment Item"
+  },
+  {
+   "fieldname": "food_item_to_be_included",
+   "fieldtype": "Table MultiSelect",
+   "label": "Food Item to be included",
+   "options": "Assessment Item"
+  },
+  {
+   "depends_on": "eval: doc.housing_assessed == 1",
+   "fieldname": "section_break_gyac",
+   "fieldtype": "Section Break",
+   "label": "Housing"
+  },
+  {
+   "fieldname": "housing_type",
+   "fieldtype": "Select",
+   "label": "Housing Type",
+   "options": "Permanent\nSemi Permanent\nOther"
+  },
+  {
+   "fieldname": "home_ownedrented",
+   "fieldtype": "Select",
+   "label": "Home Owned/Rented?",
+   "options": "Own home\nRented"
+  },
+  {
+   "fieldname": "column_break_goqn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "no_of_rooms",
+   "fieldtype": "Int",
+   "label": "No. of Rooms"
+  },
+  {
+   "default": "0",
+   "fieldname": "washroom_present",
+   "fieldtype": "Check",
+   "label": "Washroom is present"
+  },
+  {
+   "default": "0",
+   "fieldname": "water_accessible",
+   "fieldtype": "Check",
+   "label": "Water is accessible"
+  },
+  {
+   "default": "0",
+   "fieldname": "electricity_accessible",
+   "fieldtype": "Check",
+   "label": "Electricity is accessible"
+  },
+  {
+   "default": "0",
+   "fieldname": "lighting_accessible",
+   "fieldtype": "Check",
+   "label": "Lighting is accessible"
+  },
+  {
+   "fieldname": "column_break_qzux",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-15 13:24:23.276322",
+ "modified": "2024-12-02 11:44:17.791955",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Case",

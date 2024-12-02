@@ -51,6 +51,14 @@
   "docstatus": 0,
   "doctype": "Case Type",
   "is_enabled": 1,
+  "modified": "2024-12-02 12:57:34.380437",
+  "name": "Assessment",
+  "type": "Assessment"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Case Type",
+  "is_enabled": 1,
   "modified": "2024-11-14 11:28:18.772667",
   "name": "Local Administration Acknowledgement",
   "type": "Local Administration Acknowledgement"

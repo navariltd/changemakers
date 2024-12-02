@@ -8,8 +8,18 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "beneficiary",
   "vitals_taken",
   "column_break_biht",
+  "hospitalisation_record",
+  "section_break_aaos",
+  "symptoms",
+  "medical_conditions",
+  "column_break_ugpl",
+  "diagnosis",
+  "medications_section",
+  "drug_prescription",
+  "history_tab",
   "section_break_bedp",
   "chief_complaint",
   "past_medical_history",
@@ -67,11 +77,65 @@
    "fieldname": "allergies",
    "fieldtype": "Small Text",
    "label": "Allergies"
+  },
+  {
+   "fieldname": "beneficiary",
+   "fieldtype": "Link",
+   "label": "Beneficiary",
+   "options": "Beneficiary"
+  },
+  {
+   "fieldname": "section_break_aaos",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "symptoms",
+   "fieldtype": "Table MultiSelect",
+   "label": "Symptoms",
+   "options": "Patient Encounter Symptom"
+  },
+  {
+   "fieldname": "column_break_ugpl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "diagnosis",
+   "fieldtype": "Table MultiSelect",
+   "label": "Diagnosis",
+   "options": "Patient Encounter Diagnosis"
+  },
+  {
+   "fieldname": "medications_section",
+   "fieldtype": "Section Break",
+   "label": "Medications"
+  },
+  {
+   "fieldname": "drug_prescription",
+   "fieldtype": "Table",
+   "label": "Drug Prescription",
+   "options": "Drug Prescription"
+  },
+  {
+   "fieldname": "hospitalisation_record",
+   "fieldtype": "Link",
+   "label": "Hospitalisation Record",
+   "options": "Hospitalisation Record"
+  },
+  {
+   "fieldname": "medical_conditions",
+   "fieldtype": "Table MultiSelect",
+   "label": "Medical Conditions",
+   "options": "Medical Conditions Multiselect"
+  },
+  {
+   "fieldname": "history_tab",
+   "fieldtype": "Tab Break",
+   "label": "History"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-03 16:12:30.491160",
+ "modified": "2024-12-02 15:11:03.103499",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Medical Case Sheet",

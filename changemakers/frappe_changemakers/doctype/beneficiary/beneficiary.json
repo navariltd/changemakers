@@ -654,9 +654,14 @@
    "group": "Cases",
    "link_doctype": "Case",
    "link_fieldname": "beneficiary"
+  },
+  {
+   "group": "Health",
+   "link_doctype": "Medical Case Sheet",
+   "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-11-19 16:37:28.834735",
+ "modified": "2024-12-02 15:06:29.154358",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
