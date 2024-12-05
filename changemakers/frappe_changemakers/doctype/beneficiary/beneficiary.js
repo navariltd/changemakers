@@ -40,12 +40,7 @@ frappe.ui.form.on("Beneficiary", {
 			}
 
 			if (frm.doc.status === "Active") {
-				const cases = [
-					"Disqualification",
-					"Relocation",
-					"Housing Issue",
-					"Bereavement",
-				];
+				const cases = ["Disqualification", "Relocation", "Bereavement"];
 				cases.forEach((caseType) => {
 					frm.add_custom_button(
 						caseType,
@@ -57,6 +52,22 @@ frappe.ui.form.on("Beneficiary", {
 		}
 
 		calculate_and_set_age(frm);
+	},
+
+	recruitment_phase: (frm) => {
+		if (frm.doc.recruitment_phase) {
+			frappe.db
+				.get_value(
+					"Recruitment Phase",
+					frm.doc.recruitment_phase,
+					"branch"
+				)
+				.then((r) => {
+					if (r.message) {
+						frm.set_value("branch", r.message.branch);
+					}
+				});
+		}
 	},
 
 	dob: (frm) => {
