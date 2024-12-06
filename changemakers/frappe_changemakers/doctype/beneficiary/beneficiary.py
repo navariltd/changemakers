@@ -9,7 +9,6 @@ from frappe.query_builder import Field
 from frappe.utils import cint
 
 from changemakers.utils.data import is_valid_indian_phone_number
-from ..recruitment_phase.recruitment_phase import check_available_slots
 
 class Beneficiary(Document):
     def before_save(self):
@@ -24,20 +23,14 @@ class Beneficiary(Document):
         # self.validate_phone_number_fields()
         
     def validate_available_slots(self):
-        if not self.recruitment_phase or not self.branch:
+        if not self.recruitment_phase:
             return
-        
-        branch_slot_details = check_available_slots(self.recruitment_phase)
+        recruitment_phase = frappe.get_doc("Recruitment Phase", self.recruitment_phase)
 
-        if self.branch not in branch_slot_details:
-            frappe.throw(
-                _(f"No slot allocation found for branch {self.branch} in phase {self.recruitment_phase}.")
-            )
-
-        available_slots = branch_slot_details[self.branch]["available_slots"]
+        available_slots = recruitment_phase.available_slots
         if available_slots <= 0:
             frappe.throw(
-                _(f"No available slots for branch {self.branch} in phase {self.recruitment_phase}.")
+                _(f"No available slots in {self.recruitment_phase}.")
             )
 
     def validate_age(self):
@@ -66,7 +59,6 @@ class Beneficiary(Document):
 
 def generate_beneficiary_no(doc):
     recruitment_phase = frappe.get_doc("Recruitment Phase", doc.recruitment_phase)
-    funding_pool = frappe.get_doc("Funding Pool", recruitment_phase.funding_pool)
     
     Beneficiary = frappe.qb.DocType("Beneficiary")
     beneficiary_no_field = Field("beneficiary_no")
@@ -76,15 +68,15 @@ def generate_beneficiary_no(doc):
         .select(beneficiary_no_field)
         .where(
             (Beneficiary.recruitment_phase == doc.recruitment_phase) &
-            (Beneficiary.beneficiary_no.like(f"{funding_pool.series}-%"))
+            (Beneficiary.beneficiary_no.like(f"{recruitment_phase.beneficiary_number_series}%"))
         )
     )
 
     beneficiary_nos = frappe.db.sql(max_number_query, as_dict=False)
 
     numeric_parts = [
-        cint(bn[0].split("-")[-1])  
-        for bn in beneficiary_nos if bn[0].split("-")[-1].isdigit()
+        cint(bn[0][-4:])  
+        for bn in beneficiary_nos if bn[0][-4:].isdigit()
     ]
 
     last_number = max(numeric_parts, default=0)
@@ -92,6 +84,6 @@ def generate_beneficiary_no(doc):
     new_number = last_number + 1
     formatted_number = f"{new_number:04}"
 
-    beneficiary_no = f"{funding_pool.series}{formatted_number}"
+    beneficiary_no = f"{recruitment_phase.beneficiary_number_series}{formatted_number}"
 
     return beneficiary_no
