@@ -2,6 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
+ "autoname": "format:MCS-{#####}",
  "creation": "2022-12-27 13:06:57.633840",
  "default_view": "List",
  "doctype": "DocType",
@@ -27,7 +28,8 @@
   "column_break_fyhg",
   "history_of_present_illness",
   "medication_history",
-  "allergies"
+  "allergies",
+  "connections_tab"
  ],
  "fields": [
   {
@@ -131,14 +133,21 @@
    "fieldname": "history_tab",
    "fieldtype": "Tab Break",
    "label": "History"
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-02 15:11:03.103499",
+ "modified": "2024-12-06 15:34:19.636423",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Medical Case Sheet",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
