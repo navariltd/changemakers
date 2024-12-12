@@ -449,6 +449,7 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Branch",
+   "no_copy": 1,
    "options": "Branch"
   },
   {
@@ -512,12 +513,14 @@
   {
    "fieldname": "activation_date",
    "fieldtype": "Date",
-   "label": "Activation date"
+   "label": "Activation date",
+   "no_copy": 1
   },
   {
    "fieldname": "archive_date",
    "fieldtype": "Date",
-   "label": "Archive Date"
+   "label": "Archive Date",
+   "no_copy": 1
   },
   {
    "fieldname": "archive_reason",
@@ -581,6 +584,7 @@
    "fieldname": "donor",
    "fieldtype": "Link",
    "label": "Donor",
+   "no_copy": 1,
    "options": "Donor",
    "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
   },
@@ -616,6 +620,7 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Beneficiary No",
+   "no_copy": 1,
    "non_negative": 1,
    "read_only": 1,
    "search_index": 1
@@ -624,6 +629,7 @@
    "fieldname": "replaced_by",
    "fieldtype": "Link",
    "label": "Replaced by",
+   "no_copy": 1,
    "options": "Beneficiary"
   }
  ],
@@ -661,7 +667,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-12-02 15:06:29.154358",
+ "modified": "2024-12-12 10:23:37.959239",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
