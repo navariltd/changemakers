@@ -142,9 +142,9 @@
   },
   {
    "fieldname": "disability_condition",
-   "fieldtype": "Link",
+   "fieldtype": "Table MultiSelect",
    "label": "Disability Condition",
-   "options": "Disability Condition"
+   "options": "Disability Condition Item"
   },
   {
    "default": "No",
@@ -184,6 +184,7 @@
   {
    "fieldname": "location_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Location"
   },
   {
@@ -290,9 +291,9 @@
   },
   {
    "fieldname": "chronic_illness",
-   "fieldtype": "Link",
+   "fieldtype": "Table MultiSelect",
    "label": "Chronic Illness",
-   "options": "Chronic Illness Type"
+   "options": "Chronic Illness Item"
   },
   {
    "fieldname": "education_section",
@@ -449,6 +450,7 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Branch",
+   "no_copy": 1,
    "options": "Branch"
   },
   {
@@ -461,7 +463,7 @@
    "in_standard_filter": 1,
    "label": "Status",
    "no_copy": 1,
-   "options": "Waitlist\nEndorsed\nApproved\nActive\nSuspended\nRelocated\nDeceased\nDisqualified\nArchived",
+   "options": "Waitlist\nEndorsed\nApproved\nActive\nRelocated\nDeceased\nDisqualified\nArchived",
    "read_only": 1
   },
   {
@@ -512,12 +514,14 @@
   {
    "fieldname": "activation_date",
    "fieldtype": "Date",
-   "label": "Activation date"
+   "label": "Activation date",
+   "no_copy": 1
   },
   {
    "fieldname": "archive_date",
    "fieldtype": "Date",
-   "label": "Archive Date"
+   "label": "Archive Date",
+   "no_copy": 1
   },
   {
    "fieldname": "archive_reason",
@@ -581,6 +585,7 @@
    "fieldname": "donor",
    "fieldtype": "Link",
    "label": "Donor",
+   "no_copy": 1,
    "options": "Donor",
    "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
   },
@@ -616,6 +621,7 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Beneficiary No",
+   "no_copy": 1,
    "non_negative": 1,
    "read_only": 1,
    "search_index": 1
@@ -624,6 +630,7 @@
    "fieldname": "replaced_by",
    "fieldtype": "Link",
    "label": "Replaced by",
+   "no_copy": 1,
    "options": "Beneficiary"
   }
  ],
@@ -661,7 +668,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-12-02 15:06:29.154358",
+ "modified": "2024-12-12 11:40:12.168603",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",

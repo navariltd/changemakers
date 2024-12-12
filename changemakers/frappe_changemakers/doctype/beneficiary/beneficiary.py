@@ -20,7 +20,12 @@ class Beneficiary(Document):
         if self.status == "Active" and self.recruitment_phase and not self.beneficiary_no:
             self.validate_available_slots()
             self.beneficiary_no = generate_beneficiary_no(self)
-        # self.validate_phone_number_fields()
+        if self.status in ["Disqualified", "Relocated"] and not self.archive_date:
+            self.archive_date = frappe.utils.nowdate()
+
+        if self.status == "Active" and not self.activation_date:
+            self.activation_date = frappe.utils.nowdate()
+
         
     def validate_available_slots(self):
         if not self.recruitment_phase:
