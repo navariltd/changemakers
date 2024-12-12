@@ -142,9 +142,9 @@
   },
   {
    "fieldname": "disability_condition",
-   "fieldtype": "Link",
+   "fieldtype": "Table MultiSelect",
    "label": "Disability Condition",
-   "options": "Disability Condition"
+   "options": "Disability Condition Item"
   },
   {
    "default": "No",
@@ -184,6 +184,7 @@
   {
    "fieldname": "location_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Location"
   },
   {
@@ -290,9 +291,9 @@
   },
   {
    "fieldname": "chronic_illness",
-   "fieldtype": "Link",
+   "fieldtype": "Table MultiSelect",
    "label": "Chronic Illness",
-   "options": "Chronic Illness Type"
+   "options": "Chronic Illness Item"
   },
   {
    "fieldname": "education_section",
@@ -462,7 +463,7 @@
    "in_standard_filter": 1,
    "label": "Status",
    "no_copy": 1,
-   "options": "Waitlist\nEndorsed\nApproved\nActive\nSuspended\nRelocated\nDeceased\nDisqualified\nArchived",
+   "options": "Waitlist\nEndorsed\nApproved\nActive\nRelocated\nDeceased\nDisqualified\nArchived",
    "read_only": 1
   },
   {
@@ -667,7 +668,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-12-12 10:23:37.959239",
+ "modified": "2024-12-12 11:40:12.168603",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
