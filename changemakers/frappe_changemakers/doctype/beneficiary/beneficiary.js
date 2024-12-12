@@ -24,7 +24,6 @@ frappe.ui.form.on("Beneficiary", {
 
 			const requiresReplacement = [
 				"Relocated",
-				"Suspended",
 				"Deceased",
 				"Disqualified",
 			];
