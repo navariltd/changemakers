@@ -40,6 +40,7 @@ fixtures = [
                 "dt",
                 "in",
                 (
+                    "Project",
                     "Stock Entry",
                 ),
             ],
