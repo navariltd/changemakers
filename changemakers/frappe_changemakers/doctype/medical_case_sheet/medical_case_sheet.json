@@ -10,14 +10,19 @@
  "engine": "InnoDB",
  "field_order": [
   "beneficiary",
-  "vitals_taken",
+  "medical_officer",
   "column_break_biht",
+  "date",
+  "type_of_visit",
+  "column_break_ypsg",
   "hospitalisation_record",
+  "vitals_taken",
   "section_break_aaos",
   "symptoms",
-  "medical_conditions",
+  "additional_info",
   "column_break_ugpl",
   "diagnosis",
+  "medical_conditions",
   "medications_section",
   "drug_prescription",
   "history_tab",
@@ -139,11 +144,37 @@
    "fieldtype": "Tab Break",
    "label": "Connections",
    "show_dashboard": 1
+  },
+  {
+   "fieldname": "type_of_visit",
+   "fieldtype": "Select",
+   "label": "Type of Visit",
+   "options": "\nWeekly Clinic\nHome Visit\nHospital Visit"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "medical_officer",
+   "fieldtype": "Link",
+   "label": "Medical Officer",
+   "options": "Healthcare Practitioner"
+  },
+  {
+   "fieldname": "additional_info",
+   "fieldtype": "Small Text",
+   "label": "Additional Info"
+  },
+  {
+   "fieldname": "column_break_ypsg",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-06 15:34:19.636423",
+ "modified": "2024-12-12 11:25:51.610691",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Medical Case Sheet",
