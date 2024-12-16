@@ -653,11 +653,6 @@
    "link_fieldname": "beneficiary"
   },
   {
-   "group": "Health",
-   "link_doctype": "Health Camp Record",
-   "link_fieldname": "beneficiary"
-  },
-  {
    "group": "Cases",
    "link_doctype": "Case",
    "link_fieldname": "beneficiary"
@@ -668,7 +663,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2024-12-12 11:40:12.168603",
+ "modified": "2024-12-16 10:57:43.024213",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
