@@ -27,7 +27,6 @@ def update_beneficiary_status(case_doc):
             "Bereavement": "Deceased",
             "Relocation": "Relocated",
             "Disqualification": "Disqualified",
-            "Suspension": "Suspended",
             "Local Administration Acknowledgement": "Endorsed",
         },
     }
@@ -40,4 +39,7 @@ def update_beneficiary_status(case_doc):
     if not new_beneficiary_status:
         return 
     
-    frappe.db.set_value("Beneficiary", case_doc.beneficiary, "status", new_beneficiary_status)
+    beneficiary_doc = frappe.get_doc("Beneficiary", case_doc.beneficiary)
+    beneficiary_doc.status = new_beneficiary_status
+    beneficiary_doc.save()
+    
