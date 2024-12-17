@@ -25,7 +25,7 @@ def get_bom_items(project):
     bom_items = frappe.get_all(
         'BOM Item',
         filters={'parent': bom_name},
-        fields=['item_code', 'qty', 'rate', 'amount']
+        fields=['*']
     )
     return bom_items
 

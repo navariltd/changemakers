@@ -17,6 +17,7 @@ frappe.ui.form.on("Stock Entry", {
 
 	stock_entry_type: function (frm) {
 		load_bom_items(frm);
+		setup_beneficiary_query(frm);
 	},
 
 	custom_beneficiary: function (frm) {
@@ -83,13 +84,35 @@ function load_bom_items(frm) {
 			method: "changemakers.frappe_changemakers.overrides.stock_entry_query.get_bom_items",
 			args: { project: frm.doc.project },
 			callback: function (r) {
-				if (r.message) {
+				if (r.message && r.message.length > 0) {
 					frm.clear_table("items");
-					r.message.forEach((item) => {
-						const row = frm.add_child("items");
-						Object.assign(row, item);
+
+					$.each(r.message, function (_, item) {
+						let d = frappe.model.add_child(
+							frm.doc,
+							"Stock Entry Detail",
+							"items"
+						);
+						d.item_code = item.item_code;
+						d.item_name = item.item_name;
+						d.item_group = item.item_group;
+						d.s_warehouse = frm.doc.source_warehouse;
+						d.t_warehouse = frm.doc.target_warehouse;
+						d.uom = item.stock_uom;
+						d.stock_uom = item.stock_uom;
+						d.conversion_factor = item.conversion_factor
+							? item.conversion_factor
+							: 1;
+						d.qty = item.qty;
+						d.transfer_qty = item.stock_qty;
+						d.expense_account = item.expense_account;
 					});
+
 					frm.refresh_field("items");
+				} else {
+					frappe.throw(
+						__("No BOM items found for the selected project.")
+					);
 				}
 			},
 		});
