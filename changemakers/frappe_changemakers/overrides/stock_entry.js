@@ -13,28 +13,63 @@ frappe.ui.form.on("Stock Entry", {
 	project: function (frm) {
 		load_bom_items(frm);
 		setup_beneficiary_query(frm);
+		set_defaults_for_distribution(frm);
 	},
 
 	stock_entry_type: function (frm) {
 		load_bom_items(frm);
 		setup_beneficiary_query(frm);
+		set_defaults_for_distribution(frm);
 	},
 
 	custom_beneficiary: function (frm) {
 		setup_collector_query(frm);
 	},
-
-	before_submit: function (frm) {
-		if (
-			frm.doc.stock_entry_type == "Distribution" &&
-			!frm.doc.beneficiary_signature
-		) {
-			frappe.throw(
-				__("The beneficiary or collector signature is mandatory.")
-			);
-		}
-	},
 });
+function set_defaults_for_distribution(frm) {
+	if (frm.doc.stock_entry_type === "Distribution") {
+		frm.set_df_property("project", "reqd", 1);
+		if (frm.doc.project) {
+			frappe.call({
+				method: "frappe.client.get_value",
+				args: {
+					doctype: "Project",
+					fieldname: ["custom_branch", "cost_center"],
+					filters: { name: frm.doc.project },
+				},
+				callback: function (r) {
+					if (r.message) {
+						const branch_keyword = r.message.custom_branch || "";
+						frm.set_value("cost_center", r.message.cost_center);
+						frm.set_value("branch", r.message.custom_branch);
+
+						frappe.call({
+							method: "frappe.client.get_list",
+							args: {
+								doctype: "Warehouse",
+								filters: [
+									["name", "like", `%${branch_keyword}%`],
+								],
+								fields: ["name"],
+								limit_page_length: 1,
+							},
+							callback: function (res) {
+								if (res.message && res.message.length > 0) {
+									frm.set_value(
+										"from_warehouse",
+										res.message[0].name
+									);
+								}
+							},
+						});
+					}
+				},
+			});
+		}
+	} else {
+		frm.set_df_property("project", "reqd", 0);
+	}
+}
 
 function setup_beneficiary_query(frm) {
 	const project = frm.doc.project;
@@ -62,14 +97,20 @@ function setup_beneficiary_query(frm) {
 function setup_collector_query(frm) {
 	if (frm.doc.custom_beneficiary) {
 		frappe.call({
-			method: "changemakers.frappe_changemakers.overrides.stock_entry_query.get_collector",
-			args: { beneficiary: frm.doc.custom_beneficiary },
+			method: "frappe.client.get_value",
+			args: {
+				doctype: "Beneficiary",
+				fieldname: "collector",
+				filters: { name: frm.doc.custom_beneficiary },
+			},
 			callback: function (r) {
 				if (r.message) {
-					frm.set_value("collector", r.message[0]);
+					let collector = r.message.collector;
+
+					frm.set_value("collector", collector);
 					frm.set_query("collector", function () {
 						return {
-							filters: [["name", "in", r.message]],
+							filters: [["name", "=", collector]],
 						};
 					});
 				}
