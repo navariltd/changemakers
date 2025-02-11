@@ -28,13 +28,3 @@ def get_bom_items(project):
         fields=['*']
     )
     return bom_items
-
-@frappe.whitelist()
-def get_collector(beneficiary):
-    collector = frappe.get_all(
-        'Collector',
-        filters={'beneficiary': beneficiary},
-        fields=['name'],
-        limit=1
-    )
-    return [c['name'] for c in collector] if collector else []

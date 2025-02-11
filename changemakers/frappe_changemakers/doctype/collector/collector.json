@@ -8,9 +8,8 @@
  "field_order": [
   "first_name",
   "middle_name",
-  "last_name",
   "column_break_mjjo",
-  "beneficiary",
+  "last_name",
   "national_id_number"
  ],
  "fields": [
@@ -43,19 +42,11 @@
   {
    "fieldname": "column_break_mjjo",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "beneficiary",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Beneficiary",
-   "options": "Beneficiary",
-   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-15 14:12:36.923731",
+ "modified": "2025-02-11 18:08:27.890316",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Collector",
