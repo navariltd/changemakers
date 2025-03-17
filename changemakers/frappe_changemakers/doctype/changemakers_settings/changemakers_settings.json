@@ -7,7 +7,10 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "statedistrict_imported"
+  "statedistrict_imported",
+  "enable_food_distribution",
+  "enable_student_creation_on_beneficiary",
+  "manage_beneficiary_lifecycle"
  ],
  "fields": [
   {
@@ -16,12 +19,30 @@
    "fieldtype": "Check",
    "label": "State/District Imported",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_food_distribution",
+   "fieldtype": "Check",
+   "label": "Enable Food Distribution"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_student_creation_on_beneficiary",
+   "fieldtype": "Check",
+   "label": "Enable Student Creation on Beneficiary"
+  },
+  {
+   "default": "0",
+   "fieldname": "manage_beneficiary_lifecycle",
+   "fieldtype": "Check",
+   "label": "Manage Beneficiary Lifecycle"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-02-05 07:44:40.519063",
+ "modified": "2025-03-17 10:03:43.628745",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers Settings",

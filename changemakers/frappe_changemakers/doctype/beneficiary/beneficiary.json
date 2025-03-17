@@ -14,15 +14,18 @@
   "full_name",
   "recruitment_phase",
   "branch",
+  "student",
   "column_break_3",
   "beneficiary_no",
   "gender",
   "dob",
   "age",
   "donor",
+  "beneficiary_type",
   "column_break_4",
   "collector",
   "phone_number",
+  "email",
   "religion",
   "social_category",
   "languages_known",
@@ -54,6 +57,7 @@
   "identity_section",
   "ethnicity",
   "nationality",
+  "residency",
   "column_break_17",
   "place_of_birth",
   "is_identity_proof_available",
@@ -99,6 +103,20 @@
   "column_break_40",
   "employment_type",
   "other_employment_type",
+  "tab_8_tab",
+  "section_break_uoor",
+  "program",
+  "course",
+  "university",
+  "course_level",
+  "thematic_area",
+  "external_id",
+  "column_break_fypz",
+  "scholarship_status",
+  "start_date",
+  "end_date",
+  "programme_year_commenced",
+  "country_of_study",
   "connections_tab"
  ],
  "fields": [
@@ -639,6 +657,106 @@
    "fieldtype": "Link",
    "label": "Collector",
    "options": "Collector"
+  },
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "label": "Student",
+   "options": "Student"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "mandatory_depends_on": "eval: doc.beneficiary_type == \"Student\"",
+   "options": "Email"
+  },
+  {
+   "fieldname": "beneficiary_type",
+   "fieldtype": "Select",
+   "label": "Beneficiary Type",
+   "options": "\nAlumni\nStudent\nOthers"
+  },
+  {
+   "fieldname": "tab_8_tab",
+   "fieldtype": "Tab Break",
+   "label": "Alumni Info"
+  },
+  {
+   "fieldname": "residency",
+   "fieldtype": "Link",
+   "label": "Residency",
+   "options": "Country"
+  },
+  {
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "label": "Course",
+   "options": "Program"
+  },
+  {
+   "fieldname": "university",
+   "fieldtype": "Data",
+   "label": "University"
+  },
+  {
+   "fieldname": "external_id",
+   "fieldtype": "Data",
+   "label": "External ID"
+  },
+  {
+   "fieldname": "column_break_fypz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "program",
+   "fieldtype": "Link",
+   "label": "Program",
+   "options": "Program"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "programme_year_commenced",
+   "fieldtype": "Data",
+   "label": "Programme Year Commenced"
+  },
+  {
+   "fieldname": "scholarship_status",
+   "fieldtype": "Select",
+   "label": "Scholarship Status",
+   "options": "\nSuccessful: Completed/Graduated\nUnsuccessful: Failed\nUnsuccessful: Other (Died)"
+  },
+  {
+   "depends_on": "eval: doc.beneficiary_type == \"Alumni\"",
+   "fieldname": "section_break_uoor",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "course_level",
+   "fieldtype": "Select",
+   "label": "Course Level",
+   "options": "\nPostgraduate Masters\nPostgraduate Doctorate"
+  },
+  {
+   "fieldname": "thematic_area",
+   "fieldtype": "Link",
+   "label": "Thematic Area",
+   "options": "Thematic Area"
+  },
+  {
+   "fieldname": "country_of_study",
+   "fieldtype": "Link",
+   "label": "Country of Study",
+   "options": "Country"
   }
  ],
  "image_field": "image",
@@ -670,7 +788,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2025-02-11 18:09:30.643224",
+ "modified": "2025-03-17 16:24:20.113345",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",

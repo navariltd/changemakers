@@ -1,52 +1,66 @@
 // Copyright (c) 2022, hussain@frappe.io and contributors
 // For license information, please see license.txt
 
+const settingsDoctypeName = "Changemakers Settings";
+
 frappe.ui.form.on("Beneficiary", {
-	refresh(frm) {
+	refresh: async function (frm) {
 		frm.toggle_display("address_html", !frm.is_new());
 		frm.toggle_display("contact_html", !frm.is_new());
+
+		const { message: settings } = await frappe.db.get_value(
+			settingsDoctypeName,
+			{ name: settingsDoctypeName },
+			"name"
+		);
 
 		if (!frm.is_new()) {
 			frappe.contacts.render_address_and_contact(frm);
 
-			if (frm.doc.status === "Waitlist") {
-				frm.add_custom_button(
-					"Local Administrator Acknowledgement",
-					() => {
-						create_case(
-							"Local Administration Acknowledgement",
-							frm
-						);
-					},
-					"Create"
-				);
-			}
-
-			const requiresReplacement = [
-				"Relocated",
-				"Deceased",
-				"Disqualified",
-			];
-			if (
-				requiresReplacement.includes(frm.doc.status) &&
-				!frm.doc.replaced_by
-			) {
-				frm.add_custom_button(
-					"Replacement",
-					() => open_replacement_form(frm),
-					"Create"
-				);
-			}
-
-			if (frm.doc.status === "Active") {
-				const cases = ["Disqualification", "Relocation", "Bereavement"];
-				cases.forEach((caseType) => {
+			if (settings?.manage_beneficiary_lifecycle) {
+				if (frm.doc.status === "Waitlist") {
 					frm.add_custom_button(
-						caseType,
-						() => create_case(caseType, frm),
+						"Local Administrator Acknowledgement",
+						() => {
+							create_case(
+								"Local Administration Acknowledgement",
+								frm
+							);
+						},
 						"Create"
 					);
-				});
+				}
+
+				const requiresReplacement = [
+					"Relocated",
+					"Deceased",
+					"Disqualified",
+				];
+				if (
+					requiresReplacement.includes(frm.doc.status) &&
+					!frm.doc.replaced_by
+				) {
+					frm.add_custom_button(
+						"Replacement",
+						() => open_replacement_form(frm),
+						"Create"
+					);
+				}
+
+				if (frm.doc.status === "Active") {
+					const cases = [
+						"Disqualification",
+						"Relocation",
+						"Bereavement",
+					];
+					cases.forEach((caseType) => {
+						frm.add_custom_button(
+							caseType,
+							() => create_case(caseType, frm),
+							"Create"
+						);
+					});
+				}
 			}
 		}
 
