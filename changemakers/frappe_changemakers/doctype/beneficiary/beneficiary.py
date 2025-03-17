@@ -17,14 +17,17 @@ class Beneficiary(Document):
 
     def validate(self):
         self.validate_age()
-        if self.status == "Active" and self.recruitment_phase and not self.beneficiary_no:
-            self.validate_available_slots()
-            self.beneficiary_no = generate_beneficiary_no(self)
-        if self.status in ["Disqualified", "Relocated"] and not self.archive_date:
-            self.archive_date = frappe.utils.nowdate()
+        settings = frappe.get_doc("Changemakers Settings")
+        # Check if manage_beneficiary_lifecycle is enabled
+        if settings.manage_beneficiary_lifecycle:
+            if self.status == "Active" and self.recruitment_phase and not self.beneficiary_no:
+                self.validate_available_slots()
+                self.beneficiary_no = generate_beneficiary_no(self)
+            if self.status in ["Disqualified", "Relocated"] and not self.archive_date:
+                self.archive_date = frappe.utils.nowdate()
 
-        if self.status == "Active" and not self.activation_date:
-            self.activation_date = frappe.utils.nowdate()
+            if self.status == "Active" and not self.activation_date:
+                self.activation_date = frappe.utils.nowdate()
 
         
     def validate_available_slots(self):

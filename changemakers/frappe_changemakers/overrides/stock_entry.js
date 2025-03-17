@@ -1,31 +1,48 @@
-frappe.ui.form.on("Stock Entry", {
-	setup: function (frm) {
-		setup_beneficiary_query(frm);
-		setup_collector_query(frm);
-	},
+const settingsDoctypeName = "Changemakers Settings";
 
-	refresh: function (frm) {
-		if (frm.doc.collector && frm.doc.beneficiary) {
-			auto_set_collector(frm);
-		}
-	},
+(async () => {
+	const { message: settings } = await frappe.db.get_value(
+		settingsDoctypeName,
+		{ name: settingsDoctypeName },
+		"name"
+	);
 
-	project: function (frm) {
-		load_bom_items(frm);
-		setup_beneficiary_query(frm);
-		set_defaults_for_distribution(frm);
-	},
+	// Check if food distribution is enabled
+	if (!settings || !settings.enable_food_distribution) {
+		return;
+	}
 
-	stock_entry_type: function (frm) {
-		load_bom_items(frm);
-		setup_beneficiary_query(frm);
-		set_defaults_for_distribution(frm);
-	},
+	// Register form events only if enabled
+	frappe.ui.form.on("Stock Entry", {
+		setup: async function (frm) {
+			setup_beneficiary_query(frm);
+			setup_collector_query(frm);
+		},
 
-	custom_beneficiary: function (frm) {
-		setup_collector_query(frm);
-	},
-});
+		refresh: function (frm) {
+			if (frm.doc.collector && frm.doc.beneficiary) {
+				auto_set_collector(frm);
+			}
+		},
+
+		project: function (frm) {
+			load_bom_items(frm);
+			setup_beneficiary_query(frm);
+			set_defaults_for_distribution(frm);
+		},
+
+		stock_entry_type: function (frm) {
+			load_bom_items(frm);
+			setup_beneficiary_query(frm);
+			set_defaults_for_distribution(frm);
+		},
+
+		custom_beneficiary: function (frm) {
+			setup_collector_query(frm);
+		},
+	});
+})();
+
 function set_defaults_for_distribution(frm) {
 	if (frm.doc.stock_entry_type === "Distribution") {
 		frm.set_df_property("project", "reqd", 1);
