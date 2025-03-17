@@ -11,6 +11,37 @@ from frappe.utils import cint
 from changemakers.utils.data import is_valid_indian_phone_number
 
 class Beneficiary(Document):
+    def before_insert(self):
+        settings = frappe.get_doc("Changemakers Settings")
+        if settings.enable_student_creation_on_beneficiary and self.beneficiary_type == "Student":
+            # Create Student
+            student = frappe.new_doc("Student")
+            student.first_name = self.first_name
+            student.student_email_id = self.email
+            student.last_name = self.last_name
+            student.beneficiary = self.name  
+            student.insert(ignore_permissions=True)
+            self.student = student.name
+            
+    def after_insert(self):
+        # delete user and customer assocaited with beneficiary if exists
+        settings = frappe.get_doc("Changemakers Settings")
+        if settings.enable_student_creation_on_beneficiary:
+            student_name = frappe.db.get_value("Student", {"student_email_id": self.email})
+            if not student_name:
+                return
+            
+            student = frappe.get_doc("Student", student_name)
+            user = frappe.db.get_value("User", {"email": self.email})
+            customer = frappe.db.get_value("Customer", {"name": student.customer})
+            frappe.db.set_value("Student", student_name, {"user": None, "customer": None})
+            
+            if customer:
+                frappe.delete_doc("Customer", customer, ignore_permissions=True)
+            if user and user != frappe.session.user:  
+                frappe.delete_doc("User", user, ignore_permissions=True)
+
+        
     def before_save(self):
         self.set_created_by()
         self.full_name = f"{self.first_name} {self.last_name or ''}"
