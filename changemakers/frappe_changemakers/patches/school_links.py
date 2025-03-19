@@ -8,7 +8,7 @@ def execute():
                 "fieldname": "school",
                 "fieldtype": "Link",
                 "label": "School",
-                "options": "School",
+                "options": "Learning Centre",
                 "translatable": 1,
                 "insert_after": "last_name"
             }
@@ -18,7 +18,7 @@ def execute():
                 "fieldname": "school",
                 "fieldtype": "Link",
                 "label": "School",
-                "options": "School",
+                "options": "Learning Centre",
                 "translatable": 1,
                 "insert_after": "gender"
             }
