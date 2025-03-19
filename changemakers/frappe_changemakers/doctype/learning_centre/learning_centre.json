@@ -34,15 +34,13 @@
   {
    "fieldname": "date_of_commencement",
    "fieldtype": "Date",
-   "label": "Date Of Commencement",
-   "reqd": 1
+   "label": "Date Of Commencement"
   },
   {
    "fieldname": "type",
    "fieldtype": "Select",
    "label": "Type",
-   "options": "Micro Learning Centre\nTution Centre",
-   "reqd": 1
+   "options": "Micro Learning Centre\nTution Centre"
   },
   {
    "fieldname": "address_section",
@@ -55,22 +53,19 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "State",
-   "options": "State",
-   "reqd": 1
+   "options": "State"
   },
   {
    "fieldname": "zone",
    "fieldtype": "Link",
    "label": "Zone/Block",
-   "options": "Zone",
-   "reqd": 1
+   "options": "Zone"
   },
   {
    "fieldname": "habitation",
    "fieldtype": "Link",
    "label": "Hotspot Name/Habitation",
-   "options": "Habitation",
-   "reqd": 1
+   "options": "Habitation"
   },
   {
    "fieldname": "column_break_vkgq",
@@ -80,15 +75,13 @@
    "fieldname": "district",
    "fieldtype": "Link",
    "label": "City/District",
-   "options": "District",
-   "reqd": 1
+   "options": "District"
   },
   {
    "fieldname": "ward",
    "fieldtype": "Link",
    "label": "Ward/GP",
-   "options": "Ward",
-   "reqd": 1
+   "options": "Ward"
   },
   {
    "fieldname": "section_break_goye",
@@ -97,8 +90,7 @@
   {
    "fieldname": "full_address",
    "fieldtype": "Small Text",
-   "label": "Full Address",
-   "reqd": 1
+   "label": "Full Address"
   },
   {
    "fieldname": "pin_code",
@@ -119,8 +111,7 @@
    "fieldname": "capacity",
    "fieldtype": "Int",
    "label": "Capacity",
-   "non_negative": 1,
-   "reqd": 1
+   "non_negative": 1
   },
   {
    "fieldname": "poc_section",
@@ -131,8 +122,7 @@
    "fieldname": "poc_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "POC Name",
-   "reqd": 1
+   "label": "POC Name"
   },
   {
    "fieldname": "poc_alternate_phone",
@@ -159,7 +149,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-15 20:02:09.545978",
+ "modified": "2025-03-19 13:20:40.610078",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Learning Centre",
