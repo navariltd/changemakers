@@ -7,6 +7,7 @@ app_description = "Empowering the people that do good."
 app_email = "hussain@frappe.io"
 app_license = "AGPL"
 
+required_apps = ["erpnext", "education", "non_profit"]
 
 fixtures = [
     "Custom HTML Block",
@@ -78,7 +79,7 @@ website_route_rules = [
 # webform_include_css = {"doctype": "public/css/doctype.css"}
 
 # include js in page
-# page_js = {"page" : "public/js/file.js"}
+# page_js = {"page" : "public/js/file.js"} 
 
 # include js in doctype views
 doctype_js = {
