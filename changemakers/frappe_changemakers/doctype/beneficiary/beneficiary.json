@@ -473,17 +473,15 @@
    "options": "Branch"
   },
   {
-   "default": "Waitlist",
    "fieldname": "status",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "in_filter": 1,
    "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Status",
    "no_copy": 1,
-   "options": "Waitlist\nEndorsed\nApproved\nActive\nRelocated\nDeceased\nDisqualified\nArchived",
-   "read_only": 1
+   "options": "Beneficiary Status"
   },
   {
    "fieldname": "section_break_fhbu",
@@ -788,7 +786,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2025-05-14 19:43:05.923706",
+ "modified": "2025-05-15 12:13:50.575219",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",

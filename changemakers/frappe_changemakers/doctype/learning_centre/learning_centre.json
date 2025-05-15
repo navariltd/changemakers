@@ -13,6 +13,7 @@
   "column_break_fbbr",
   "type",
   "organisation",
+  "generate_supplier_on_creation",
   "address_section",
   "state",
   "zone",
@@ -145,11 +146,17 @@
    "fieldtype": "Link",
    "label": "Organisation",
    "options": "Organisation"
+  },
+  {
+   "default": "0",
+   "fieldname": "generate_supplier_on_creation",
+   "fieldtype": "Check",
+   "label": "Generate Supplier on Creation"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-19 13:20:40.610078",
+ "modified": "2025-05-15 14:41:38.673295",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Learning Centre",
@@ -203,6 +210,7 @@
    "share": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

@@ -9,8 +9,13 @@
  "field_order": [
   "statedistrict_imported",
   "enable_food_distribution",
-  "enable_student_creation_on_beneficiary",
-  "manage_beneficiary_lifecycle"
+  "column_break_kltk",
+  "generate_supplier_when_learning_center_is_created",
+  "beneficiary_section",
+  "manage_beneficiary_lifecycle",
+  "allow_beneficiary_status_editing",
+  "column_break_rewa",
+  "enable_student_creation_on_beneficiary"
  ],
  "fields": [
   {
@@ -37,12 +42,37 @@
    "fieldname": "manage_beneficiary_lifecycle",
    "fieldtype": "Check",
    "label": "Manage Beneficiary Lifecycle"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_beneficiary_status_editing",
+   "fieldtype": "Check",
+   "label": "Allow Beneficiary Status Editing"
+  },
+  {
+   "default": "0",
+   "fieldname": "generate_supplier_when_learning_center_is_created",
+   "fieldtype": "Check",
+   "label": "Generate Supplier When Learning Center Is Created"
+  },
+  {
+   "fieldname": "column_break_kltk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "beneficiary_section",
+   "fieldtype": "Section Break",
+   "label": "Beneficiary"
+  },
+  {
+   "fieldname": "column_break_rewa",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-03-17 10:03:43.628745",
+ "modified": "2025-05-15 14:38:00.111943",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers Settings",
@@ -59,6 +89,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

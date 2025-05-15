@@ -1,6 +1,7 @@
 import frappe
 
 from changemakers.utils.data import scrap_and_import_india_district_list
+from .frappe_changemakers.patches.set_default_beneficiary_status import create_beneficiary_status
 
 
 def after_install():
@@ -8,6 +9,13 @@ def after_install():
     frappe.db.set_single_value(
         "System Settings", "reset_password_link_expiry_duration", 86400
     )
+    
+    try:
+        # Create default beneficiary status
+        create_beneficiary_status()
+        frappe.db.commit()
+    except Exception:   
+        frappe.errprint("Beneficiary Status Creation Failed")
 
     # Import indian district list
     try:
