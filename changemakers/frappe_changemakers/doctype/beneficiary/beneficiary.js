@@ -8,10 +8,15 @@ frappe.ui.form.on("Beneficiary", {
 		frm.toggle_display("address_html", !frm.is_new());
 		frm.toggle_display("contact_html", !frm.is_new());
 
-		const { message: settings } = await frappe.db.get_value(
+		const settings = await frappe.db.get_doc(
 			settingsDoctypeName,
-			{ name: settingsDoctypeName },
-			"name"
+			settingsDoctypeName
+		);
+
+		frm.set_df_property(
+			"status",
+			"read_only",
+			settings?.allow_beneficiary_status_editing ? 0 : 1
 		);
 
 		if (!frm.is_new()) {

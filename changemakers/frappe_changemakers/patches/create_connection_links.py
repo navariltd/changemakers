@@ -31,3 +31,5 @@ def update_links_for_donation_distribution() -> None:
 
 def execute() -> None:
     update_links_for_donation_distribution()
+
+
