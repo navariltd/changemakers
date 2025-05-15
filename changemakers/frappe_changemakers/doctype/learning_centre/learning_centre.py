@@ -18,3 +18,25 @@ class LearningCentre(Document):
 
         if len(str(self.pin_code)) != 6:
             frappe.throw("Pin Code should be a numeric value with exactly 6 digits")
+
+    def after_insert(self):
+        self.create_supplier()
+        
+        
+    def create_supplier(self):
+        if not frappe.db.exists("Supplier Group", "Learning Centre"):
+            supplier_group = frappe.new_doc("Supplier Group")
+            supplier_group.supplier_group_name = "Learning Centre"
+            supplier_group.flags.ignore_permissions = True
+            supplier_group.insert()
+
+        if frappe.db.exists("Supplier", self.name):
+            return
+
+        supplier = frappe.new_doc("Supplier")
+        supplier.supplier_name = self.name
+        supplier.supplier_type = "Company"
+        supplier.supplier_group = "Learning Centre"
+
+        supplier.flags.ignore_permissions = True
+        supplier.insert()

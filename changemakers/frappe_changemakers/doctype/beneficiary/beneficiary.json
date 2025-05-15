@@ -602,10 +602,10 @@
   },
   {
    "fieldname": "donor",
-   "fieldtype": "Link",
+   "fieldtype": "Table MultiSelect",
    "label": "Donor",
    "no_copy": 1,
-   "options": "Donor",
+   "options": "Donor Table",
    "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
   },
   {
@@ -788,7 +788,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2025-03-17 16:24:20.113345",
+ "modified": "2025-05-14 19:43:05.923706",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
@@ -907,6 +907,7 @@
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "search_fields": "age,zone,ward,habitation",
  "show_title_field_in_link": 1,
  "sort_field": "modified",
