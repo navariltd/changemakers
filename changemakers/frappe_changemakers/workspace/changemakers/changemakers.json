@@ -5,7 +5,7 @@
    "label": "Cases Per Week"
   }
  ],
- "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"zBCrzD8d6w\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Cases Per Week\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":3}},{\"id\":\"MgGYu_4ow3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Case\",\"col\":3}},{\"id\":\"cF4ncCc8K7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Phase\",\"col\":3}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"7DQJ2fjmW0\",\"type\":\"card\",\"data\":{\"card_name\":\"Services & Programs\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Healthcare\",\"col\":4}},{\"id\":\"jxARUZ8geY\",\"type\":\"card\",\"data\":{\"card_name\":\"Care Centres & Shelters\",\"col\":4}},{\"id\":\"PYlp0anXDn\",\"type\":\"card\",\"data\":{\"card_name\":\"Location & Demographic\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"zBCrzD8d6w\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Cases Per Week\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":3}},{\"id\":\"cF4ncCc8K7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Phase\",\"col\":3}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"7DQJ2fjmW0\",\"type\":\"card\",\"data\":{\"card_name\":\"Services & Programs\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Healthcare\",\"col\":4}},{\"id\":\"jxARUZ8geY\",\"type\":\"card\",\"data\":{\"card_name\":\"Care Centres & Shelters\",\"col\":4}},{\"id\":\"PYlp0anXDn\",\"type\":\"card\",\"data\":{\"card_name\":\"Location & Demographic\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2022-10-13 13:51:43.725589",
  "custom_blocks": [],
  "docstatus": 0,
@@ -553,7 +553,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-12-02 12:12:28.211275",
+ "modified": "2025-05-15 11:23:52.413539",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers",
@@ -578,14 +578,6 @@
    "doc_view": "List",
    "label": "Recruitment Phase",
    "link_to": "Recruitment Phase",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Case",
-   "link_to": "Case",
    "stats_filter": "[]",
    "type": "DocType"
   }

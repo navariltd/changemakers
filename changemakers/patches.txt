@@ -1,4 +1,5 @@
 [pre_model_sync]
 
 [post_model_sync]
-changemakers.frappe_changemakers.patches.school_links # 1
+changemakers.frappe_changemakers.patches.school_links # 4
+changemakers.frappe_changemakers.patches.create_connection_links # 4
