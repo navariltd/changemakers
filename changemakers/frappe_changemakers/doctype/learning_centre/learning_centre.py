@@ -20,7 +20,9 @@ class LearningCentre(Document):
             frappe.throw("Pin Code should be a numeric value with exactly 6 digits")
 
     def after_insert(self):
-        self.create_supplier()
+        settings = frappe.get_doc("Changemakers Settings", "Changemakers Settings")
+        if settings.generate_supplier_when_learning_center_is_created or self.generate_supplier_on_creation:
+            self.create_supplier()
         
         
     def create_supplier(self):
