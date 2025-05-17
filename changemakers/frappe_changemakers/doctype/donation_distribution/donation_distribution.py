@@ -3,8 +3,28 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe.utils import flt, nowdate
 
 class DonationDistribution(Document):
+	def validate(self):
+		# Set date if not already set
+		if not self.date:
+			self.date = nowdate()
+
+		total_amount = 0.0
+
+		# Sum up total amount from the items
+		for item in self.items:
+			total_amount += flt(item.amount)
+
+		# Set total_amount field to the sum of all item amounts
+		self.total_amount = total_amount
+
+		# Calculate and set percentage for each item
+		if total_amount > 0:
+			for item in self.items:
+				item.percentage = flt((item.amount / total_amount) * 100, 2)
+				
 	def before_submit(self):
 		submitted_distributions = frappe.get_all(
 			"Donation Distribution",

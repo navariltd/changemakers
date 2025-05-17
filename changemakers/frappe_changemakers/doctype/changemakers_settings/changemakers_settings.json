@@ -14,8 +14,10 @@
   "beneficiary_section",
   "manage_beneficiary_lifecycle",
   "allow_beneficiary_status_editing",
+  "default_beneficiary_status",
   "column_break_rewa",
-  "enable_student_creation_on_beneficiary"
+  "enable_student_creation_on_beneficiary",
+  "enable_programme_details"
  ],
  "fields": [
   {
@@ -67,12 +69,24 @@
   {
    "fieldname": "column_break_rewa",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_programme_details",
+   "fieldtype": "Check",
+   "label": "Enable Programme Details"
+  },
+  {
+   "fieldname": "default_beneficiary_status",
+   "fieldtype": "Link",
+   "label": "Default Beneficiary Status",
+   "options": "Beneficiary Status"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-05-15 14:38:00.111943",
+ "modified": "2025-05-17 12:50:35.503747",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers Settings",

@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "prompt",
  "creation": "2022-12-27 13:22:20.568074",
@@ -156,7 +157,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-15 14:41:38.673295",
+ "modified": "2025-05-17 14:42:33.920761",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Learning Centre",

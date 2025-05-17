@@ -1,11 +1,6 @@
 {
- "charts": [
-  {
-   "chart_name": "Cases Per Week",
-   "label": "Cases Per Week"
-  }
- ],
- "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"zBCrzD8d6w\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Cases Per Week\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":3}},{\"id\":\"cF4ncCc8K7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Phase\",\"col\":3}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"7DQJ2fjmW0\",\"type\":\"card\",\"data\":{\"card_name\":\"Services & Programs\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Healthcare\",\"col\":4}},{\"id\":\"jxARUZ8geY\",\"type\":\"card\",\"data\":{\"card_name\":\"Care Centres & Shelters\",\"col\":4}},{\"id\":\"PYlp0anXDn\",\"type\":\"card\",\"data\":{\"card_name\":\"Location & Demographic\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "charts": [],
+ "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"H-e6U8hWgm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Changemakers Settings\",\"col\":4}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"7zD8pl7CLK\",\"type\":\"card\",\"data\":{\"card_name\":\" Programs & Education\",\"col\":4}},{\"id\":\"eOReRO_Pc0\",\"type\":\"card\",\"data\":{\"card_name\":\" Impact & Metrics\",\"col\":4}},{\"id\":\"CebhoNopem\",\"type\":\"card\",\"data\":{\"card_name\":\"Donations & Contributions\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Health & Medical\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
  "creation": "2022-10-13 13:51:43.725589",
  "custom_blocks": [],
  "docstatus": 0,
@@ -20,8 +15,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Care Centres & Shelters",
-   "link_count": 9,
+   "label": "Donations & Contributions",
+   "link_count": 3,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -29,9 +24,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Care Centre",
+   "label": "Donor",
    "link_count": 0,
-   "link_to": "Care Centre",
+   "link_to": "Donor",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -39,9 +34,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Care Centre Admission",
+   "label": "Donation",
    "link_count": 0,
-   "link_to": "Care Centre Admission",
+   "link_to": "Donation",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -49,9 +44,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Shelter Home",
+   "label": "Donation Distribution",
    "link_count": 0,
-   "link_to": "Shelter Home",
+   "link_to": "Donation Distribution",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -59,68 +54,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Shelter Home Admission Criterion",
-   "link_count": 0,
-   "link_to": "Shelter Home Admission Criterion",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Shelter Home Admission Record",
-   "link_count": 0,
-   "link_to": "Shelter Home Admission Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Shelter Home Exit Record",
-   "link_count": 0,
-   "link_to": "Shelter Home Exit Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Shelter Home Service Record",
-   "link_count": 0,
-   "link_to": "Shelter Home Service Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Shelter Home Support Type",
-   "link_count": 0,
-   "link_to": "Shelter Home Support Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Shelter Home Type",
-   "link_count": 0,
-   "link_to": "Shelter Home Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Location & Demographic",
-   "link_count": 8,
+   "label": " Programs & Education",
+   "link_count": 5,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -128,9 +63,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "District",
+   "label": "Program",
    "link_count": 0,
-   "link_to": "District",
+   "link_to": "Program",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -138,9 +73,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Education Level",
+   "label": "Course",
    "link_count": 0,
-   "link_to": "Education Level",
+   "link_to": "Course",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -148,9 +83,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Habitation",
+   "label": "Student",
    "link_count": 0,
-   "link_to": "Habitation",
+   "link_to": "Student",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -158,266 +93,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Languages Known",
+   "label": "Thematic Area",
    "link_count": 0,
-   "link_to": "Languages Known",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Religion",
-   "link_count": 0,
-   "link_to": "Religion",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "State",
-   "link_count": 0,
-   "link_to": "State",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Ward",
-   "link_count": 0,
-   "link_to": "Ward",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Zone",
-   "link_count": 0,
-   "link_to": "Zone",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Beneficiary",
-   "link_count": 6,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Beneficiary",
-   "link_count": 0,
-   "link_to": "Beneficiary",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Case",
-   "link_count": 0,
-   "link_to": "Case",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Collector",
-   "link_count": 0,
-   "link_to": "Collector",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Entitlement Request",
-   "link_count": 0,
-   "link_to": "Entitlement Request",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Funding Pool",
-   "link_count": 0,
-   "link_to": "Funding Pool",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Recruitment Phase",
-   "link_count": 0,
-   "link_to": "Recruitment Phase",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Settings",
-   "link_count": 7,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Case Type",
-   "link_count": 0,
-   "link_to": "Case Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Changemakers Settings",
-   "link_count": 0,
-   "link_to": "Changemakers Settings",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Changemakers User Profile",
-   "link_count": 0,
-   "link_to": "Changemakers User Profile",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Designation",
-   "link_count": 0,
-   "link_to": "Designation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Income Source Type",
-   "link_count": 0,
-   "link_to": "Income Source Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Organisation",
-   "link_count": 0,
-   "link_to": "Organisation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Payment Type",
-   "link_count": 0,
-   "link_to": "Payment Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Services & Programs",
-   "link_count": 7,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Daily Visit Update",
-   "link_count": 0,
-   "link_to": "Daily Visit Update",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Entitlement Request",
-   "link_count": 0,
-   "link_to": "Entitlement Request",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Entitlement Type",
-   "link_count": 0,
-   "link_to": "Entitlement Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Food Distribution Record",
-   "link_count": 0,
-   "link_to": "Food Distribution Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Family Reintegration",
-   "link_count": 0,
-   "link_to": "Family Reintegration",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Rescue",
-   "link_count": 0,
-   "link_to": "Rescue",
+   "link_to": "Thematic Area",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -435,8 +113,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Reports",
-   "link_count": 2,
+   "label": " Impact & Metrics",
+   "link_count": 4,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -444,33 +122,32 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "My Cases",
+   "label": "SDG",
    "link_count": 0,
-   "link_to": "My Cases",
-   "link_type": "Report",
-   "onboard": 0,
-   "report_ref_doctype": "Case",
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Daily Visit Update Report View",
-   "link_count": 0,
-   "link_to": "Daily Visit Update Report View",
-   "link_type": "Report",
-   "onboard": 0,
-   "report_ref_doctype": "Daily Visit Update",
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Healthcare",
-   "link_count": 8,
+   "link_to": "SDG",
    "link_type": "DocType",
    "onboard": 0,
-   "type": "Card Break"
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Impact Measurement",
+   "link_count": 0,
+   "link_to": "Impact Measurement",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Family Reintegration",
+   "link_count": 0,
+   "link_to": "Family Reintegration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   },
   {
    "hidden": 0,
@@ -485,12 +162,50 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Chronic Illness Type",
+   "label": "Configuration",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Changemakers Settings",
    "link_count": 0,
-   "link_to": "Chronic Illness Type",
+   "link_to": "Changemakers Settings",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Case Type",
+   "link_count": 0,
+   "link_to": "Case Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Changemakers User Profile",
+   "link_count": 0,
+   "link_to": "Changemakers User Profile",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Health & Medical",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
   },
   {
    "hidden": 0,
@@ -551,9 +266,147 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Masters",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Beneficiary",
+   "link_count": 0,
+   "link_to": "Beneficiary",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Case",
+   "link_count": 0,
+   "link_to": "Case",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Collector",
+   "link_count": 0,
+   "link_to": "Collector",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Funding Pool",
+   "link_count": 0,
+   "link_to": "Funding Pool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Recruitment Phase",
+   "link_count": 0,
+   "link_to": "Recruitment Phase",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Changemakers User Profile",
+   "link_count": 0,
+   "link_to": "Changemakers User Profile",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Beneficiary",
+   "link_count": 0,
+   "link_to": "Beneficiary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Donation",
+   "link_count": 0,
+   "link_to": "Donation",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Donation Distribution",
+   "link_count": 0,
+   "link_to": "Donation Distribution",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Donation Payments",
+   "link_count": 0,
+   "link_to": "Donation Payments",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Donor Contribution",
+   "link_count": 0,
+   "link_to": "Donor Contribution",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "My Cases",
+   "link_count": 0,
+   "link_to": "My Cases",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2025-05-15 11:23:52.413539",
+ "modified": "2025-05-17 15:36:12.734930",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers",
@@ -576,9 +429,8 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Recruitment Phase",
-   "link_to": "Recruitment Phase",
-   "stats_filter": "[]",
+   "label": "Changemakers Settings",
+   "link_to": "Changemakers Settings",
    "type": "DocType"
   }
  ],
