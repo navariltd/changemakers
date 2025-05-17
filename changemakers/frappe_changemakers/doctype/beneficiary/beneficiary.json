@@ -53,6 +53,24 @@
   "column_break_23",
   "poc_phone",
   "image",
+  "programme_tab",
+  "programme_section",
+  "program",
+  "programme_start_date",
+  "programme_end_date",
+  "lead_donor",
+  "subdonor",
+  "column_break_fypz",
+  "scholarship_status",
+  "program_country",
+  "programme_state",
+  "programme_county",
+  "institution",
+  "course_section",
+  "course",
+  "thematic_area",
+  "column_break_kvlj",
+  "course_level",
   "identity_tab",
   "identity_section",
   "ethnicity",
@@ -103,20 +121,6 @@
   "column_break_40",
   "employment_type",
   "other_employment_type",
-  "tab_8_tab",
-  "section_break_uoor",
-  "program",
-  "course",
-  "university",
-  "course_level",
-  "thematic_area",
-  "external_id",
-  "column_break_fypz",
-  "scholarship_status",
-  "start_date",
-  "end_date",
-  "programme_year_commenced",
-  "country_of_study",
   "connections_tab"
  ],
  "fields": [
@@ -675,11 +679,6 @@
    "options": "\nAlumni\nStudent\nOthers"
   },
   {
-   "fieldname": "tab_8_tab",
-   "fieldtype": "Tab Break",
-   "label": "Alumni Info"
-  },
-  {
    "fieldname": "residency",
    "fieldtype": "Link",
    "label": "Residency",
@@ -692,50 +691,20 @@
    "options": "Program"
   },
   {
-   "fieldname": "university",
-   "fieldtype": "Data",
-   "label": "University"
-  },
-  {
-   "fieldname": "external_id",
-   "fieldtype": "Data",
-   "label": "External ID"
-  },
-  {
    "fieldname": "column_break_fypz",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "program",
    "fieldtype": "Link",
-   "label": "Program",
+   "label": "Programme",
    "options": "Program"
-  },
-  {
-   "fieldname": "start_date",
-   "fieldtype": "Date",
-   "label": "Start Date"
-  },
-  {
-   "fieldname": "end_date",
-   "fieldtype": "Date",
-   "label": "End Date"
-  },
-  {
-   "fieldname": "programme_year_commenced",
-   "fieldtype": "Data",
-   "label": "Programme Year Commenced"
   },
   {
    "fieldname": "scholarship_status",
    "fieldtype": "Select",
    "label": "Scholarship Status",
    "options": "\nSuccessful: Completed/Graduated\nUnsuccessful: Failed\nUnsuccessful: Other (Died)"
-  },
-  {
-   "depends_on": "eval: doc.beneficiary_type == \"Alumni\"",
-   "fieldname": "section_break_uoor",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "course_level",
@@ -750,10 +719,65 @@
    "options": "Thematic Area"
   },
   {
-   "fieldname": "country_of_study",
+   "fieldname": "programme_start_date",
+   "fieldtype": "Date",
+   "label": "Programme Start Date"
+  },
+  {
+   "fieldname": "programme_end_date",
+   "fieldtype": "Date",
+   "label": "Programme End Date"
+  },
+  {
+   "fieldname": "lead_donor",
    "fieldtype": "Link",
-   "label": "Country of Study",
+   "label": "Lead Donor",
+   "options": "Donor"
+  },
+  {
+   "fieldname": "subdonor",
+   "fieldtype": "Link",
+   "label": "Sub Donor",
+   "options": "Donor"
+  },
+  {
+   "fieldname": "program_country",
+   "fieldtype": "Link",
+   "label": "Programme Country",
    "options": "Country"
+  },
+  {
+   "fieldname": "programme_state",
+   "fieldtype": "Data",
+   "label": "Programme State"
+  },
+  {
+   "fieldname": "programme_county",
+   "fieldtype": "Data",
+   "label": "Programme County"
+  },
+  {
+   "fieldname": "institution",
+   "fieldtype": "Link",
+   "label": "Institution",
+   "options": "Learning Centre"
+  },
+  {
+   "fieldname": "column_break_kvlj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "programme_tab",
+   "fieldtype": "Tab Break",
+   "label": "Programme Details"
+  },
+  {
+   "fieldname": "programme_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "course_section",
+   "fieldtype": "Section Break"
   }
  ],
  "image_field": "image",
@@ -785,7 +809,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2025-05-16 19:15:16.958858",
+ "modified": "2025-05-17 12:55:56.977244",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
@@ -909,7 +933,24 @@
  "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
+ "states": [
+  {
+   "color": "Green",
+   "title": "Active"
+  },
+  {
+   "color": "Red",
+   "title": "Inactive"
+  },
+  {
+   "color": "Purple",
+   "title": "Alumni"
+  },
+  {
+   "color": "Blue",
+   "title": "Deceased"
+  }
+ ],
  "title_field": "full_name",
  "track_changes": 1
 }

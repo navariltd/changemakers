@@ -49,6 +49,8 @@ class Beneficiary(Document):
     def validate(self):
         self.validate_age()
         settings = frappe.get_doc("Changemakers Settings")
+        if not self.status and getattr(settings, "default_beneficiary_status", None):
+            self.status = settings.default_beneficiary_status
         # Check if manage_beneficiary_lifecycle is enabled
         if settings.manage_beneficiary_lifecycle:
             if self.status == "Active" and self.recruitment_phase and not self.beneficiary_no:
