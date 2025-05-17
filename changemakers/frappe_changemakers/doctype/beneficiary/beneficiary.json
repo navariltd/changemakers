@@ -640,7 +640,6 @@
    "label": "Beneficiary No",
    "no_copy": 1,
    "non_negative": 1,
-   "read_only": 1,
    "search_index": 1
   },
   {
@@ -786,7 +785,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2025-05-15 12:13:50.575219",
+ "modified": "2025-05-16 19:15:16.958858",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",

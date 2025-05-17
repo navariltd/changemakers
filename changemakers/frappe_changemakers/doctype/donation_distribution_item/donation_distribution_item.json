@@ -29,19 +29,22 @@
    "reqd": 1
   },
   {
+   "columns": 1,
    "fieldname": "percentage",
    "fieldtype": "Percent",
    "in_filter": 1,
    "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
-   "label": "Percentage"
+   "label": "Percentage",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_adjg",
    "fieldtype": "Column Break"
   },
   {
+   "columns": 2,
    "fieldname": "beneficiary",
    "fieldtype": "Link",
    "in_filter": 1,
@@ -79,7 +82,7 @@
    "label": "Accounting Dimensions"
   },
   {
-   "columns": 1,
+   "columns": 2,
    "fieldname": "project",
    "fieldtype": "Link",
    "in_filter": 1,
@@ -104,7 +107,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-15 10:54:58.455891",
+ "modified": "2025-05-17 09:57:18.784913",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Distribution Item",

@@ -18,6 +18,11 @@ frappe.ui.form.on("Beneficiary", {
 			"read_only",
 			settings?.allow_beneficiary_status_editing ? 0 : 1
 		);
+		frm.set_df_property(
+			"beneficiary_no",
+			"read_only",
+			settings?.allow_beneficiary_status_editing ? 0 : 1
+		);
 
 		if (!frm.is_new()) {
 			frappe.contacts.render_address_and_contact(frm);
