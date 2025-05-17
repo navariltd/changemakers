@@ -1,3 +1,6 @@
+# Copyright (c) 2025, hussain@frappe.io
+# For license information, please see license.txt
+
 import frappe
 from collections import Counter
 
@@ -31,42 +34,34 @@ def get_columns():
 def get_data(filters):
 	frappe_filters = {}
 
-	# Direct filters
-	for field in [
+	filter_fields = [
 		"program", "lead_donor", "subdonor", "beneficiary_type", "status",
 		"program_country", "programme_state", "programme_county",
 		"institution", "course", "thematic_area"
-	]:
+	]
+	for field in filter_fields:
 		if filters.get(field):
 			frappe_filters[field] = filters[field]
 
-	# Date range filters
 	if filters.get("start_date_from"):
 		frappe_filters["programme_start_date"] = [">=", filters["start_date_from"]]
 	if filters.get("start_date_to"):
 		frappe_filters.setdefault("programme_start_date", []).append(["<=", filters["start_date_to"]])
-
 	if filters.get("end_date_from"):
 		frappe_filters["programme_end_date"] = [">=", filters["end_date_from"]]
 	if filters.get("end_date_to"):
 		frappe_filters.setdefault("programme_end_date", []).append(["<=", filters["end_date_to"]])
 
-	# Flatten date range lists into AND condition filters
 	date_filters = {}
 	for key in ["programme_start_date", "programme_end_date"]:
-		if isinstance(frappe_filters.get(key), list) and isinstance(frappe_filters[key][0], list):
-			# Already in range form
-			pass
-		elif isinstance(frappe_filters.get(key), list) and len(frappe_filters[key]) == 2:
-			date_filters.update({
-				key: ("between", (frappe_filters[key][0], frappe_filters[key][1]))
-			})
+		value = frappe_filters.get(key)
+		if isinstance(value, list) and len(value) == 2 and not isinstance(value[0], list):
+			date_filters[key] = ("between", (value[0], value[1]))
 			del frappe_filters[key]
-
 	frappe_filters.update(date_filters)
 
-	# Get data using frappe ORM
-	beneficiaries = frappe.get_all("Beneficiary",
+	beneficiaries = frappe.get_all(
+		"Beneficiary",
 		fields=[
 			"name", "student", "program", "programme_start_date", "programme_end_date",
 			"lead_donor", "subdonor", "scholarship_status",
@@ -77,7 +72,6 @@ def get_data(filters):
 		filters=frappe_filters,
 		order_by="modified desc"
 	)
-
 	return beneficiaries
 
 def get_report_summary(data):
@@ -85,30 +79,35 @@ def get_report_summary(data):
 		return []
 
 	program_count = Counter(row.get("program") for row in data if row.get("program"))
-	type_count = Counter(row.get("beneficiary_type") for row in data if row.get("beneficiary_type"))
-	status_count = Counter(row.get("status") for row in data if row.get("status"))
-
-	return [
-		{"label": "Top Program", "value": max(program_count, key=program_count.get, default="N/A")},
-		{"label": "Top Beneficiary Type", "value": max(type_count, key=type_count.get, default="N/A")},
-		{"label": "Top Status", "value": max(status_count, key=status_count.get, default="N/A")},
-		{"label": "Total Beneficiaries", "value": len(data)},
+	summary = [
+		{"label": "Total Beneficiaries", "value": len(data), "indicator": "blue"}
 	]
+	for program, count in sorted(program_count.items(), key=lambda x: x[1], reverse=True):
+		if count > 0:
+			summary.append({"label": program, "value": count, "indicator": "green"})
+	return summary
 
 def get_chart(data):
 	if not data:
-		return {}
+		return None
 
-	program_count = Counter(row.get("program") for row in data if row.get("program"))
-
+	status_count = Counter(row.get("status") for row in data if row.get("status"))
+	status_colors = {
+		"Active": "#34d399",
+		"Inactive": "#ef4444",
+		"Alumni": "#8b5cf6",
+		"Deceased": "#3b82f6"
+	}
 	return {
+		"title": "Beneficiaries by Status",
 		"data": {
-			"labels": list(program_count.keys()),
+			"labels": list(status_count.keys()),
 			"datasets": [{
 				"name": "Beneficiaries",
-				"values": list(program_count.values())
+				"values": list(status_count.values())
 			}]
 		},
-		"type": "bar",
-		"colors": ["#34d399"]
+		"type": "donut",
+		"colors": [status_colors.get(status, "#94a3b8") for status in status_count.keys()],
+		"height": 300
 	}
