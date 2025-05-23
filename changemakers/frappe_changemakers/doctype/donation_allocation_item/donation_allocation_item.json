@@ -76,7 +76,7 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Recipient Type",
-   "link_filters": "[[\"DocType\",\"name\",\"in\", [\"Customer\", \"Lead\", \"Student\", \"Beneficiary\"]]]",
+   "link_filters": "[[\"DocType\",\"name\",\"in\", [\"Learning Center\", \"Student\", \"Beneficiary\"]]]",
    "options": "DocType"
   },
   {
@@ -94,7 +94,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-23 14:18:42.490478",
+ "modified": "2025-05-23 15:35:31.400263",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Allocation Item",
