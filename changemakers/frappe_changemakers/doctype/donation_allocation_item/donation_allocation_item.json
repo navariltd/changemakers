@@ -9,9 +9,8 @@
   "amount",
   "percentage",
   "column_break_adjg",
-  "beneficiary",
-  "student",
-  "learning_centre",
+  "recipient_type",
+  "recipient",
   "accounting_dimensions_section",
   "project",
   "dimension_col_break",
@@ -44,39 +43,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 2,
-   "fieldname": "beneficiary",
-   "fieldtype": "Link",
-   "in_filter": 1,
-   "in_list_view": 1,
-   "in_preview": 1,
-   "in_standard_filter": 1,
-   "label": "Beneficiary",
-   "options": "Beneficiary"
-  },
-  {
-   "fetch_from": "beneficiary.student",
-   "fieldname": "student",
-   "fieldtype": "Link",
-   "in_filter": 1,
-   "in_list_view": 1,
-   "in_preview": 1,
-   "in_standard_filter": 1,
-   "label": "Student",
-   "options": "Student"
-  },
-  {
-   "columns": 1,
-   "fieldname": "learning_centre",
-   "fieldtype": "Link",
-   "in_filter": 1,
-   "in_list_view": 1,
-   "in_preview": 1,
-   "in_standard_filter": 1,
-   "label": "Learning Centre",
-   "options": "Learning Centre"
-  },
-  {
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
    "label": "Accounting Dimensions"
@@ -101,16 +67,37 @@
    "fieldtype": "Link",
    "label": "Cost Center",
    "options": "Cost Center"
+  },
+  {
+   "fieldname": "recipient_type",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Recipient Type",
+   "link_filters": "[[\"DocType\",\"name\",\"in\", [\"Customer\", \"Lead\", \"Student\", \"Beneficiary\"]]]",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "recipient",
+   "fieldtype": "Dynamic Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Recipient",
+   "options": "recipient_type"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-17 09:57:18.784913",
+ "modified": "2025-05-23 14:18:42.490478",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
- "name": "Donation Distribution Item",
+ "name": "Donation Allocation Item",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

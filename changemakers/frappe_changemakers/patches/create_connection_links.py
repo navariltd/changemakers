@@ -1,6 +1,6 @@
 import frappe
 
-def update_links_for_donation_distribution() -> None:
+def update_links_for_donation_allocation() -> None:
     doctypes = ["Donation", "Donor"]
     for doctype in doctypes:
         try:
@@ -8,11 +8,11 @@ def update_links_for_donation_distribution() -> None:
 
             doc.links = [
                 link for link in doc.get("links", [])
-                if link.link_doctype != "Donation Distribution"
+                if link.link_doctype != "Donation Allocation"
             ]
 
             link_data = {
-                "link_doctype": "Donation Distribution",
+                "link_doctype": "Donation Allocation",
                 "link_fieldname": "donation" if doctype == "Donation" else "donor",
             }
             if doctype == "Donation":
@@ -30,6 +30,6 @@ def update_links_for_donation_distribution() -> None:
             )
 
 def execute() -> None:
-    update_links_for_donation_distribution()
+    update_links_for_donation_allocation()
 
 

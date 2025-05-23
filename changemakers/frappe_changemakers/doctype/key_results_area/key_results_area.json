@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-05-23 13:20:50.549633",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "area",
+  "column_break_ppwo",
+  "weightage_"
+ ],
+ "fields": [
+  {
+   "fieldname": "area",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Area",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ppwo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "weightage_",
+   "fieldtype": "Percent",
+   "label": "Weightage (%)"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-05-23 13:21:39.036194",
+ "modified_by": "Administrator",
+ "module": "Frappe Changemakers",
+ "name": "Key Results Area",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

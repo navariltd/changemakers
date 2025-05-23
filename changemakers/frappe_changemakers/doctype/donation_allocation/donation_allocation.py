@@ -5,7 +5,7 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import flt, nowdate
 
-class DonationDistribution(Document):
+class DonationAllocation(Document):
 	def validate(self):
 		# Set date if not already set
 		if not self.date:
@@ -27,7 +27,7 @@ class DonationDistribution(Document):
 				
 	def before_submit(self):
 		submitted_distributions = frappe.get_all(
-			"Donation Distribution",
+			"Donation Allocation",
 			filters={
 				"donation": self.donation,
 				"docstatus": 1,
