@@ -1,0 +1,49 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-05-23 12:50:30.845863",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "partner_from",
+  "column_break_uiff",
+  "partner"
+ ],
+ "fields": [
+  {
+   "fieldname": "partner_from",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Partner From",
+   "link_filters": "[[\"DocType\",\"name\",\"in\", [\"Customer\", \"Member\", \"Supplier\", \"Donor\"]]]",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "fieldname": "partner",
+   "fieldtype": "Dynamic Link",
+   "label": "Partner",
+   "options": "partner_from",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_uiff",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-05-23 12:58:45.843566",
+ "modified_by": "Administrator",
+ "module": "Frappe Changemakers",
+ "name": "Partner List",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

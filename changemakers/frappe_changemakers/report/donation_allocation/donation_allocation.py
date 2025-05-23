@@ -39,7 +39,7 @@ class DonationDistributionReport:
             columns.append({"label": "Total Distributed Amount", "fieldname": "amount_distributed", "fieldtype": "Currency", "width": 170})
 
         columns += [
-            {"label": "Distribution", "fieldname": "distribution", "fieldtype": "Link", "options": "Donation Distribution", "width": 150},
+            {"label": "Distribution", "fieldname": "distribution", "fieldtype": "Link", "options": "Donation Allocation", "width": 150},
             {"label": "Date", "fieldname": "distribution_date", "fieldtype": "Date", "width": 150},
             {"label": "Total Amount", "fieldname": "total_amount", "fieldtype": "Currency", "width": 150},
             {"label": "Amount", "fieldname": "amount", "fieldtype": "Currency", "width": 150},
@@ -78,7 +78,7 @@ class DonationDistributionReport:
             frappe_filters["date"] = ["between", dates]
 
         distributions = frappe.get_all(
-            "Donation Distribution",
+            "Donation Allocation",
             filters=frappe_filters,
             fields=["name", "donation", "donor", "date as distribution_date", "total_amount", "remarks"],
             order_by="donation, date ASC"
@@ -91,7 +91,7 @@ class DonationDistributionReport:
         item_filters["parent"] = ["in", distribution_names]
 
         items = frappe.get_all(
-            "Donation Distribution Item",
+            "Donation Allocation Item",
             filters=item_filters,
             fields=["parent", "amount", "percentage", "beneficiary", "student", 
                     "learning_centre", "project", "cost_center"],
