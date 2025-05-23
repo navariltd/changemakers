@@ -84,6 +84,7 @@ website_route_rules = [
 # include js in doctype views
 doctype_js = {
     "Stock Entry": "frappe_changemakers/overrides/stock_entry.js",
+    "Project": "frappe_changemakers/overrides/project.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
