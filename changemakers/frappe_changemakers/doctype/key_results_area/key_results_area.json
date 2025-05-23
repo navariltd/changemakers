@@ -13,9 +13,13 @@
  "fields": [
   {
    "fieldname": "area",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
+   "in_filter": 1,
    "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
    "label": "Area",
+   "options": "Key Result Area",
    "reqd": 1
   },
   {
@@ -25,6 +29,10 @@
   {
    "fieldname": "weightage_",
    "fieldtype": "Percent",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
    "label": "Weightage (%)"
   }
  ],
@@ -32,7 +40,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-23 13:21:39.036194",
+ "modified": "2025-05-23 15:46:15.359555",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Key Results Area",
