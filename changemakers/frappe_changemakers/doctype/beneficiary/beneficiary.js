@@ -8,11 +8,39 @@ frappe.ui.form.on("Beneficiary", {
 		frm.toggle_display("address_html", !frm.is_new());
 		frm.toggle_display("contact_html", !frm.is_new());
 
-		const { message: settings } = await frappe.db.get_value(
+		const settings = await frappe.db.get_doc(
 			settingsDoctypeName,
-			{ name: settingsDoctypeName },
-			"name"
+			settingsDoctypeName
 		);
+
+		frm.set_df_property(
+			"status",
+			"read_only",
+			settings?.allow_beneficiary_status_editing ? 0 : 1
+		);
+		frm.set_df_property(
+			"beneficiary_no",
+			"read_only",
+			settings?.allow_beneficiary_status_editing ? 0 : 1
+		);
+		frm.set_df_property(
+			"programme_section",
+			"hidden",
+			settings?.enable_programme_details ? 0 : 1
+		);
+		frm.set_df_property(
+			"course_section",
+			"hidden",
+			settings?.enable_programme_details ? 0 : 1
+		);
+
+		if (
+			frm.is_new() &&
+			settings?.default_beneficiary_status &&
+			!frm.doc.status
+		) {
+			frm.set_value("status", settings.default_beneficiary_status);
+		}
 
 		if (!frm.is_new()) {
 			frappe.contacts.render_address_and_contact(frm);

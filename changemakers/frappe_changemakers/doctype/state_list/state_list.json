@@ -1,31 +1,34 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-11-19 14:37:46.852492",
+ "creation": "2025-05-23 13:04:52.730524",
  "doctype": "DocType",
+ "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "cost_center"
+  "state"
  ],
  "fields": [
   {
-   "fieldname": "cost_center",
+   "fieldname": "state",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Cost Center",
-   "options": "Cost Center",
+   "label": "State",
+   "options": "State",
    "reqd": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-19 14:41:04.228584",
+ "modified": "2025-05-23 13:05:47.669439",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
- "name": "Beneficiary Program",
+ "name": "State List",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
