@@ -1,7 +1,7 @@
 import frappe
 
 def update_links_for_donation_allocation() -> None:
-    doctypes = ["Donation", "Donor"]
+    doctypes = ["Donation", "Donor", "Project"]
     for doctype in doctypes:
         try:
             doc = frappe.get_doc("DocType", doctype)
@@ -11,14 +11,28 @@ def update_links_for_donation_allocation() -> None:
                 if link.link_doctype != "Donation Allocation"
             ]
 
-            link_data = {
-                "link_doctype": "Donation Allocation",
-                "link_fieldname": "donation" if doctype == "Donation" else "donor",
-            }
             if doctype == "Donation":
-                link_data["group"] = "Distribution"
-
-            doc.append("links", link_data)
+                doc.append("links", {
+                    "link_doctype": "Donation Allocation",
+                    "link_fieldname": "donation",
+                    "group": "Allocation"
+                })
+            elif doctype == "Donor":
+                doc.append("links", {
+                    "link_doctype": "Donation Allocation",
+                    "link_fieldname": "donor"
+                })
+            elif doctype == "Project":
+                doc.append("links", {
+                    "link_doctype": "Donation",
+                    "link_fieldname": "project",
+                    "group": "Donations"
+                })
+                doc.append("links", {
+                    "link_doctype": "Donation Allocation",
+                    "link_fieldname": "project",
+                    "group": "Donations"
+                })
 
             doc.save()
             frappe.db.commit()
@@ -31,5 +45,3 @@ def update_links_for_donation_allocation() -> None:
 
 def execute() -> None:
     update_links_for_donation_allocation()
-
-
