@@ -1,6 +1,11 @@
 frappe.ui.form.on("Project", {
 	refresh: function (frm) {
 		setup_state_filter(frm);
+		if (frm.doc.project_type === "Food Distribution") {
+			frm.add_custom_button("Distribute Food", () => {
+				open_distribution_modal(frm);
+			});
+		}
 	},
 
 	custom_project_countrys: function (frm) {
@@ -65,4 +70,82 @@ function filter_states_by_selected_countries(frm) {
 			},
 		});
 	}
+}
+
+function open_distribution_modal(frm) {
+	frappe.call({
+		method: "changemakers.frappe_changemakers.overrides.stock_entry_query.get_distribution_data",
+		args: {
+			project: frm.doc.name,
+		},
+		callback: function (r) {
+			if (r.message) {
+				let { bom, beneficiaries } = r.message;
+
+				let dialog = new frappe.ui.Dialog({
+					title: "Create Food Distribution Entry",
+					fields: [
+						{
+							label: "BOM",
+							fieldname: "bom",
+							fieldtype: "Link",
+							options: "BOM",
+							reqd: 1,
+							default: bom,
+							get_query: () => ({
+								filters: {
+									project: frm.doc.name,
+								},
+							}),
+						},
+						{
+							label: "Beneficiaries",
+							fieldname: "beneficiaries",
+							fieldtype: "Table",
+							cannot_add_rows: false,
+							data: beneficiaries,
+							get_data: () => beneficiaries,
+							fields: [
+								{
+									fieldname: "beneficiary",
+									label: "Beneficiary",
+									fieldtype: "Link",
+									options: "Beneficiary",
+									in_list_view: 1,
+									reqd: 1,
+									get_query: () => ({
+										filters: {
+											branch: frm.doc.branch,
+											status: "Active",
+										},
+									}),
+								},
+							],
+						},
+					],
+					primary_action_label: "Create Stock Entries",
+					primary_action(values) {
+						frappe.call({
+							method: "changemakers.frappe_changemakers.overrides.stock_entry_query.create_food_stock_entries",
+							args: {
+								project: frm.doc.name,
+								bom: values.bom,
+								beneficiaries: values.beneficiaries,
+							},
+							callback: function (res) {
+								if (res.message) {
+									frappe.msgprint(
+										"Stock Entries Created Successfully!"
+									);
+									dialog.hide();
+								}
+							},
+						});
+					},
+				});
+
+				dialog.show();
+			}
+		},
+	});
 }
