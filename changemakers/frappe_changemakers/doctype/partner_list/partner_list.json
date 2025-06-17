@@ -12,6 +12,7 @@
  ],
  "fields": [
   {
+   "default": "Partner",
    "fieldname": "partner_from",
    "fieldtype": "Link",
    "in_filter": 1,
@@ -19,7 +20,7 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Partner From",
-   "link_filters": "[[\"DocType\",\"name\",\"in\", [\"Beneficiary\", \"Member\", \"Supplier\", \"Donor\"]]]",
+   "link_filters": "[[\"DocType\",\"name\",\"in\", [\"Beneficiary\", \"Partner\", \"Donor\"]]]",
    "options": "DocType",
    "reqd": 1
   },
@@ -43,7 +44,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-23 15:47:20.931048",
+ "modified": "2025-05-30 09:44:27.219251",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Partner List",
