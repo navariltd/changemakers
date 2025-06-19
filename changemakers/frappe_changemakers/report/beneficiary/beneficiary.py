@@ -93,10 +93,10 @@ def get_chart(data):
 
 	status_count = Counter(row.get("status") for row in data if row.get("status"))
 	status_colors = {
-		"Active": "#34d399",
-		"Inactive": "#ef4444",
-		"Alumni": "#8b5cf6",
-		"Deceased": "#3b82f6"
+		"Active": "#22c55e",  
+		"Inactive": "#ef4444",  
+		"Alumni": "#a855f7",  
+		"Deceased": "#3b82f6"  
 	}
 	return {
 		"title": "Beneficiaries by Status",
@@ -111,3 +111,4 @@ def get_chart(data):
 		"colors": [status_colors.get(status, "#94a3b8") for status in status_count.keys()],
 		"height": 300
 	}
+

@@ -1,16 +1,10 @@
-// Copyright (c) 2025, hussain@frappe.io and contributors
-// For license information, please see license.txt
-
 frappe.query_reports["Donation Allocation"] = {
 	filters: [
 		{
 			fieldname: "from_date",
 			label: __("From Date"),
 			fieldtype: "Date",
-			default: frappe.datetime.add_months(
-				frappe.datetime.get_today(),
-				-1
-			),
+			default: frappe.datetime.add_months(frappe.datetime.get_today(), -1),
 			reqd: 1,
 		},
 		{
@@ -33,22 +27,53 @@ frappe.query_reports["Donation Allocation"] = {
 			options: "Donation",
 		},
 		{
+			fieldname: "recipient_type",
+			label: __("Recipient Type"),
+			fieldtype: "Select",
+			options: [
+				"",
+				"Learning Centre",
+				"Student",
+				"Beneficiary",
+				"Budget",
+				"Employee",
+			],
+			default: "",
+		},
+		{
 			fieldname: "beneficiary",
 			label: __("Beneficiary"),
 			fieldtype: "Link",
 			options: "Beneficiary",
+			depends_on: 'eval:doc.recipient_type=="Beneficiary"',
 		},
 		{
 			fieldname: "student",
 			label: __("Student"),
 			fieldtype: "Link",
 			options: "Student",
+			depends_on: 'eval:doc.recipient_type=="Student"',
 		},
 		{
 			fieldname: "learning_centre",
 			label: __("Learning Centre"),
 			fieldtype: "Link",
 			options: "Learning Centre",
+			depends_on: 'eval:doc.recipient_type=="Learning Centre"',
+		},
+		{
+			fieldname: "budget",
+			label: __("Budget"),
+			fieldtype: "Link",
+			options: "Budget",
+			depends_on: 'eval:doc.recipient_type=="Budget"',
+		},
+		{
+			fieldname: "employee",
+			label: __("Employee"),
+			fieldtype: "Link",
+			options: "Employee",
+			depends_on: 'eval:doc.recipient_type=="Employee"',
 		},
 		{
 			fieldname: "project",
@@ -56,13 +81,6 @@ frappe.query_reports["Donation Allocation"] = {
 			fieldtype: "Link",
 			options: "Project",
 		},
-		{
-			fieldname: "cost_center",
-			label: __("Cost Center"),
-			fieldtype: "Link",
-			options: "Cost Center",
-		},
-
 		{
 			fieldname: "show_total_pledged",
 			label: __("Show Pledged Amount"),
@@ -124,19 +142,20 @@ frappe.query_reports["Donation Allocation"] = {
 			}</a>`;
 		}
 
-		if (column.fieldname === "beneficiary" && data && data.beneficiary) {
-			return `<a href="/app/beneficiary/${data.beneficiary}" target="_blank">${value}</a>`;
-		}
-
-		if (column.fieldname === "student" && data && data.student) {
-			return `<a href="/app/student/${data.student}" target="_blank">${value}</a>`;
+		if (
+			column.fieldname === "recipient" &&
+			data &&
+			data.recipient &&
+			data.recipient_type
+		) {
+			const doctype_name = data.recipient_type.replace(/\s/g, "-");
+			return `<a href="/app/${doctype_name}/${data.recipient}" target="_blank">${value}</a>`;
 		}
 
 		if (column.fieldname === "project" && data && data.project) {
 			return `<a href="/app/project/${data.project}" target="_blank">${value}</a>`;
 		}
 
-		// Generic blanking for specified numeric fields if value is "" or "0"
 		const blankFields = [
 			"pledged_amount",
 			"amount",

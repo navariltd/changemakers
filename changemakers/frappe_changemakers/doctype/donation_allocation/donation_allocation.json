@@ -11,6 +11,8 @@
   "donor",
   "column_break_otbo",
   "date",
+  "donation_total_paid_amount",
+  "donation_unallocated_amount",
   "total_amount",
   "accounting_dimensions_section",
   "project",
@@ -53,7 +55,8 @@
    "in_standard_filter": 1,
    "label": "Donation",
    "options": "Donation",
-   "reqd": 1
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "column_break_otbo",
@@ -68,7 +71,8 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Donor",
-   "options": "Donor"
+   "options": "Donor",
+   "search_index": 1
   },
   {
    "fieldname": "date",
@@ -123,25 +127,45 @@
    "in_standard_filter": 1,
    "label": "Project",
    "options": "Project",
-   "reqd": 1
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
-   "options": "Project",
+   "options": "Cost Center",
    "reqd": 1
   },
   {
    "fieldname": "dimension_col_break",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "donation.total_amount_paid",
+   "fieldname": "donation_total_paid_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Donation Total Paid Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "donation_unallocated_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Donation Unallocated Amount",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-05-30 10:02:43.525146",
+ "modified": "2025-06-19 09:11:56.777867",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Allocation",
