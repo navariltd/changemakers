@@ -15,45 +15,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Donations & Contributions",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Donor",
-   "link_count": 0,
-   "link_to": "Donor",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Donation",
-   "link_count": 0,
-   "link_to": "Donation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Donation Distribution",
-   "link_count": 0,
-   "link_to": "Donation Allocation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": " Programs & Education",
    "link_count": 5,
    "link_type": "DocType",
@@ -329,6 +290,45 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Donations & Contributions",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Donor",
+   "link_count": 0,
+   "link_to": "Donor",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Donation",
+   "link_count": 0,
+   "link_to": "Donation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Donation Allocation",
+   "link_count": 0,
+   "link_to": "Donation Allocation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Reports",
    "link_count": 6,
    "link_type": "DocType",
@@ -338,7 +338,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Beneficiary",
+   "label": "Beneficiary Report",
    "link_count": 0,
    "link_to": "Beneficiary",
    "link_type": "Report",
@@ -348,7 +348,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Donation",
+   "label": "Donation Report",
    "link_count": 0,
    "link_to": "Donation",
    "link_type": "Report",
@@ -358,7 +358,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Donation Allocation",
+   "label": "Donation Allocation Report",
    "link_count": 0,
    "link_to": "Donation Allocation",
    "link_type": "Report",
@@ -368,7 +368,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Donation Payments",
+   "label": "Donation Payments Report",
    "link_count": 0,
    "link_to": "Donation Payments",
    "link_type": "Report",
@@ -378,7 +378,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Donor Contribution",
+   "label": "Donor Contribution Report",
    "link_count": 0,
    "link_to": "Donor Contribution",
    "link_type": "Report",
@@ -388,7 +388,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "My Cases",
+   "label": "My Cases Report",
    "link_count": 0,
    "link_to": "My Cases",
    "link_type": "Report",
@@ -396,7 +396,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-05-22 16:27:08.883576",
+ "modified": "2025-06-19 10:56:43.231400",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers",

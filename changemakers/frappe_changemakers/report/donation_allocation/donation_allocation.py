@@ -4,7 +4,7 @@
 import frappe
 from collections import defaultdict
 
-def execute(filters=None):  
+def execute(filters=None):
     report = DonationDistributionReport(filters)
     return report.run()
 
@@ -22,7 +22,7 @@ class DonationDistributionReport:
         self.get_chart_data()
         self.get_report_summary()
         return self.columns, self.data, None, self.chart, self.report_summary
-    
+
     def get_columns(self):
         columns = [
             {"label": "Donation", "fieldname": "donation", "fieldtype": "Link", "options": "Donation", "width": 230},
@@ -44,11 +44,9 @@ class DonationDistributionReport:
             {"label": "Total Amount", "fieldname": "total_amount", "fieldtype": "Currency", "width": 150},
             {"label": "Amount", "fieldname": "amount", "fieldtype": "Currency", "width": 150},
             {"label": "Percentage", "fieldname": "percentage", "fieldtype": "Percent", "width": 150},
-            {"label": "Beneficiary", "fieldname": "beneficiary", "fieldtype": "Link", "options": "Beneficiary", "width": 150},
-            {"label": "Student", "fieldname": "student", "fieldtype": "Link", "options": "Student", "width": 150},
-            {"label": "Learning Centre", "fieldname": "learning_centre", "fieldtype": "Link", "options": "Learning Centre", "width": 150},
+            {"label": "Recipient Type", "fieldname": "recipient_type", "fieldtype": "Data", "width": 150},
+            {"label": "Recipient", "fieldname": "recipient", "fieldtype": "Dynamic Link", "options": "recipient_type", "width": 150},
             {"label": "Project", "fieldname": "project", "fieldtype": "Link", "options": "Project", "width": 150},
-            {"label": "Cost Center", "fieldname": "cost_center", "fieldtype": "Link", "options": "Cost Center", "width": 150},
             {"label": "Remarks", "fieldname": "remarks", "fieldtype": "Text", "width": 200},
         ]
 
@@ -69,9 +67,28 @@ class DonationDistributionReport:
         if filters.get("donor"):
             frappe_filters["donor"] = filters.get("donor")
 
-        for key in ["beneficiary", "student", "project", "learning_centre", "cost_center"]:
-            if filters.get(key):
-                item_filters[key] = filters[key]
+        # Dynamic Recipient filters
+        if filters.get("recipient_type"):
+            item_filters["recipient_type"] = filters["recipient_type"]
+
+            recipient_type = filters["recipient_type"]
+            recipient_field_map = {
+                "Beneficiary": "beneficiary",
+                "Student": "student",
+                "Learning Centre": "learning_centre",
+                "Budget": "budget",
+                "Employee": "employee"
+            }
+
+            specific_fieldname = recipient_field_map.get(recipient_type)
+            if specific_fieldname:
+                recipient_value = filters.get(specific_fieldname)
+                if recipient_value:
+                    item_filters["recipient"] = recipient_value
+
+        if filters.get("project"):
+            item_filters["project"] = filters["project"]
+
 
         if isinstance(frappe_filters.get("date"), list) and len(frappe_filters["date"]) > 2:
             dates = frappe_filters.pop("date")[1::2]
@@ -93,8 +110,7 @@ class DonationDistributionReport:
         items = frappe.get_all(
             "Donation Allocation Item",
             filters=item_filters,
-            fields=["parent", "amount", "percentage", "beneficiary", "student", 
-                    "learning_centre", "project", "cost_center"],
+            fields=["parent", "amount", "percentage", "recipient_type", "recipient", "project"],
             order_by="parent, idx"
         )
 
@@ -139,7 +155,6 @@ class DonationDistributionReport:
             first_items = items_by_distribution.get(first_dist.name, [])
             first_item = first_items[0] if first_items else None
 
-           
             row = {
                 "donation": donation.name,
                 "donor": donation.donor,
@@ -163,11 +178,9 @@ class DonationDistributionReport:
                     row.update({
                         "amount": first_item.amount,
                         "percentage": first_item.percentage,
-                        "beneficiary": first_item.beneficiary,
-                        "student": first_item.student,
-                        "learning_centre": first_item.learning_centre,
-                        "project": first_item.project,
-                        "cost_center": first_item.cost_center
+                        "recipient_type": first_item.recipient_type,
+                        "recipient": first_item.recipient,
+                        "project": first_item.project
                     })
 
             data.append(row)
@@ -178,9 +191,8 @@ class DonationDistributionReport:
                     "total_amount_paid": "", "amount_distributed": "",
                     "distribution": "", "distribution_date": "", "total_amount": "",
                     "amount": item.amount, "percentage": item.percentage,
-                    "beneficiary": item.beneficiary, "student": item.student,
-                    "learning_centre": item.learning_centre, "project": item.project,
-                    "cost_center": item.cost_center, "remarks": "", "indent": 1
+                    "recipient_type": item.recipient_type, "recipient": item.recipient,
+                    "project": item.project, "remarks": "", "indent": 1
                 })
 
             for dist in distributions[1:]:
@@ -196,9 +208,8 @@ class DonationDistributionReport:
                     "total_amount": dist.total_amount, "remarks": dist.remarks,
                     "is_group": 1, "bold": 0, "indent": 1,
                     "amount": first_item.amount, "percentage": first_item.percentage,
-                    "beneficiary": first_item.beneficiary, "student": first_item.student,
-                    "learning_centre": first_item.learning_centre, "project": first_item.project,
-                    "cost_center": first_item.cost_center
+                    "recipient_type": first_item.recipient_type, "recipient": first_item.recipient,
+                    "project": first_item.project
                 }
 
                 data.append(dist_row)
@@ -209,37 +220,33 @@ class DonationDistributionReport:
                         "total_amount_paid": "", "amount_distributed": "",
                         "distribution": "", "distribution_date": "", "total_amount": "",
                         "amount": item.amount, "percentage": item.percentage,
-                        "beneficiary": item.beneficiary, "student": item.student,
-                        "learning_centre": item.learning_centre, "project": item.project,
-                        "cost_center": item.cost_center, "remarks": "", "indent": 2
+                        "recipient_type": item.recipient_type, "recipient": item.recipient,
+                        "project": item.project, "remarks": "", "indent": 2
                     })
 
         return data
 
 
     def get_chart_data(self):
-       
+
         summary_map = defaultdict(lambda: {"pledged": 0, "paid": 0, "distributed": 0})
 
-       
+
         for row in self.data:
             donation = row.get("donation")
             if not donation:
-               
                 continue
 
             indent = row.get("indent", 0)
 
             if indent == 0:
-               
                 summary_map[donation]["pledged"] = row.get("pledged_amount", 0)
-               
                 summary_map[donation]["paid"] = row.get("total_amount_paid", 0)
                 summary_map[donation]["distributed"] = row.get("amount_distributed", 0)
 
         items = list(summary_map.items())
-       
-        sorted_data = items 
+
+        sorted_data = items
 
         self.chart = {
             "data": {
@@ -296,4 +303,3 @@ class DonationDistributionReport:
                 "indicator": "orange"
             }
         ]
-
