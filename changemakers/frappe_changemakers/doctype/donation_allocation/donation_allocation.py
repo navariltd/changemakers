@@ -69,8 +69,32 @@ def add_budget_allocations_from_doc(doc):
 				"parent": item.recipient,                
 				"parenttype": "Budget",
 				"parentfield": "donation_allocations",   
-				"donation_allocation": doc.name,
-				"donation": doc.donation,
+				"donation_allocation": doc.name, 
+				"donation": doc.donation, 
+				"account": item.account, 
 				"donor": doc.donor,
 				"amount": item.amount
 			}).insert(ignore_permissions=True)
+
+
+@frappe.whitelist()
+def get_budget_accounts(budget_name):
+	"""
+	Returns a list of all accounts associated with a specific budget.
+	
+	Args:
+		budget_name (str): The name of the budget document
+		
+	Returns:
+		list: List of account names from the budget
+	"""
+	if not budget_name:
+		return []
+
+	accounts = frappe.get_all(
+		"Budget Account",  
+		filters={"parent": budget_name},
+		fields=["account"],
+		distinct=True
+	)
+	return [d.get('account') for d in accounts if d.get('account')]

@@ -9,8 +9,10 @@
   "column_break_adjg",
   "recipient_type",
   "recipient",
+  "account",
   "column_break_rqny",
   "amount",
+  "general_admin",
   "percentage",
   "accounting_dimensions_section",
   "project",
@@ -49,7 +51,7 @@
    "label": "Accounting Dimensions"
   },
   {
-   "columns": 2,
+   "columns": 1,
    "fieldname": "project",
    "fieldtype": "Link",
    "in_filter": 1,
@@ -93,13 +95,33 @@
   {
    "fieldname": "column_break_rqny",
    "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Account",
+   "options": "Account"
+  },
+  {
+   "columns": 1,
+   "fieldname": "general_admin",
+   "fieldtype": "Data",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": " General/ Admin"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-19 09:01:47.783356",
+ "modified": "2025-06-20 13:18:57.595900",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Allocation Item",
