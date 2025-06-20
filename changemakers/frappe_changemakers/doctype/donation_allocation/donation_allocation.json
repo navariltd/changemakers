@@ -127,15 +127,13 @@
    "in_standard_filter": 1,
    "label": "Project",
    "options": "Project",
-   "reqd": 1,
    "search_index": 1
   },
   {
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
-   "options": "Cost Center",
-   "reqd": 1
+   "options": "Cost Center"
   },
   {
    "fieldname": "dimension_col_break",
@@ -165,7 +163,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-19 09:11:56.777867",
+ "modified": "2025-06-20 11:51:08.416316",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Allocation",

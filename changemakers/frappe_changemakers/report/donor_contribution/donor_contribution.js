@@ -95,6 +95,11 @@ frappe.query_reports["Donor Contribution"] = {
 		},
 
 		{
+			fieldname: "general_admin",
+			label: __("General / Admin"),
+			fieldtype: "Data",
+		},
+		{
 			fieldname: "show_total_pledged",
 			label: __("Show Pledged Amount"),
 			fieldtype: "Check",

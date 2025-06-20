@@ -8,6 +8,7 @@
  "field_order": [
   "donation_allocation",
   "amount",
+  "account",
   "column_break_orvg",
   "donation",
   "donor"
@@ -63,13 +64,24 @@
    "label": "Amount",
    "reqd": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Account",
+   "options": "Account",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-19 09:08:31.665347",
+ "modified": "2025-06-20 13:14:47.147825",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Budget Donation Allocation Item",

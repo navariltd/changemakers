@@ -4,7 +4,10 @@ frappe.query_reports["Donation Allocation"] = {
 			fieldname: "from_date",
 			label: __("From Date"),
 			fieldtype: "Date",
-			default: frappe.datetime.add_months(frappe.datetime.get_today(), -1),
+			default: frappe.datetime.add_months(
+				frappe.datetime.get_today(),
+				-1
+			),
 			reqd: 1,
 		},
 		{
@@ -81,6 +84,7 @@ frappe.query_reports["Donation Allocation"] = {
 			fieldtype: "Link",
 			options: "Project",
 		},
+		{ fieldname: "general_admin", label: __("General / Admin"), fieldtype: "Data" },
 		{
 			fieldname: "show_total_pledged",
 			label: __("Show Pledged Amount"),
