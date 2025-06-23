@@ -80,7 +80,22 @@ def get_data(filters=None):
                 SELECT COUNT(*)
                 FROM `tabMonthly Distribution Percentage` mdp
                 WHERE mdp.parent = b.monthly_distribution
-            ) AS months_distributed
+            ) AS months_distributed,
+            (
+                CASE
+                    WHEN (
+                        SELECT COUNT(*)
+                        FROM `tabMonthly Distribution Percentage` mdp
+                        WHERE mdp.parent = b.monthly_distribution
+                    ) > 0
+                    THEN 100 / (
+                        SELECT COUNT(*)
+                        FROM `tabMonthly Distribution Percentage` mdp
+                        WHERE mdp.parent = b.monthly_distribution
+                    )
+                    ELSE 0
+                END
+            ) AS percentage
         FROM
             `tabBudget` b
         LEFT JOIN
