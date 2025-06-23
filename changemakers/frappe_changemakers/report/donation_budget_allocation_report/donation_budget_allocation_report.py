@@ -84,7 +84,8 @@ def get_data(filters=None):
         """
         SELECT
             name AS budget_name,
-            budget_against
+            budget_against,
+			monthly_distribution
         FROM
             `tabBudget`
         ORDER BY
@@ -96,20 +97,36 @@ def get_data(filters=None):
     data = []
 
     for budget in budgets:
+        # Calculate months_distributed for each budget
+        months_distributed = (
+            frappe.db.sql(
+                """
+            SELECT COUNT(*) AS cnt
+            FROM `tabMonthly Distribution Percentage`
+            WHERE parent = %s
+            """,
+                (budget.monthly_distribution,),
+                as_dict=True,
+            )[0]["cnt"]
+            or 0
+        )
+
+        percentage = 100 / months_distributed if months_distributed > 0 else 0
+
         # Add the budget row
         data.append(
             {
                 "row_type": "budget",
                 "budget_name": budget.budget_name,
                 "budget_against": budget.budget_against,
-                "name": "",  # Not applicable for budget row
+                "name": "",
                 "donor": "",
                 "donation": "",
                 "amount": "",
                 "budget_account": "",
                 "budget_amount": "",
-                "months_distributed": "",
-                "percentage": "",
+                "months_distributed": months_distributed,
+                "percentage": percentage,
             }
         )
 
