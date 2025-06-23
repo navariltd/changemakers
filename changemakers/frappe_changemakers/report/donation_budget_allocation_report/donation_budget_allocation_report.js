@@ -15,7 +15,7 @@ frappe.query_reports["Donation Budget Allocation Report"] = {
 				"Cost Center",
 				"Program",
 			],
-			default: "Project",
+			default: "",
 		},
 		{
 			fieldname: "project",
@@ -128,7 +128,9 @@ frappe.query_reports["Donation Budget Allocation Report"] = {
 			(blankFields.includes(column.fieldname) ||
 				/\d+$/.test(column.fieldname)) &&
 			data &&
-			(data[column.fieldname] === "" || data[column.fieldname] === "0")
+			(data[column.fieldname] === "" ||
+				data[column.fieldname] === "0" ||
+				data[column.fieldname] === "Sh 0.00")
 		) {
 			return " ";
 		}

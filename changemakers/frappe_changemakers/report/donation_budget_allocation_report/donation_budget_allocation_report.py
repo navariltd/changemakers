@@ -4,7 +4,9 @@
 import frappe
 from datetime import datetime, timedelta
 from frappe.query_builder import DocType
-from frappe.query_builder.functions import Count
+
+# Import Sum directly from frappe.query_builder.functions
+from frappe.query_builder.functions import Count, Sum
 
 
 def execute(filters=None):
@@ -84,7 +86,7 @@ def get_columns(filters=None):
         {
             "fieldname": "percentage",
             "fieldtype": "Percent",
-            "label": "Percentage",
+            "label": "Percentage (Monthly Avg.)",  # Changed label for clarity
             "width": 100,
         },
     ]
@@ -94,7 +96,7 @@ def get_columns(filters=None):
         columns.append(
             {
                 "fieldname": frappe.scrub(month_label),
-                "fieldtype": "Percent",
+                "fieldtype": "Currency",  # Changed to Currency
                 "label": month_label,
                 "width": 200,
             }
@@ -162,7 +164,7 @@ def get_data(filters=None):
     Budget = DocType("Budget")
     MonthlyDistribution = DocType("Monthly Distribution")
     BudgetDonationAllocationItem = DocType("Budget Donation Allocation Item")
-    BudgetAccount = DocType("Budget Account")  # Declared here for wider scope if needed
+    BudgetAccount = DocType("Budget Account")
 
     budgets_query = (
         frappe.qb.from_(Budget)
@@ -303,7 +305,7 @@ def get_data(filters=None):
         )
         distribution_rows = distribution_rows_query.run(as_dict=True)
 
-        distribution_dict = {}
+        distribution_dict_percentages = {}  # Store percentages
         for row in distribution_rows:
             if fiscal_year_start_date and fiscal_year_end_date:
                 try:
@@ -322,15 +324,15 @@ def get_data(filters=None):
 
                     if found_year:
                         full_month_label = f"{row['month']} {found_year}"
-                        distribution_dict[frappe.scrub(full_month_label)] = row[
-                            "percentage_allocation"
-                        ]
+                        distribution_dict_percentages[
+                            frappe.scrub(full_month_label)
+                        ] = row["percentage_allocation"]
                     else:
                         frappe.log_error(
                             f"Could not determine year for month '{row['month']}' in Fiscal Year '{budget.fiscal_year}' (FY Dates: {fiscal_year_start_date} - {fiscal_year_end_date})",
                             "Month Year Mismatch",
                         )
-                        distribution_dict[frappe.scrub(row["month"])] = row[
+                        distribution_dict_percentages[frappe.scrub(row["month"])] = row[
                             "percentage_allocation"
                         ]
                 except ValueError:
@@ -338,13 +340,38 @@ def get_data(filters=None):
                         f"Invalid month name '{row['month']}' in Monthly Distribution Percentage for parent {budget.monthly_distribution}",
                         "Invalid Month Name Format",
                     )
-                    distribution_dict[frappe.scrub(row["month"])] = row[
+                    distribution_dict_percentages[frappe.scrub(row["month"])] = row[
                         "percentage_allocation"
                     ]
             else:
-                distribution_dict[frappe.scrub(row["month"])] = row[
+                distribution_dict_percentages[frappe.scrub(row["month"])] = row[
                     "percentage_allocation"
                 ]
+
+        # Fetch the sum of budget_amount for the current budget
+        total_budget_amount_query = (
+            frappe.qb.from_(BudgetAccount)
+            .select(Sum(BudgetAccount.budget_amount).as_("total_amount"))  # Fixed here
+            .where(BudgetAccount.parent == budget.budget_name)
+            .where(BudgetAccount.parenttype == "Budget")
+        )
+        total_budget_amount_result = total_budget_amount_query.run(as_dict=True)
+        total_budget_amount = (
+            total_budget_amount_result[0]["total_amount"]
+            if total_budget_amount_result
+            and total_budget_amount_result[0]["total_amount"] is not None
+            else 0
+        )
+
+        # Calculate monthly amounts
+        month_data_amounts = {}
+        for (
+            month_label_scrubbed,
+            percentage_value,
+        ) in distribution_dict_percentages.items():
+            month_data_amounts[month_label_scrubbed] = (
+                percentage_value / 100
+            ) * total_budget_amount
 
         percentage = 100 / months_distributed if months_distributed > 0 else 0
 
@@ -360,9 +387,6 @@ def get_data(filters=None):
         elif budget.budget_against == "Program":
             name = frappe.db.get_value("Program", budget.get("program"), "name")
 
-        month_data = {frappe.scrub(month_label): "" for month_label in sorted_months}
-        month_data.update(distribution_dict)
-
         data.append(
             {
                 "row_type": "budget",
@@ -373,10 +397,10 @@ def get_data(filters=None):
                 "donation": "",
                 "amount": "",
                 "budget_account": "",
-                "budget_amount": "",
+                "budget_amount": total_budget_amount,  # Display the sum of budget_amount here
                 "months_distributed": months_distributed,
                 "percentage": percentage,
-                **month_data,
+                **month_data_amounts,  # Use calculated amounts
             }
         )
 
@@ -399,9 +423,16 @@ def get_data(filters=None):
         accounts = accounts_query.run(as_dict=True)
 
         for account in accounts:
-            account_month_data = {
-                frappe.scrub(month_label): "" for month_label in sorted_months
-            }
+            # For account rows, the monthly distribution should be based on the account's budget_amount
+            account_monthly_amounts = {}
+            for (
+                month_label_scrubbed,
+                percentage_value,
+            ) in distribution_dict_percentages.items():
+                account_monthly_amounts[month_label_scrubbed] = (
+                    percentage_value / 100
+                ) * account.budget_amount
+
             data.append(
                 {
                     "row_type": "account",
@@ -415,7 +446,7 @@ def get_data(filters=None):
                     "budget_amount": account.budget_amount,
                     "months_distributed": "",
                     "percentage": "",
-                    **account_month_data,
+                    **account_monthly_amounts,  # Use calculated amounts for accounts
                 }
             )
 
@@ -442,6 +473,11 @@ def get_data(filters=None):
             allocations = allocations_query.run(as_dict=True)
 
             for alloc in allocations:
+                # For allocation rows, monthly amounts are not directly calculated from percentages.
+                # They represent the actual allocated amount for that specific allocation.
+                # So we leave the monthly amount columns empty for these rows, or you might
+                # consider distributing 'alloc.amount' if that's the business logic.
+                # For now, I'll keep them empty as the request focuses on budget distribution.
                 allocation_month_data = {
                     frappe.scrub(month_label): "" for month_label in sorted_months
                 }
