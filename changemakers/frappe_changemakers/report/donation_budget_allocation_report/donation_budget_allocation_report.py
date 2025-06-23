@@ -87,8 +87,8 @@ def get_columns(filters=None):
         {
             "fieldname": "percentage",
             "fieldtype": "Percent",
-            "label": "Percentage (Monthly Avg.)",  # Changed label for clarity
-            "width": 100,
+            "label": "Percentage (Monthly Avg.)",
+            "width": 200,
         },
     ]
 
@@ -97,7 +97,7 @@ def get_columns(filters=None):
         columns.append(
             {
                 "fieldname": frappe.scrub(month_label),
-                "fieldtype": "Currency",  # Changed to Currency
+                "fieldtype": "Currency",
                 "label": month_label,
                 "width": 200,
             }
@@ -474,11 +474,6 @@ def get_data(filters=None):
             allocations = allocations_query.run(as_dict=True)
 
             for alloc in allocations:
-                # For allocation rows, monthly amounts are not directly calculated from percentages.
-                # They represent the actual allocated amount for that specific allocation.
-                # So we leave the monthly amount columns empty for these rows, or you might
-                # consider distributing 'alloc.amount' if that's the business logic.
-                # For now, I'll keep them empty as the request focuses on budget distribution.
                 allocation_month_data = {
                     frappe.scrub(month_label): "" for month_label in sorted_months
                 }
