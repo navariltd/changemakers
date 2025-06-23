@@ -33,20 +33,16 @@ def get_columns():
             "width": 200,
         },
         {
-            "fieldname": "amount",
-            "fieldtype": "Currency",
-            "label": "Amount",
-        },
-        {
             "fieldname": "budget_account",
             "fieldtype": "Link",
             "label": "Account",
             "options": "Budget Account",
+            "width": 200,
         },
         {
             "fieldname": "budget_amount",
             "fieldtype": "Currency",
-            "label": "Allocation",
+            "label": "Budget Allocation",
             "width": 150,
         },
         {
@@ -61,6 +57,19 @@ def get_columns():
             "fieldtype": "Link",
             "label": "Donation",
             "options": "Donation",
+            "width": 200,
+        },
+        {
+            "fieldname": "allocation",
+            "fieldtype": "Link",
+            "label": "Donation Allocation",
+            "options": "Donation Allocation",
+            "width": 200,
+        },
+        {
+            "fieldname": "amount",
+            "fieldtype": "Currency",
+            "label": "Allocated Amount",
             "width": 200,
         },
         {
@@ -113,6 +122,20 @@ def get_data(filters=None):
             or 0
         )
 
+        distribution_rows = frappe.db.sql(
+            """
+            SELECT month, percentage_allocation
+            FROM `tabMonthly Distribution Percentage`
+            WHERE parent = %s
+            ORDER BY month
+            """,
+            (budget.monthly_distribution,),
+            as_dict=True,
+        )
+        distribution_dict = {
+            row["month"]: row["percentage_allocation"] for row in distribution_rows
+        }
+
         percentage = 100 / months_distributed if months_distributed > 0 else 0
 
         # Determine the name based on budget_against
@@ -138,6 +161,7 @@ def get_data(filters=None):
                 "budget_amount": "",
                 "months_distributed": months_distributed,
                 "percentage": percentage,
+                **distribution_dict,  # Add distribution percentages
             }
         )
 
@@ -179,7 +203,7 @@ def get_data(filters=None):
                 """
                 SELECT
                     donation_allocation,
-                    amount, donor
+                    amount, donor, donation
                 FROM
                     `tabBudget Donation Allocation Item`
                 WHERE
@@ -198,7 +222,8 @@ def get_data(filters=None):
                         "budget_against": "",
                         "name": "",
                         "donor": alloc.donor,
-                        "donation": alloc.donation_allocation,
+                        "donation": alloc.donation,
+                        "allocation": alloc.donation_allocation,  # TODO: ADD COLUMN
                         "amount": alloc.amount,
                         "budget_account": "",
                         "budget_amount": "",
