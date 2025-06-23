@@ -29,7 +29,8 @@ frappe.query_reports["Donation Budget Allocation Report"] = {
 		const blankFields = ["amount", "allocation_amount", "budget_amount"];
 
 		if (
-			blankFields.includes(column.fieldname) &&
+			(blankFields.includes(column.fieldname) ||
+				/\d+$/.test(column.fieldname)) &&
 			data &&
 			(data[column.fieldname] === "" || data[column.fieldname] === "0")
 		) {
