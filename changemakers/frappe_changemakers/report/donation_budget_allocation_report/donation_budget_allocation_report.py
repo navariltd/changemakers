@@ -2,17 +2,18 @@
 # For license information, please see license.txt
 
 import frappe
+from datetime import datetime, timedelta
 
 
 def execute(filters=None):
-    columns = get_columns()
+    columns = get_columns(filters)
     data = get_data(filters)
 
     return columns, data
 
 
-def get_columns():
-    return [
+def get_columns(filters=None):
+    columns = [
         {
             "fieldname": "budget_name",
             "fieldtype": "Data",
@@ -86,29 +87,112 @@ def get_columns():
         },
     ]
 
+    sorted_months = get_sorted_months_from_fiscal_years(filters)
+    for month_label in sorted_months:
+        columns.append(
+            {
+                "fieldname": frappe.scrub(month_label),
+                "fieldtype": "Percent",
+                "label": month_label,
+                "width": 200,
+            }
+        )
+    return columns
+
+
+def get_sorted_months_from_fiscal_years(filters=None):
+    fiscal_year_names = []
+    if filters and filters.get("fiscal_year"):
+        fiscal_year_names.append(filters["fiscal_year"])
+    else:
+        budget_fiscal_years = frappe.db.sql(
+            """
+            SELECT DISTINCT tmd.fiscal_year
+            FROM `tabBudget` tb
+            JOIN `tabMonthly Distribution` tmd ON tb.monthly_distribution = tmd.name
+            WHERE tmd.fiscal_year IS NOT NULL AND tmd.fiscal_year != ''
+            """,
+            as_list=True,
+        )
+        for fy in budget_fiscal_years:
+            fiscal_year_names.append(fy[0])
+
+    if not fiscal_year_names:
+        return []
+
+    unique_month_labels = set()
+    month_datetime_map = {}
+
+    for fy_name in list(set(fiscal_year_names)):
+        fiscal_year_doc = frappe.get_cached_doc("Fiscal Year", fy_name)
+        # Corrected field names here:
+        start_date = fiscal_year_doc.year_start_date
+        end_date = fiscal_year_doc.year_end_date
+
+        current_date = frappe.utils.getdate(start_date)
+        end_date_obj = frappe.utils.getdate(end_date)
+
+        while current_date <= end_date_obj:
+            month_label = current_date.strftime("%B %Y")
+            unique_month_labels.add(month_label)
+            month_datetime_map[month_label] = current_date
+
+            next_month = current_date.replace(day=28) + timedelta(days=4)
+            current_date = next_month.replace(day=1)
+
+    sorted_months = sorted(
+        list(unique_month_labels), key=lambda x: month_datetime_map[x]
+    )
+    return sorted_months
+
 
 def get_data(filters=None):
-    # Fetch all budgets
     budgets = frappe.db.sql(
         """
         SELECT
-            name AS budget_name,
-            budget_against,
-            employee,
-            project,
-            task,
-            monthly_distribution
-        FROM `tabBudget`
+            tb.name AS budget_name,
+            tb.budget_against,
+            tb.employee,
+            tb.project,
+            tb.task,
+            tb.monthly_distribution,
+            tmd.fiscal_year
+        FROM `tabBudget` tb
+        LEFT JOIN `tabMonthly Distribution` tmd ON tb.monthly_distribution = tmd.name
         ORDER BY
-            name
+            tb.name
     """,
         as_dict=True,
     )
 
     data = []
+    sorted_months = get_sorted_months_from_fiscal_years(filters)
+
+    fiscal_year_cache = {}
 
     for budget in budgets:
-        # Calculate months_distributed for each budget
+        if (
+            filters
+            and filters.get("fiscal_year")
+            and budget.fiscal_year != filters["fiscal_year"]
+        ):
+            continue
+
+        fiscal_year_start_date = None
+        fiscal_year_end_date = None  # Also cache end date for month inferring
+        if budget.fiscal_year:
+            if budget.fiscal_year not in fiscal_year_cache:
+                fiscal_year_doc = frappe.get_cached_doc(
+                    "Fiscal Year", budget.fiscal_year
+                )
+                # Corrected field names here:
+                fiscal_year_cache[budget.fiscal_year] = {
+                    "start_date": fiscal_year_doc.year_start_date,
+                    "end_date": fiscal_year_doc.year_end_date,
+                }
+            fiscal_year_start_date = fiscal_year_cache[budget.fiscal_year]["start_date"]
+            fiscal_year_end_date = fiscal_year_cache[budget.fiscal_year]["end_date"]
+
         months_distributed = (
             frappe.db.sql(
                 """
@@ -132,13 +216,55 @@ def get_data(filters=None):
             (budget.monthly_distribution,),
             as_dict=True,
         )
-        distribution_dict = {
-            row["month"]: row["percentage_allocation"] for row in distribution_rows
-        }
+
+        distribution_dict = {}
+        for row in distribution_rows:
+            if fiscal_year_start_date and fiscal_year_end_date:
+                try:
+                    month_number = datetime.strptime(row["month"], "%B").month
+
+                    current_fy_date = frappe.utils.getdate(fiscal_year_start_date)
+                    fy_end_date_obj = frappe.utils.getdate(
+                        fiscal_year_end_date
+                    )  # Use the cached end date
+
+                    found_year = None
+                    while current_fy_date <= fy_end_date_obj:
+                        if current_fy_date.month == month_number:
+                            found_year = current_fy_date.year
+                            break
+                        next_month = current_fy_date.replace(day=28) + timedelta(days=4)
+                        current_fy_date = next_month.replace(day=1)
+
+                    if found_year:
+                        full_month_label = f"{row['month']} {found_year}"
+                        distribution_dict[frappe.scrub(full_month_label)] = row[
+                            "percentage_allocation"
+                        ]
+                    else:
+                        frappe.log_error(
+                            f"Could not determine year for month '{row['month']}' in Fiscal Year '{budget.fiscal_year}' (FY Dates: {fiscal_year_start_date} - {fiscal_year_end_date})",
+                            "Month Year Mismatch",
+                        )
+                        # Fallback to just scrubbing the month name if year inference fails
+                        distribution_dict[frappe.scrub(row["month"])] = row[
+                            "percentage_allocation"
+                        ]
+                except ValueError:
+                    frappe.log_error(
+                        f"Invalid month name '{row['month']}' in Monthly Distribution Percentage for parent {budget.monthly_distribution}",
+                        "Invalid Month Name Format",
+                    )
+                    distribution_dict[frappe.scrub(row["month"])] = row[
+                        "percentage_allocation"
+                    ]
+            else:
+                distribution_dict[frappe.scrub(row["month"])] = row[
+                    "percentage_allocation"
+                ]
 
         percentage = 100 / months_distributed if months_distributed > 0 else 0
 
-        # Determine the name based on budget_against
         name = ""
         if budget.budget_against == "Employee":
             name = frappe.db.get_value("Employee", budget.get("employee"), "first_name")
@@ -147,7 +273,9 @@ def get_data(filters=None):
         elif budget.budget_against == "Task":
             name = frappe.db.get_value("Task", budget.get("task"), "subject")
 
-        # Add the budget row
+        month_data = {frappe.scrub(month_label): "" for month_label in sorted_months}
+        month_data.update(distribution_dict)
+
         data.append(
             {
                 "row_type": "budget",
@@ -161,11 +289,10 @@ def get_data(filters=None):
                 "budget_amount": "",
                 "months_distributed": months_distributed,
                 "percentage": percentage,
-                **distribution_dict,  # Add distribution percentages
+                **month_data,
             }
         )
 
-        # Fetch accounts for this budget
         accounts = frappe.db.sql(
             """
             SELECT
@@ -181,11 +308,13 @@ def get_data(filters=None):
         )
 
         for account in accounts:
-            # Add the account row as a subrow to the budget
+            account_month_data = {
+                frappe.scrub(month_label): "" for month_label in sorted_months
+            }
             data.append(
                 {
                     "row_type": "account",
-                    "budget_name": "",  # Leave blank for subrow
+                    "budget_name": "",
                     "budget_against": "",
                     "name": "",
                     "donor": "",
@@ -195,10 +324,10 @@ def get_data(filters=None):
                     "budget_amount": account.budget_amount,
                     "months_distributed": "",
                     "percentage": "",
+                    **account_month_data,
                 }
             )
 
-            # Fetch allocation items for this account
             allocations = frappe.db.sql(
                 """
                 SELECT
@@ -214,7 +343,9 @@ def get_data(filters=None):
             )
 
             for alloc in allocations:
-                # Add the allocation item as a subrow to the account
+                allocation_month_data = {
+                    frappe.scrub(month_label): "" for month_label in sorted_months
+                }
                 data.append(
                     {
                         "row_type": "allocation",
@@ -223,12 +354,13 @@ def get_data(filters=None):
                         "name": "",
                         "donor": alloc.donor,
                         "donation": alloc.donation,
-                        "allocation": alloc.donation_allocation,  # TODO: ADD COLUMN
+                        "allocation": alloc.donation_allocation,
                         "amount": alloc.amount,
                         "budget_account": "",
                         "budget_amount": "",
                         "months_distributed": "",
                         "percentage": "",
+                        **allocation_month_data,
                     }
                 )
 
