@@ -13,7 +13,12 @@ def execute(filters=None):
 
 def get_columns():
     return [
-        {"fieldname": "name", "fieldtype": "Data", "label": "Name", "width": 250},
+        {
+            "fieldname": "budget_name",
+            "fieldtype": "Data",
+            "label": "Budget",
+            "width": 250,
+        },
         {
             "fieldname": "budget_against",
             "fieldtype": "Data",
@@ -21,6 +26,11 @@ def get_columns():
             "options": "Project",
             "width": 200,
         },
+        # {
+        #     "fieldname": "name",
+        #     "fieldtype": "Link",
+        #     "label": "Name",
+        # },
         {
             "fieldname": "donor",
             "fieldtype": "Link",
@@ -70,8 +80,9 @@ def get_columns():
 def get_data(filters=None):
     query = """
         SELECT
-            b.name AS name,
+            b.name AS budget_name,
             b.budget_against AS budget_against,
+            b.donor AS donor,
             ba.account AS budget_account,
             ba.budget_amount AS budget_amount,
             dai.donation_allocation AS donation_allocation,
@@ -106,4 +117,5 @@ def get_data(filters=None):
             b.name, ba.account, dai.donation_allocation
     """
     data = frappe.db.sql(query, as_dict=True)
+
     return data
