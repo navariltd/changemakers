@@ -79,53 +79,104 @@ def get_columns():
 
 
 def get_data(filters=None):
-    query = """
+    # Fetch all budgets
+    budgets = frappe.db.sql(
+        """
         SELECT
-        	CASE
-                WHEN b.budget_against = 'Employee' THEN e.first_name
-                WHEN b.budget_against = 'Project' THEN p.project_name
-                WHEN b.budget_against = 'Task' THEN t.subject
-                ELSE b.name
-            END AS name,
-            b.name AS budget_name,
-            b.budget_against AS budget_against,
-            b.donor AS donor,
-            ba.account AS budget_account,
-            ba.budget_amount AS budget_amount,
-            dai.donation_allocation AS donation_allocation,
-            dai.amount AS donation_amount,
-            (
-                SELECT COUNT(*)
-                FROM `tabMonthly Distribution Percentage` mdp
-                WHERE mdp.parent = b.monthly_distribution
-            ) AS months_distributed,
-            (
-                CASE
-                    WHEN (
-                        SELECT COUNT(*)
-                        FROM `tabMonthly Distribution Percentage` mdp
-                        WHERE mdp.parent = b.monthly_distribution
-                    ) > 0
-                    THEN 100 / (
-                        SELECT COUNT(*)
-                        FROM `tabMonthly Distribution Percentage` mdp
-                        WHERE mdp.parent = b.monthly_distribution
-                    )
-                    ELSE 0
-                END
-            ) AS percentage
+            name AS budget_name,
+            budget_against
         FROM
-            `tabBudget` b
-		LEFT JOIN `tabEmployee` e ON e.name = b.employee
-		LEFT JOIN `tabProject` p ON p.name = b.project
-		LEFT JOIN `tabTask` t ON t.name = b.task
-        LEFT JOIN
-            `tabBudget Account` ba ON ba.parent = b.name AND ba.parenttype = 'Budget'
-        LEFT JOIN
-            `tabBudget Donation Allocation Item` dai ON dai.parent = b.name AND dai.parenttype = 'Budget'
+            `tabBudget`
         ORDER BY
-            b.name, ba.account, dai.donation_allocation
-    """
-    data = frappe.db.sql(query, as_dict=True)
+            name
+    """,
+        as_dict=True,
+    )
+
+    data = []
+
+    for budget in budgets:
+        # Add the budget row
+        data.append(
+            {
+                "row_type": "budget",
+                "budget_name": budget.budget_name,
+                "budget_against": budget.budget_against,
+                "name": "",  # Not applicable for budget row
+                "donor": "",
+                "donation": "",
+                "amount": "",
+                "budget_account": "",
+                "budget_amount": "",
+                "months_distributed": "",
+                "percentage": "",
+            }
+        )
+
+        # Fetch accounts for this budget
+        accounts = frappe.db.sql(
+            """
+            SELECT
+                account,
+                budget_amount
+            FROM
+                `tabBudget Account`
+            WHERE
+                parent = %s AND parenttype = 'Budget'
+        """,
+            (budget.budget_name,),
+            as_dict=True,
+        )
+
+        for account in accounts:
+            # Add the account row as a subrow to the budget
+            data.append(
+                {
+                    "row_type": "account",
+                    "budget_name": "",  # Leave blank for subrow
+                    "budget_against": "",
+                    "name": "",
+                    "donor": "",
+                    "donation": "",
+                    "amount": "",
+                    "budget_account": account.account,
+                    "budget_amount": account.budget_amount,
+                    "months_distributed": "",
+                    "percentage": "",
+                }
+            )
+
+            # Fetch allocation items for this account
+            allocations = frappe.db.sql(
+                """
+                SELECT
+                    donation_allocation,
+                    amount
+                FROM
+                    `tabBudget Donation Allocation Item`
+                WHERE
+                    parent = %s AND parenttype = 'Budget' AND account = %s
+            """,
+                (budget.budget_name, account.account),
+                as_dict=True,
+            )
+
+            for alloc in allocations:
+                # Add the allocation item as a subrow to the account
+                data.append(
+                    {
+                        "row_type": "allocation",
+                        "budget_name": "",
+                        "budget_against": "",
+                        "name": "",
+                        "donor": "",
+                        "donation": alloc.donation_allocation,
+                        "amount": alloc.amount,
+                        "budget_account": "",
+                        "budget_amount": "",
+                        "months_distributed": "",
+                        "percentage": "",
+                    }
+                )
 
     return data
