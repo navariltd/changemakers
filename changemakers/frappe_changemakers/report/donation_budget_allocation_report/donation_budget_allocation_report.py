@@ -5,13 +5,15 @@ import frappe
 
 
 def execute(filters=None):
-    columns, data = [], []
+    columns = get_columns()
+    data = get_data(filters)
+
     return columns, data
 
 
 def get_columns():
     return [
-        {"fieldname": "name", "fieldtype": "Data", "label": "Name", "width": 150},
+        {"fieldname": "name", "fieldtype": "Data", "label": "Name", "width": 250},
         {
             "fieldname": "budget_against",
             "fieldtype": "Data",
@@ -63,3 +65,25 @@ def get_columns():
             "width": 100,
         },
     ]
+
+
+def get_data(filters=None):
+    query = """
+        SELECT
+            b.name AS name,
+            b.budget_against AS budget_against,
+            ba.account AS budget_account,
+            ba.budget_amount AS budget_amount,
+            dai.donation_allocation AS donation_allocation,
+            dai.amount AS donation_amount
+        FROM
+            `tabBudget` b
+        LEFT JOIN
+            `tabBudget Account` ba ON ba.parent = b.name AND ba.parenttype = 'Budget'
+        LEFT JOIN
+            `tabBudget Donation Allocation Item` dai ON dai.parent = b.name AND dai.parenttype = 'Budget'
+        ORDER BY
+            b.name, ba.account, dai.donation_allocation
+    """
+    data = frappe.db.sql(query, as_dict=True)
+    return data
