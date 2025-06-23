@@ -85,9 +85,11 @@ def get_data(filters=None):
         SELECT
             name AS budget_name,
             budget_against,
-			monthly_distribution
-        FROM
-            `tabBudget`
+            employee,
+            project,
+            task,
+            monthly_distribution
+        FROM `tabBudget`
         ORDER BY
             name
     """,
@@ -113,13 +115,22 @@ def get_data(filters=None):
 
         percentage = 100 / months_distributed if months_distributed > 0 else 0
 
+        # Determine the name based on budget_against
+        name = ""
+        if budget.budget_against == "Employee":
+            name = frappe.db.get_value("Employee", budget.get("employee"), "first_name")
+        elif budget.budget_against == "Project":
+            name = frappe.db.get_value("Project", budget.get("project"), "project_name")
+        elif budget.budget_against == "Task":
+            name = frappe.db.get_value("Task", budget.get("task"), "subject")
+
         # Add the budget row
         data.append(
             {
                 "row_type": "budget",
                 "budget_name": budget.budget_name,
                 "budget_against": budget.budget_against,
-                "name": "",
+                "name": name,
                 "donor": "",
                 "donation": "",
                 "amount": "",
