@@ -3,6 +3,8 @@
 
 import frappe
 from datetime import datetime, timedelta
+from frappe.query_builder import DocType
+from frappe.query_builder.functions import Count
 
 
 def execute(filters=None):
@@ -105,15 +107,26 @@ def get_sorted_months_from_fiscal_years(filters=None):
     if filters and filters.get("fiscal_year"):
         fiscal_year_names.append(filters["fiscal_year"])
     else:
-        budget_fiscal_years = frappe.db.sql(
-            """
-            SELECT DISTINCT tmd.fiscal_year
-            FROM `tabBudget` tb
-            JOIN `tabMonthly Distribution` tmd ON tb.monthly_distribution = tmd.name
-            WHERE tmd.fiscal_year IS NOT NULL AND tmd.fiscal_year != ''
-            """,
-            as_list=True,
+        Budget = DocType("Budget")
+        MonthlyDistribution = DocType("Monthly Distribution")
+
+        budget_fiscal_years_query = (
+            frappe.qb.from_(Budget)
+            .join(MonthlyDistribution)
+            .on(Budget.monthly_distribution == MonthlyDistribution.name)
+            .select(MonthlyDistribution.fiscal_year)
+            .where(MonthlyDistribution.fiscal_year.isnotnull())
+            .where(MonthlyDistribution.fiscal_year != "")
+            .distinct()
         )
+        # Apply budget_name filter if present, to only consider fiscal years of filtered budgets
+        if filters and filters.get("budget_name"):
+            budget_fiscal_years_query = budget_fiscal_years_query.where(
+                Budget.name == filters["budget_name"]
+            )
+
+        budget_fiscal_years = budget_fiscal_years_query.run(as_list=True)
+
         for fy in budget_fiscal_years:
             fiscal_year_names.append(fy[0])
 
@@ -125,7 +138,6 @@ def get_sorted_months_from_fiscal_years(filters=None):
 
     for fy_name in list(set(fiscal_year_names)):
         fiscal_year_doc = frappe.get_cached_doc("Fiscal Year", fy_name)
-        # Corrected field names here:
         start_date = fiscal_year_doc.year_start_date
         end_date = fiscal_year_doc.year_end_date
 
@@ -147,45 +159,123 @@ def get_sorted_months_from_fiscal_years(filters=None):
 
 
 def get_data(filters=None):
-    budgets = frappe.db.sql(
-        """
-        SELECT
-            tb.name AS budget_name,
-            tb.budget_against,
-            tb.employee,
-            tb.project,
-            tb.task,
-            tb.monthly_distribution,
-            tmd.fiscal_year
-        FROM `tabBudget` tb
-        LEFT JOIN `tabMonthly Distribution` tmd ON tb.monthly_distribution = tmd.name
-        ORDER BY
-            tb.name
-    """,
-        as_dict=True,
+    Budget = DocType("Budget")
+    MonthlyDistribution = DocType("Monthly Distribution")
+    BudgetDonationAllocationItem = DocType("Budget Donation Allocation Item")
+    BudgetAccount = DocType("Budget Account")  # Declared here for wider scope if needed
+
+    budgets_query = (
+        frappe.qb.from_(Budget)
+        .left_join(MonthlyDistribution)
+        .on(Budget.monthly_distribution == MonthlyDistribution.name)
+        .select(
+            Budget.name.as_("budget_name"),
+            Budget.budget_against,
+            Budget.employee,
+            Budget.project,
+            Budget.task,
+            Budget.cost_center,
+            Budget.program,
+            Budget.monthly_distribution,
+            MonthlyDistribution.fiscal_year,
+        )
+        .orderby(Budget.name)
     )
+
+    # Apply filters
+    if filters:
+        if filters.get("fiscal_year"):
+            budgets_query = budgets_query.where(
+                MonthlyDistribution.fiscal_year == filters["fiscal_year"]
+            )
+        if filters.get("budget_against"):
+            budgets_query = budgets_query.where(
+                Budget.budget_against == filters["budget_against"]
+            )
+        if filters.get("budget_against"):
+            budget_against_type = filters["budget_against"]
+            if budget_against_type == "Employee" and filters.get("employee"):
+                budgets_query = budgets_query.where(
+                    Budget.employee == filters.get("employee")
+                )
+            elif budget_against_type == "Project" and filters.get("project"):
+                budgets_query = budgets_query.where(
+                    Budget.project == filters.get("project")
+                )
+            elif budget_against_type == "Task" and filters.get("task"):
+                budgets_query = budgets_query.where(Budget.task == filters.get("task"))
+            elif budget_against_type == "Cost Center" and filters.get("cost_center"):
+                budgets_query = budgets_query.where(
+                    Budget.cost_center == filters.get("cost_center")
+                )
+            elif budget_against_type == "Program" and filters.get("program"):
+                budgets_query = budgets_query.where(
+                    Budget.program == filters.get("program")
+                )
+
+        if filters.get("budget_name"):
+            budgets_query = budgets_query.where(Budget.name == filters["budget_name"])
+
+        if filters.get("budget_account"):
+            # Subquery to find Budget names associated with the selected Budget Account
+            budgets_with_account = (
+                frappe.qb.from_(BudgetAccount)
+                .select(BudgetAccount.parent)
+                .where(BudgetAccount.account == filters["budget_account"])
+                .where(BudgetAccount.parenttype == "Budget")
+                .distinct()
+            )
+            budgets_query = budgets_query.where(Budget.name.isin(budgets_with_account))
+
+        if filters.get("donor"):
+            # Subquery to find Budget names associated with the selected Donor
+            budgets_with_donor = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(BudgetDonationAllocationItem.parent)
+                .where(BudgetDonationAllocationItem.donor == filters["donor"])
+                .distinct()
+            )
+            budgets_query = budgets_query.where(Budget.name.isin(budgets_with_donor))
+
+        if filters.get("donation"):
+            # Subquery to find Budget names associated with the selected Donation
+            budgets_with_donation = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(BudgetDonationAllocationItem.parent)
+                .where(BudgetDonationAllocationItem.donation == filters["donation"])
+                .distinct()
+            )
+            budgets_query = budgets_query.where(Budget.name.isin(budgets_with_donation))
+
+        if filters.get("donation_allocation"):
+            # Subquery to find Budget names associated with the selected Donation Allocation
+            budgets_with_allocation = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(BudgetDonationAllocationItem.parent)
+                .where(
+                    BudgetDonationAllocationItem.donation_allocation
+                    == filters["donation_allocation"]
+                )
+                .distinct()
+            )
+            budgets_query = budgets_query.where(
+                Budget.name.isin(budgets_with_allocation)
+            )
+
+    budgets = budgets_query.run(as_dict=True)
 
     data = []
     sorted_months = get_sorted_months_from_fiscal_years(filters)
-
     fiscal_year_cache = {}
 
     for budget in budgets:
-        if (
-            filters
-            and filters.get("fiscal_year")
-            and budget.fiscal_year != filters["fiscal_year"]
-        ):
-            continue
-
         fiscal_year_start_date = None
-        fiscal_year_end_date = None  # Also cache end date for month inferring
+        fiscal_year_end_date = None
         if budget.fiscal_year:
             if budget.fiscal_year not in fiscal_year_cache:
                 fiscal_year_doc = frappe.get_cached_doc(
                     "Fiscal Year", budget.fiscal_year
                 )
-                # Corrected field names here:
                 fiscal_year_cache[budget.fiscal_year] = {
                     "start_date": fiscal_year_doc.year_start_date,
                     "end_date": fiscal_year_doc.year_end_date,
@@ -193,29 +283,25 @@ def get_data(filters=None):
             fiscal_year_start_date = fiscal_year_cache[budget.fiscal_year]["start_date"]
             fiscal_year_end_date = fiscal_year_cache[budget.fiscal_year]["end_date"]
 
-        months_distributed = (
-            frappe.db.sql(
-                """
-            SELECT COUNT(*) AS cnt
-            FROM `tabMonthly Distribution Percentage`
-            WHERE parent = %s
-            """,
-                (budget.monthly_distribution,),
-                as_dict=True,
-            )[0]["cnt"]
-            or 0
-        )
+        MonthlyDistributionPercentage = DocType("Monthly Distribution Percentage")
 
-        distribution_rows = frappe.db.sql(
-            """
-            SELECT month, percentage_allocation
-            FROM `tabMonthly Distribution Percentage`
-            WHERE parent = %s
-            ORDER BY month
-            """,
-            (budget.monthly_distribution,),
-            as_dict=True,
+        months_distributed_query = (
+            frappe.qb.from_(MonthlyDistributionPercentage)
+            .select(Count("*").as_("cnt"))
+            .where(MonthlyDistributionPercentage.parent == budget.monthly_distribution)
         )
+        months_distributed = months_distributed_query.run(as_dict=True)[0]["cnt"] or 0
+
+        distribution_rows_query = (
+            frappe.qb.from_(MonthlyDistributionPercentage)
+            .select(
+                MonthlyDistributionPercentage.month,
+                MonthlyDistributionPercentage.percentage_allocation,
+            )
+            .where(MonthlyDistributionPercentage.parent == budget.monthly_distribution)
+            .orderby(MonthlyDistributionPercentage.month)
+        )
+        distribution_rows = distribution_rows_query.run(as_dict=True)
 
         distribution_dict = {}
         for row in distribution_rows:
@@ -224,9 +310,7 @@ def get_data(filters=None):
                     month_number = datetime.strptime(row["month"], "%B").month
 
                     current_fy_date = frappe.utils.getdate(fiscal_year_start_date)
-                    fy_end_date_obj = frappe.utils.getdate(
-                        fiscal_year_end_date
-                    )  # Use the cached end date
+                    fy_end_date_obj = frappe.utils.getdate(fiscal_year_end_date)
 
                     found_year = None
                     while current_fy_date <= fy_end_date_obj:
@@ -246,7 +330,6 @@ def get_data(filters=None):
                             f"Could not determine year for month '{row['month']}' in Fiscal Year '{budget.fiscal_year}' (FY Dates: {fiscal_year_start_date} - {fiscal_year_end_date})",
                             "Month Year Mismatch",
                         )
-                        # Fallback to just scrubbing the month name if year inference fails
                         distribution_dict[frappe.scrub(row["month"])] = row[
                             "percentage_allocation"
                         ]
@@ -272,6 +355,10 @@ def get_data(filters=None):
             name = frappe.db.get_value("Project", budget.get("project"), "project_name")
         elif budget.budget_against == "Task":
             name = frappe.db.get_value("Task", budget.get("task"), "subject")
+        elif budget.budget_against == "Cost Center":
+            name = frappe.db.get_value("Cost Center", budget.get("cost_center"), "name")
+        elif budget.budget_against == "Program":
+            name = frappe.db.get_value("Program", budget.get("program"), "name")
 
         month_data = {frappe.scrub(month_label): "" for month_label in sorted_months}
         month_data.update(distribution_dict)
@@ -293,19 +380,23 @@ def get_data(filters=None):
             }
         )
 
-        accounts = frappe.db.sql(
-            """
-            SELECT
-                account,
-                budget_amount
-            FROM
-                `tabBudget Account`
-            WHERE
-                parent = %s AND parenttype = 'Budget'
-        """,
-            (budget.budget_name,),
-            as_dict=True,
+        BudgetAccount = DocType("Budget Account")
+        accounts_query = (
+            frappe.qb.from_(BudgetAccount)
+            .select(
+                BudgetAccount.account,
+                BudgetAccount.budget_amount,
+            )
+            .where(BudgetAccount.parent == budget.budget_name)
+            .where(BudgetAccount.parenttype == "Budget")
         )
+        # Apply budget_account filter to accounts_query
+        if filters and filters.get("budget_account"):
+            accounts_query = accounts_query.where(
+                BudgetAccount.account == filters["budget_account"]
+            )
+
+        accounts = accounts_query.run(as_dict=True)
 
         for account in accounts:
             account_month_data = {
@@ -328,19 +419,27 @@ def get_data(filters=None):
                 }
             )
 
-            allocations = frappe.db.sql(
-                """
-                SELECT
-                    donation_allocation,
-                    amount, donor, donation
-                FROM
-                    `tabBudget Donation Allocation Item`
-                WHERE
-                    parent = %s AND parenttype = 'Budget' AND account = %s
-            """,
-                (budget.budget_name, account.account),
-                as_dict=True,
+            BudgetDonationAllocationItem = DocType("Budget Donation Allocation Item")
+            allocations_query = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(
+                    BudgetDonationAllocationItem.donation_allocation,
+                    BudgetDonationAllocationItem.amount,
+                    BudgetDonationAllocationItem.donor,
+                    BudgetDonationAllocationItem.donation,
+                )
+                .where(BudgetDonationAllocationItem.parent == budget.budget_name)
+                .where(BudgetDonationAllocationItem.parenttype == "Budget")
+                .where(BudgetDonationAllocationItem.account == account.account)
             )
+            # Apply donation_allocation filter to allocations_query
+            if filters and filters.get("donation_allocation"):
+                allocations_query = allocations_query.where(
+                    BudgetDonationAllocationItem.donation_allocation
+                    == filters["donation_allocation"]
+                )
+
+            allocations = allocations_query.run(as_dict=True)
 
             for alloc in allocations:
                 allocation_month_data = {
