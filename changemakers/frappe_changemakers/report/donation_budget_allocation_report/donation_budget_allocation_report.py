@@ -33,6 +33,23 @@ def get_columns():
             "width": 200,
         },
         {
+            "fieldname": "amount",
+            "fieldtype": "Currency",
+            "label": "Amount",
+        },
+        {
+            "fieldname": "budget_account",
+            "fieldtype": "Link",
+            "label": "Account",
+            "options": "Budget Account",
+        },
+        {
+            "fieldname": "budget_amount",
+            "fieldtype": "Currency",
+            "label": "Allocation",
+            "width": 150,
+        },
+        {
             "fieldname": "donor",
             "fieldtype": "Link",
             "label": "Donor",
@@ -45,23 +62,6 @@ def get_columns():
             "label": "Donation",
             "options": "Donation",
             "width": 200,
-        },
-        {
-            "fieldname": "amount",
-            "fieldtype": "Currency",
-            "label": "Amount",
-        },
-        {
-            "fieldname": "budget_account",
-            "fieldtype": "Link",
-            "label": "Budget Account",
-            "options": "Budget Account",
-        },
-        {
-            "fieldname": "budget_amount",
-            "fieldtype": "Currency",
-            "label": "Allocation",
-            "width": 150,
         },
         {
             "fieldname": "months_distributed",
@@ -179,7 +179,7 @@ def get_data(filters=None):
                 """
                 SELECT
                     donation_allocation,
-                    amount
+                    amount, donor
                 FROM
                     `tabBudget Donation Allocation Item`
                 WHERE
@@ -197,7 +197,7 @@ def get_data(filters=None):
                         "budget_name": "",
                         "budget_against": "",
                         "name": "",
-                        "donor": "",
+                        "donor": alloc.donor,
                         "donation": alloc.donation_allocation,
                         "amount": alloc.amount,
                         "budget_account": "",
