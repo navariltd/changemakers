@@ -20,8 +20,9 @@ def get_columns(filters=None):
     columns = [
         {
             "fieldname": "budget_name",
-            "fieldtype": "Data",
+            "fieldtype": "Link",
             "label": "Budget",
+            "options": "Budget",
             "width": 250,
         },
         {
