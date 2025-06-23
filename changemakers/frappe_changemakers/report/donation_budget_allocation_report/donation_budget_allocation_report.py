@@ -75,7 +75,12 @@ def get_data(filters=None):
             ba.account AS budget_account,
             ba.budget_amount AS budget_amount,
             dai.donation_allocation AS donation_allocation,
-            dai.amount AS donation_amount
+            dai.amount AS donation_amount,
+            (
+                SELECT COUNT(*)
+                FROM `tabMonthly Distribution Percentage` mdp
+                WHERE mdp.parent = b.monthly_distribution
+            ) AS months_distributed
         FROM
             `tabBudget` b
         LEFT JOIN
