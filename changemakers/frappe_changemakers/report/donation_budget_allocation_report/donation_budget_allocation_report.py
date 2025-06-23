@@ -26,11 +26,12 @@ def get_columns():
             "options": "Project",
             "width": 200,
         },
-        # {
-        #     "fieldname": "name",
-        #     "fieldtype": "Link",
-        #     "label": "Name",
-        # },
+        {
+            "fieldname": "name",
+            "fieldtype": "Data",
+            "label": "Name",
+            "width": 200,
+        },
         {
             "fieldname": "donor",
             "fieldtype": "Link",
@@ -80,6 +81,12 @@ def get_columns():
 def get_data(filters=None):
     query = """
         SELECT
+        	CASE
+                WHEN b.budget_against = 'Employee' THEN e.first_name
+                WHEN b.budget_against = 'Project' THEN p.project_name
+                WHEN b.budget_against = 'Task' THEN t.subject
+                ELSE b.name
+            END AS name,
             b.name AS budget_name,
             b.budget_against AS budget_against,
             b.donor AS donor,
@@ -109,6 +116,9 @@ def get_data(filters=None):
             ) AS percentage
         FROM
             `tabBudget` b
+		LEFT JOIN `tabEmployee` e ON e.name = b.employee
+		LEFT JOIN `tabProject` p ON p.name = b.project
+		LEFT JOIN `tabTask` t ON t.name = b.task
         LEFT JOIN
             `tabBudget Account` ba ON ba.parent = b.name AND ba.parenttype = 'Budget'
         LEFT JOIN
