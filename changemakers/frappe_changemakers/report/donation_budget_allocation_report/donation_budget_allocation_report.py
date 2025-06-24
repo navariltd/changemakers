@@ -134,7 +134,6 @@ def get_sorted_months_from_fiscal_years(filters=None):
             .where(MonthlyDistribution.fiscal_year != "")
             .distinct()
         )
-
         # Apply budget_name filter if present, to only consider fiscal years of filtered budgets
         if filters and filters.get("budget_name"):
             budget_fiscal_years_query = budget_fiscal_years_query.where(
@@ -179,7 +178,7 @@ def get_data(filters=None):
     MonthlyDistribution = DocType("Monthly Distribution")
     BudgetDonationAllocationItem = DocType("Budget Donation Allocation Item")
     BudgetAccount = DocType("Budget Account")
-    GL_Entry = DocType("GL Entry") # Added for actuals
+    GL_Entry = DocType("GL Entry")
 
     budgets_query = (
         frappe.qb.from_(Budget)
@@ -450,7 +449,7 @@ def get_data(filters=None):
             )
             # Add to total actuals for the parent budget
             total_actual_amount_for_budget += actual_amount_for_account
-            
+
             variance_for_account = account.budget_amount - actual_amount_for_account
 
             data.append(
@@ -464,8 +463,8 @@ def get_data(filters=None):
                     "amount": "",
                     "budget_account": account.account,
                     "budget_amount": account.budget_amount,
-                    "actual_amount": actual_amount_for_account, # Actual for this account
-                    "variance_amount": variance_for_account, # Variance for this account
+                    "actual_amount": actual_amount_for_account,  # Actual for this account
+                    "variance_amount": variance_for_account,  # Variance for this account
                     "months_distributed": "",
                     "percentage": "",
                     **account_monthly_amounts,  # Use calculated amounts for accounts
@@ -511,18 +510,23 @@ def get_data(filters=None):
                         "amount": alloc.amount,
                         "budget_account": "",
                         "budget_amount": "",
-                        "actual_amount": "", # Allocations don't have direct actuals
-                        "variance_amount": "", # Allocations don't have direct variance
+                        "actual_amount": "",  # Allocations don't have direct actuals
+                        "variance_amount": "",  # Allocations don't have direct variance
                         "months_distributed": "",
                         "percentage": "",
                         **allocation_month_data,
                     }
                 )
-        
+
+        # --- ADD MAIN BUDGET ROW AFTER PROCESSING ALL ITS ACCOUNTS ---
         variance_for_budget = total_budget_amount - total_actual_amount_for_budget
-        
+
         data.insert(
-            len(budgets) - 1 if budgets.index(budget) == 0 else data.index(data[-1]) + 1, # A rough way to insert after previous budget's items, or at start
+            (
+                len(budgets) - 1
+                if budgets.index(budget) == 0
+                else data.index(data[-1]) + 1
+            ),
             {
                 "row_type": "budget",
                 "budget_name": budget.budget_name,
@@ -533,20 +537,20 @@ def get_data(filters=None):
                 "amount": "",
                 "budget_account": "",
                 "budget_amount": total_budget_amount,  # Display the sum of budget_amount here
-                "actual_amount": total_actual_amount_for_budget, # Total actuals for this budget
-                "variance_amount": variance_for_budget, # Total variance for this budget
+                "actual_amount": total_actual_amount_for_budget,  # Total actuals for this budget
+                "variance_amount": variance_for_budget,  # Total variance for this budget
                 "months_distributed": months_distributed,
                 "percentage": percentage,
                 **month_data_amounts,  # Use calculated amounts
-            }
+            },
         )
-
+        
     final_report_data = []
     processed_budget_names = set()
 
     for budget in budgets:
         if budget.budget_name in processed_budget_names:
-            continue # Already added the main budget row and its children
+            continue  # Already added the main budget row and its children
 
         fiscal_year_start_date = None
         fiscal_year_end_date = None
@@ -598,22 +602,29 @@ def get_data(filters=None):
                         current_fy_date = next_month.replace(day=1)
                     if found_year:
                         full_month_label = f"{row['month']} {found_year}"
-                        distribution_dict_percentages[frappe.scrub(full_month_label)] = row["percentage_allocation"]
+                        distribution_dict_percentages[
+                            frappe.scrub(full_month_label)
+                        ] = row["percentage_allocation"]
                     else:
                         frappe.log_error(
                             f"Could not determine year for month '{row['month']}' in Fiscal Year '{budget.fiscal_year}'",
                             "Month Year Mismatch",
                         )
-                        distribution_dict_percentages[frappe.scrub(row["month"])] = row["percentage_allocation"]
+                        distribution_dict_percentages[frappe.scrub(row["month"])] = row[
+                            "percentage_allocation"
+                        ]
                 except ValueError:
                     frappe.log_error(
                         f"Invalid month name '{row['month']}' in Monthly Distribution Percentage for parent {budget.monthly_distribution}",
                         "Invalid Month Name Format",
                     )
-                    distribution_dict_percentages[frappe.scrub(row["month"])] = row["percentage_allocation"]
+                    distribution_dict_percentages[frappe.scrub(row["month"])] = row[
+                        "percentage_allocation"
+                    ]
             else:
-                distribution_dict_percentages[frappe.scrub(row["month"])] = row["percentage_allocation"]
-
+                distribution_dict_percentages[frappe.scrub(row["month"])] = row[
+                    "percentage_allocation"
+                ]
 
         total_budget_amount_query = (
             frappe.qb.from_(BudgetAccount)
@@ -628,10 +639,15 @@ def get_data(filters=None):
             and total_budget_amount_result[0]["total_amount"] is not None
             else 0
         )
-        
+
         month_data_amounts = {}
-        for (month_label_scrubbed, percentage_value,) in distribution_dict_percentages.items():
-            month_data_amounts[month_label_scrubbed] = (percentage_value / 100) * total_budget_amount
+        for (
+            month_label_scrubbed,
+            percentage_value,
+        ) in distribution_dict_percentages.items():
+            month_data_amounts[month_label_scrubbed] = (
+                percentage_value / 100
+            ) * total_budget_amount
 
         percentage = 100 / months_distributed if months_distributed > 0 else 0
 
@@ -648,7 +664,7 @@ def get_data(filters=None):
             name = frappe.db.get_value("Program", budget.get("program"), "name")
 
         total_actual_amount_for_budget = 0
-        
+
         current_budget_accounts_data = []
 
         accounts_query = (
@@ -668,8 +684,13 @@ def get_data(filters=None):
 
         for account in accounts:
             account_monthly_amounts = {}
-            for (month_label_scrubbed, percentage_value,) in distribution_dict_percentages.items():
-                account_monthly_amounts[month_label_scrubbed] = (percentage_value / 100) * account.budget_amount
+            for (
+                month_label_scrubbed,
+                percentage_value,
+            ) in distribution_dict_percentages.items():
+                account_monthly_amounts[month_label_scrubbed] = (
+                    percentage_value / 100
+                ) * account.budget_amount
 
             actual_amount_for_account = get_actual_expenses_for_account(
                 account.account,
@@ -683,7 +704,7 @@ def get_data(filters=None):
                 budget.program,
             )
             total_actual_amount_for_budget += actual_amount_for_account
-            
+
             variance_for_account = account.budget_amount - actual_amount_for_account
 
             current_budget_accounts_data.append(
@@ -747,7 +768,7 @@ def get_data(filters=None):
                         **allocation_month_data,
                     }
                 )
-        
+
         variance_for_budget = total_budget_amount - total_actual_amount_for_budget
 
         final_report_data.append(
@@ -769,7 +790,7 @@ def get_data(filters=None):
             }
         )
         final_report_data.extend(current_budget_accounts_data)
-        processed_budget_names.add(budget.budget_name) # Mark as processed
+        processed_budget_names.add(budget.budget_name)  # Mark as processed
 
     return final_report_data
 
@@ -790,13 +811,13 @@ def get_actual_expenses_for_account(
     considering budget against dimensions.
     """
     GL_Entry = DocType("GL Entry")
-    
+
     query = (
         frappe.qb.from_(GL_Entry)
         .select(Sum(GL_Entry.debit).as_("total_debit"))
         .where(GL_Entry.account == account)
         .where(GL_Entry.posting_date.between(start_date, end_date))
-        .where(GL_Entry.is_cancelled == 0) # Exclude cancelled entries
+        .where(GL_Entry.is_cancelled == 0)  # Exclude cancelled entries
     )
 
     # Apply dimensional filters based on budget_against_type
@@ -810,6 +831,11 @@ def get_actual_expenses_for_account(
         query = query.where(GL_Entry.cost_center == cost_center)
     elif budget_against_type == "Program" and program:
         query = query.where(GL_Entry.program == program)
+    # Add other budget_against types as needed (e.g., Department, Item Group, etc.)
 
     result = query.run(as_dict=True)
-    return result[0]["total_debit"] if result and result[0]["total_debit"] is not None else 0
+    return (
+        result[0]["total_debit"]
+        if result and result[0]["total_debit"] is not None
+        else 0
+    )
