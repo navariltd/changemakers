@@ -452,7 +452,6 @@ def get_data(filters=None):
 
             data.append(
                 {
-                    "row_type": "account",
                     "budget_name": "",
                     "budget_against": "",
                     "name": "",
@@ -469,7 +468,6 @@ def get_data(filters=None):
                 }
             )
 
-            # --- PROCESS ALLOCATIONS (No Actual/Variance for Allocations themselves) ---
             BudgetDonationAllocationItem = DocType("Budget Donation Allocation Item")
             allocations_query = (
                 frappe.qb.from_(BudgetDonationAllocationItem)
@@ -483,7 +481,6 @@ def get_data(filters=None):
                 .where(BudgetDonationAllocationItem.parenttype == "Budget")
                 .where(BudgetDonationAllocationItem.account == account.account)
             )
-            # Apply donation_allocation filter to allocations_query
             if filters and filters.get("donation_allocation"):
                 allocations_query = allocations_query.where(
                     BudgetDonationAllocationItem.donation_allocation
@@ -498,7 +495,6 @@ def get_data(filters=None):
                 }
                 data.append(
                     {
-                        "row_type": "allocation",
                         "donor": alloc.donor,
                         "donation": alloc.donation,
                         "allocation": alloc.donation_allocation,
@@ -507,7 +503,6 @@ def get_data(filters=None):
                     }
                 )
 
-        # --- ADD MAIN BUDGET ROW AFTER PROCESSING ALL ITS ACCOUNTS ---
         variance_for_budget = total_budget_amount - total_actual_amount_for_budget
 
         data.insert(
@@ -517,7 +512,6 @@ def get_data(filters=None):
                 else data.index(data[-1]) + 1
             ),
             {
-                "row_type": "budget",
                 "budget_name": budget.budget_name,
                 "budget_against": budget.budget_against,
                 "name": name,
@@ -525,12 +519,12 @@ def get_data(filters=None):
                 "donation": "",
                 "amount": "",
                 "budget_account": "",
-                "budget_amount": total_budget_amount,  # Display the sum of budget_amount here
-                "actual_amount": total_actual_amount_for_budget,  # Total actuals for this budget
-                "variance_amount": variance_for_budget,  # Total variance for this budget
+                "budget_amount": total_budget_amount,
+                "actual_amount": total_actual_amount_for_budget,
+                "variance_amount": variance_for_budget,
                 "months_distributed": months_distributed,
                 "percentage": percentage,
-                **month_data_amounts,  # Use calculated amounts
+                **month_data_amounts,
             },
         )
 
@@ -698,7 +692,6 @@ def get_data(filters=None):
 
             current_budget_accounts_data.append(
                 {
-                    "row_type": "account",
                     "budget_name": "",
                     "budget_against": "",
                     "name": "",
@@ -740,7 +733,6 @@ def get_data(filters=None):
                 }
                 current_budget_accounts_data.append(
                     {
-                        "row_type": "allocation",
                         "budget_name": "",
                         "budget_against": "",
                         "name": "",
@@ -762,7 +754,6 @@ def get_data(filters=None):
 
         final_report_data.append(
             {
-                "row_type": "budget",
                 "budget_name": budget.budget_name,
                 "budget_against": budget.budget_against,
                 "name": name,
@@ -779,7 +770,7 @@ def get_data(filters=None):
             }
         )
         final_report_data.extend(current_budget_accounts_data)
-        processed_budget_names.add(budget.budget_name)  # Mark as processed
+        processed_budget_names.add(budget.budget_name)  # Mark budget as processed
 
     return final_report_data
 
