@@ -51,6 +51,20 @@ def get_columns(filters=None):
             "label": "Budget Allocation",
             "width": 150,
         },
+        # NEW COLUMNS FOR ACTUAL AND VARIANCE
+        {
+            "fieldname": "actual_amount",
+            "fieldtype": "Currency",
+            "label": "Actual Amount",
+            "width": 150,
+        },
+        {
+            "fieldname": "variance_amount",
+            "fieldtype": "Currency",
+            "label": "Variance",
+            "width": 150,
+        },
+        # END NEW COLUMNS
         {
             "fieldname": "donor",
             "fieldtype": "Link",
@@ -166,6 +180,7 @@ def get_data(filters=None):
     MonthlyDistribution = DocType("Monthly Distribution")
     BudgetDonationAllocationItem = DocType("Budget Donation Allocation Item")
     BudgetAccount = DocType("Budget Account")
+    GL_Entry = DocType("GL Entry") # Added for actuals
 
     budgets_query = (
         frappe.qb.from_(Budget)
@@ -195,6 +210,7 @@ def get_data(filters=None):
             budgets_query = budgets_query.where(
                 Budget.budget_against == filters["budget_against"]
             )
+        # Apply specific budget_against filters
         if filters.get("budget_against"):
             budget_against_type = filters["budget_against"]
             if budget_against_type == "Employee" and filters.get("employee"):
@@ -352,7 +368,7 @@ def get_data(filters=None):
         # Fetch the sum of budget_amount for the current budget
         total_budget_amount_query = (
             frappe.qb.from_(BudgetAccount)
-            .select(Sum(BudgetAccount.budget_amount).as_("total_amount"))  # Fixed here
+            .select(Sum(BudgetAccount.budget_amount).as_("total_amount"))
             .where(BudgetAccount.parent == budget.budget_name)
             .where(BudgetAccount.parenttype == "Budget")
         )
@@ -388,23 +404,10 @@ def get_data(filters=None):
         elif budget.budget_against == "Program":
             name = frappe.db.get_value("Program", budget.get("program"), "name")
 
-        data.append(
-            {
-                "row_type": "budget",
-                "budget_name": budget.budget_name,
-                "budget_against": budget.budget_against,
-                "name": name,
-                "donor": "",
-                "donation": "",
-                "amount": "",
-                "budget_account": "",
-                "budget_amount": total_budget_amount,  # Display the sum of budget_amount here
-                "months_distributed": months_distributed,
-                "percentage": percentage,
-                **month_data_amounts,  # Use calculated amounts
-            }
-        )
+        # Initialize total actuals for the main budget row
+        total_actual_amount_for_budget = 0
 
+        # --- PROCESS ACCOUNTS AND THEIR ACTUALS/VARIANCES ---
         BudgetAccount = DocType("Budget Account")
         accounts_query = (
             frappe.qb.from_(BudgetAccount)
@@ -434,6 +437,23 @@ def get_data(filters=None):
                     percentage_value / 100
                 ) * account.budget_amount
 
+            # --- FETCH ACTUAL AMOUNT FOR THIS ACCOUNT ---
+            actual_amount_for_account = get_actual_expenses_for_account(
+                account.account,
+                fiscal_year_start_date,
+                fiscal_year_end_date,
+                budget.budget_against,
+                budget.employee,
+                budget.project,
+                budget.task,
+                budget.cost_center,
+                budget.program,
+            )
+            # Add to total actuals for the parent budget
+            total_actual_amount_for_budget += actual_amount_for_account
+            
+            variance_for_account = account.budget_amount - actual_amount_for_account
+
             data.append(
                 {
                     "row_type": "account",
@@ -445,12 +465,15 @@ def get_data(filters=None):
                     "amount": "",
                     "budget_account": account.account,
                     "budget_amount": account.budget_amount,
+                    "actual_amount": actual_amount_for_account, # Actual for this account
+                    "variance_amount": variance_for_account, # Variance for this account
                     "months_distributed": "",
                     "percentage": "",
                     **account_monthly_amounts,  # Use calculated amounts for accounts
                 }
             )
 
+            # --- PROCESS ALLOCATIONS (No Actual/Variance for Allocations themselves) ---
             BudgetDonationAllocationItem = DocType("Budget Donation Allocation Item")
             allocations_query = (
                 frappe.qb.from_(BudgetDonationAllocationItem)
@@ -489,10 +512,324 @@ def get_data(filters=None):
                         "amount": alloc.amount,
                         "budget_account": "",
                         "budget_amount": "",
+                        "actual_amount": "", # Allocations don't have direct actuals
+                        "variance_amount": "", # Allocations don't have direct variance
                         "months_distributed": "",
                         "percentage": "",
                         **allocation_month_data,
                     }
                 )
+        
+        # --- ADD MAIN BUDGET ROW AFTER PROCESSING ALL ITS ACCOUNTS ---
+        # Calculate variance for the main budget row
+        variance_for_budget = total_budget_amount - total_actual_amount_for_budget
 
-    return data
+        # Now, prepend the main budget row to data list, or ensure it's added first
+        # It's better to insert it at the beginning of its segment or manage the data structure
+        # Let's rebuild the data list for clarity, or just insert.
+        # For simplicity, let's insert it at the position where the budget accounts start
+        
+        # Find where to insert the budget summary (before its first child account)
+        # This approach can be tricky if you have complex grouping.
+        # A simpler approach is to append and then rely on report grouping in the front-end if needed,
+        # or structure `data` to always have budget, then its accounts, then allocations.
+        # For now, I'll just append it and you can decide on the final display order.
+        
+        data.insert(
+            len(budgets) - 1 if budgets.index(budget) == 0 else data.index(data[-1]) + 1, # A rough way to insert after previous budget's items, or at start
+            {
+                "row_type": "budget",
+                "budget_name": budget.budget_name,
+                "budget_against": budget.budget_against,
+                "name": name,
+                "donor": "",
+                "donation": "",
+                "amount": "",
+                "budget_account": "",
+                "budget_amount": total_budget_amount,  # Display the sum of budget_amount here
+                "actual_amount": total_actual_amount_for_budget, # Total actuals for this budget
+                "variance_amount": variance_for_budget, # Total variance for this budget
+                "months_distributed": months_distributed,
+                "percentage": percentage,
+                **month_data_amounts,  # Use calculated amounts
+            }
+        )
+        # The above insert logic is basic. You might want to collect all budget-related rows
+        # then sort them before returning `data`.
+        # For a nested look, you might need a client-side report (like a tree-view report type)
+        # or manually create parent-child relationships in the data.
+    
+    # A more robust way to structure for hierarchy:
+    final_report_data = []
+    processed_budget_names = set()
+
+    for budget in budgets:
+        if budget.budget_name in processed_budget_names:
+            continue # Already added the main budget row and its children
+
+        fiscal_year_start_date = None
+        fiscal_year_end_date = None
+        if budget.fiscal_year:
+            if budget.fiscal_year not in fiscal_year_cache:
+                fiscal_year_doc = frappe.get_cached_doc(
+                    "Fiscal Year", budget.fiscal_year
+                )
+                fiscal_year_cache[budget.fiscal_year] = {
+                    "start_date": fiscal_year_doc.year_start_date,
+                    "end_date": fiscal_year_doc.year_end_date,
+                }
+            fiscal_year_start_date = fiscal_year_cache[budget.fiscal_year]["start_date"]
+            fiscal_year_end_date = fiscal_year_cache[budget.fiscal_year]["end_date"]
+
+        MonthlyDistributionPercentage = DocType("Monthly Distribution Percentage")
+
+        months_distributed_query = (
+            frappe.qb.from_(MonthlyDistributionPercentage)
+            .select(Count("*").as_("cnt"))
+            .where(MonthlyDistributionPercentage.parent == budget.monthly_distribution)
+        )
+        months_distributed = months_distributed_query.run(as_dict=True)[0]["cnt"] or 0
+
+        distribution_rows_query = (
+            frappe.qb.from_(MonthlyDistributionPercentage)
+            .select(
+                MonthlyDistributionPercentage.month,
+                MonthlyDistributionPercentage.percentage_allocation,
+            )
+            .where(MonthlyDistributionPercentage.parent == budget.monthly_distribution)
+            .orderby(MonthlyDistributionPercentage.month)
+        )
+        distribution_rows = distribution_rows_query.run(as_dict=True)
+
+        distribution_dict_percentages = {}
+        for row in distribution_rows:
+            if fiscal_year_start_date and fiscal_year_end_date:
+                try:
+                    month_number = datetime.strptime(row["month"], "%B").month
+                    current_fy_date = frappe.utils.getdate(fiscal_year_start_date)
+                    fy_end_date_obj = frappe.utils.getdate(fiscal_year_end_date)
+                    found_year = None
+                    while current_fy_date <= fy_end_date_obj:
+                        if current_fy_date.month == month_number:
+                            found_year = current_fy_date.year
+                            break
+                        next_month = current_fy_date.replace(day=28) + timedelta(days=4)
+                        current_fy_date = next_month.replace(day=1)
+                    if found_year:
+                        full_month_label = f"{row['month']} {found_year}"
+                        distribution_dict_percentages[frappe.scrub(full_month_label)] = row["percentage_allocation"]
+                    else:
+                        frappe.log_error(
+                            f"Could not determine year for month '{row['month']}' in Fiscal Year '{budget.fiscal_year}'",
+                            "Month Year Mismatch",
+                        )
+                        distribution_dict_percentages[frappe.scrub(row["month"])] = row["percentage_allocation"]
+                except ValueError:
+                    frappe.log_error(
+                        f"Invalid month name '{row['month']}' in Monthly Distribution Percentage for parent {budget.monthly_distribution}",
+                        "Invalid Month Name Format",
+                    )
+                    distribution_dict_percentages[frappe.scrub(row["month"])] = row["percentage_allocation"]
+            else:
+                distribution_dict_percentages[frappe.scrub(row["month"])] = row["percentage_allocation"]
+
+
+        total_budget_amount_query = (
+            frappe.qb.from_(BudgetAccount)
+            .select(Sum(BudgetAccount.budget_amount).as_("total_amount"))
+            .where(BudgetAccount.parent == budget.budget_name)
+            .where(BudgetAccount.parenttype == "Budget")
+        )
+        total_budget_amount_result = total_budget_amount_query.run(as_dict=True)
+        total_budget_amount = (
+            total_budget_amount_result[0]["total_amount"]
+            if total_budget_amount_result
+            and total_budget_amount_result[0]["total_amount"] is not None
+            else 0
+        )
+        
+        month_data_amounts = {}
+        for (month_label_scrubbed, percentage_value,) in distribution_dict_percentages.items():
+            month_data_amounts[month_label_scrubbed] = (percentage_value / 100) * total_budget_amount
+
+        percentage = 100 / months_distributed if months_distributed > 0 else 0
+
+        name = ""
+        if budget.budget_against == "Employee":
+            name = frappe.db.get_value("Employee", budget.get("employee"), "first_name")
+        elif budget.budget_against == "Project":
+            name = frappe.db.get_value("Project", budget.get("project"), "project_name")
+        elif budget.budget_against == "Task":
+            name = frappe.db.get_value("Task", budget.get("task"), "subject")
+        elif budget.budget_against == "Cost Center":
+            name = frappe.db.get_value("Cost Center", budget.get("cost_center"), "name")
+        elif budget.budget_against == "Program":
+            name = frappe.db.get_value("Program", budget.get("program"), "name")
+
+        total_actual_amount_for_budget = 0
+        
+        current_budget_accounts_data = []
+
+        accounts_query = (
+            frappe.qb.from_(BudgetAccount)
+            .select(
+                BudgetAccount.account,
+                BudgetAccount.budget_amount,
+            )
+            .where(BudgetAccount.parent == budget.budget_name)
+            .where(BudgetAccount.parenttype == "Budget")
+        )
+        if filters and filters.get("budget_account"):
+            accounts_query = accounts_query.where(
+                BudgetAccount.account == filters["budget_account"]
+            )
+        accounts = accounts_query.run(as_dict=True)
+
+        for account in accounts:
+            account_monthly_amounts = {}
+            for (month_label_scrubbed, percentage_value,) in distribution_dict_percentages.items():
+                account_monthly_amounts[month_label_scrubbed] = (percentage_value / 100) * account.budget_amount
+
+            actual_amount_for_account = get_actual_expenses_for_account(
+                account.account,
+                fiscal_year_start_date,
+                fiscal_year_end_date,
+                budget.budget_against,
+                budget.employee,
+                budget.project,
+                budget.task,
+                budget.cost_center,
+                budget.program,
+            )
+            total_actual_amount_for_budget += actual_amount_for_account
+            
+            variance_for_account = account.budget_amount - actual_amount_for_account
+
+            current_budget_accounts_data.append(
+                {
+                    "row_type": "account",
+                    "budget_name": "",
+                    "budget_against": "",
+                    "name": "",
+                    "donor": "",
+                    "donation": "",
+                    "amount": "",
+                    "budget_account": account.account,
+                    "budget_amount": account.budget_amount,
+                    "actual_amount": actual_amount_for_account,
+                    "variance_amount": variance_for_account,
+                    "months_distributed": "",
+                    "percentage": "",
+                    **account_monthly_amounts,
+                }
+            )
+
+            allocations_query = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(
+                    BudgetDonationAllocationItem.donation_allocation,
+                    BudgetDonationAllocationItem.amount,
+                    BudgetDonationAllocationItem.donor,
+                    BudgetDonationAllocationItem.donation,
+                )
+                .where(BudgetDonationAllocationItem.parent == budget.budget_name)
+                .where(BudgetDonationAllocationItem.parenttype == "Budget")
+                .where(BudgetDonationAllocationItem.account == account.account)
+            )
+            if filters and filters.get("donation_allocation"):
+                allocations_query = allocations_query.where(
+                    BudgetDonationAllocationItem.donation_allocation
+                    == filters["donation_allocation"]
+                )
+            allocations = allocations_query.run(as_dict=True)
+
+            for alloc in allocations:
+                allocation_month_data = {
+                    frappe.scrub(month_label): "" for month_label in sorted_months
+                }
+                current_budget_accounts_data.append(
+                    {
+                        "row_type": "allocation",
+                        "budget_name": "",
+                        "budget_against": "",
+                        "name": "",
+                        "donor": alloc.donor,
+                        "donation": alloc.donation,
+                        "allocation": alloc.donation_allocation,
+                        "amount": alloc.amount,
+                        "budget_account": "",
+                        "budget_amount": "",
+                        "actual_amount": "",
+                        "variance_amount": "",
+                        "months_distributed": "",
+                        "percentage": "",
+                        **allocation_month_data,
+                    }
+                )
+        
+        variance_for_budget = total_budget_amount - total_actual_amount_for_budget
+
+        final_report_data.append(
+            {
+                "row_type": "budget",
+                "budget_name": budget.budget_name,
+                "budget_against": budget.budget_against,
+                "name": name,
+                "donor": "",
+                "donation": "",
+                "amount": "",
+                "budget_account": "",
+                "budget_amount": total_budget_amount,
+                "actual_amount": total_actual_amount_for_budget,
+                "variance_amount": variance_for_budget,
+                "months_distributed": months_distributed,
+                "percentage": percentage,
+                **month_data_amounts,
+            }
+        )
+        final_report_data.extend(current_budget_accounts_data)
+        processed_budget_names.add(budget.budget_name) # Mark as processed
+
+    return final_report_data
+
+
+def get_actual_expenses_for_account(
+    account,
+    start_date,
+    end_date,
+    budget_against_type,
+    employee=None,
+    project=None,
+    task=None,
+    cost_center=None,
+    program=None,
+):
+    """
+    Fetches the total actual expense (debit) for a given account within a date range,
+    considering budget against dimensions.
+    """
+    GL_Entry = DocType("GL Entry")
+    
+    query = (
+        frappe.qb.from_(GL_Entry)
+        .select(Sum(GL_Entry.debit).as_("total_debit"))
+        .where(GL_Entry.account == account)
+        .where(GL_Entry.posting_date.between(start_date, end_date))
+        .where(GL_Entry.is_cancelled == 0) # Exclude cancelled entries
+    )
+
+    # Apply dimensional filters based on budget_against_type
+    if budget_against_type == "Employee" and employee:
+        query = query.where(GL_Entry.employee == employee)
+    elif budget_against_type == "Project" and project:
+        query = query.where(GL_Entry.project == project)
+    elif budget_against_type == "Task" and task:
+        query = query.where(GL_Entry.task == task)
+    elif budget_against_type == "Cost Center" and cost_center:
+        query = query.where(GL_Entry.cost_center == cost_center)
+    elif budget_against_type == "Program" and program:
+        query = query.where(GL_Entry.program == program)
+    # Add other budget_against types as needed (e.g., Department, Item Group, etc.)
+
+    result = query.run(as_dict=True)
+    return result[0]["total_debit"] if result and result[0]["total_debit"] is not None else 0
