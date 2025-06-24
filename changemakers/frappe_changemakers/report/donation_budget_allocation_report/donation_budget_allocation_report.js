@@ -122,7 +122,14 @@ frappe.query_reports["Donation Budget Allocation Report"] = {
 	formatter: function (value, row, column, data, default_formatter) {
 		let formatted_value = default_formatter(value, row, column, data);
 
-		const blankFields = ["amount", "allocation_amount", "budget_amount"];
+		const blankFields = [
+			"amount",
+			"allocation_amount",
+			"budget_amount",
+			"actual_amount",
+			"months_distributed",
+			"percentage",
+		];
 
 		// Check if the column is one of the blankable fields OR a dynamically generated month column
 		if (
