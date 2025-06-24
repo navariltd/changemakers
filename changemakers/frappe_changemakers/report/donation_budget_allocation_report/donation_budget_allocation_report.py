@@ -4,8 +4,6 @@
 import frappe
 from datetime import datetime, timedelta
 from frappe.query_builder import DocType
-
-# Import Sum directly from frappe.query_builder.functions
 from frappe.query_builder.functions import Count, Sum
 
 
@@ -501,19 +499,10 @@ def get_data(filters=None):
                 data.append(
                     {
                         "row_type": "allocation",
-                        "budget_name": "",
-                        "budget_against": "",
-                        "name": "",
                         "donor": alloc.donor,
                         "donation": alloc.donation,
                         "allocation": alloc.donation_allocation,
                         "amount": alloc.amount,
-                        "budget_account": "",
-                        "budget_amount": "",
-                        "actual_amount": "",  # Allocations don't have direct actuals
-                        "variance_amount": "",  # Allocations don't have direct variance
-                        "months_distributed": "",
-                        "percentage": "",
                         **allocation_month_data,
                     }
                 )
@@ -544,7 +533,7 @@ def get_data(filters=None):
                 **month_data_amounts,  # Use calculated amounts
             },
         )
-        
+
     final_report_data = []
     processed_budget_names = set()
 
@@ -831,7 +820,6 @@ def get_actual_expenses_for_account(
         query = query.where(GL_Entry.cost_center == cost_center)
     elif budget_against_type == "Program" and program:
         query = query.where(GL_Entry.program == program)
-    # Add other budget_against types as needed (e.g., Department, Item Group, etc.)
 
     result = query.run(as_dict=True)
     return (

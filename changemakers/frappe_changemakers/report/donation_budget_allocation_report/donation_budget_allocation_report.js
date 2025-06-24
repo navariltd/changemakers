@@ -120,7 +120,6 @@ frappe.query_reports["Donation Budget Allocation Report"] = {
 		},
 	],
 	formatter: function (value, row, column, data, default_formatter) {
-		// First, apply the default formatter. This will convert 0 to "Sh 0.00" if it's a currency field.
 		let formatted_value = default_formatter(value, row, column, data);
 
 		const blankFields = ["amount", "allocation_amount", "budget_amount"];
@@ -128,7 +127,7 @@ frappe.query_reports["Donation Budget Allocation Report"] = {
 		// Check if the column is one of the blankable fields OR a dynamically generated month column
 		if (
 			(blankFields.includes(column.fieldname) ||
-				/\d+$/.test(column.fieldname)) && // This regex checks if fieldname ends with digits (for month columns like "january_2025")
+				/\d+$/.test(column.fieldname)) &&
 			data &&
 			(value === null ||
 				value === undefined ||
