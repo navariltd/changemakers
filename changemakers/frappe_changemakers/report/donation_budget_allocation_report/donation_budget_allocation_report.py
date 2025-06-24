@@ -51,7 +51,6 @@ def get_columns(filters=None):
             "label": "Budget Allocation",
             "width": 150,
         },
-        # NEW COLUMNS FOR ACTUAL AND VARIANCE
         {
             "fieldname": "actual_amount",
             "fieldtype": "Currency",
@@ -64,7 +63,6 @@ def get_columns(filters=None):
             "label": "Variance",
             "width": 150,
         },
-        # END NEW COLUMNS
         {
             "fieldname": "donor",
             "fieldtype": "Link",
@@ -136,6 +134,7 @@ def get_sorted_months_from_fiscal_years(filters=None):
             .where(MonthlyDistribution.fiscal_year != "")
             .distinct()
         )
+
         # Apply budget_name filter if present, to only consider fiscal years of filtered budgets
         if filters and filters.get("budget_name"):
             budget_fiscal_years_query = budget_fiscal_years_query.where(
@@ -520,20 +519,7 @@ def get_data(filters=None):
                     }
                 )
         
-        # --- ADD MAIN BUDGET ROW AFTER PROCESSING ALL ITS ACCOUNTS ---
-        # Calculate variance for the main budget row
         variance_for_budget = total_budget_amount - total_actual_amount_for_budget
-
-        # Now, prepend the main budget row to data list, or ensure it's added first
-        # It's better to insert it at the beginning of its segment or manage the data structure
-        # Let's rebuild the data list for clarity, or just insert.
-        # For simplicity, let's insert it at the position where the budget accounts start
-        
-        # Find where to insert the budget summary (before its first child account)
-        # This approach can be tricky if you have complex grouping.
-        # A simpler approach is to append and then rely on report grouping in the front-end if needed,
-        # or structure `data` to always have budget, then its accounts, then allocations.
-        # For now, I'll just append it and you can decide on the final display order.
         
         data.insert(
             len(budgets) - 1 if budgets.index(budget) == 0 else data.index(data[-1]) + 1, # A rough way to insert after previous budget's items, or at start
@@ -554,12 +540,7 @@ def get_data(filters=None):
                 **month_data_amounts,  # Use calculated amounts
             }
         )
-        # The above insert logic is basic. You might want to collect all budget-related rows
-        # then sort them before returning `data`.
-        # For a nested look, you might need a client-side report (like a tree-view report type)
-        # or manually create parent-child relationships in the data.
-    
-    # A more robust way to structure for hierarchy:
+
     final_report_data = []
     processed_budget_names = set()
 
@@ -829,7 +810,6 @@ def get_actual_expenses_for_account(
         query = query.where(GL_Entry.cost_center == cost_center)
     elif budget_against_type == "Program" and program:
         query = query.where(GL_Entry.program == program)
-    # Add other budget_against types as needed (e.g., Department, Item Group, etc.)
 
     result = query.run(as_dict=True)
     return result[0]["total_debit"] if result and result[0]["total_debit"] is not None else 0
