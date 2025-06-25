@@ -452,12 +452,6 @@ def get_data(filters=None):
 
             data.append(
                 {
-                    "budget_name": "",
-                    "budget_against": "",
-                    "name": "",
-                    "donor": "",
-                    "donation": "",
-                    "amount": "",
                     "budget_account": account.account,
                     "budget_amount": account.budget_amount,
                     "actual_amount": actual_amount_for_account,  # Actual for this account

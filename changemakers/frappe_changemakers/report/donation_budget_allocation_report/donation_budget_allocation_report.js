@@ -129,6 +129,7 @@ frappe.query_reports["Donation Budget Allocation Report"] = {
 			"actual_amount",
 			"months_distributed",
 			"percentage",
+			"variance_amount",
 		];
 
 		// Check if the column is one of the blankable fields OR a dynamically generated month column
