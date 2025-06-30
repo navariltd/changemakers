@@ -24,7 +24,6 @@ class DonationAllocation(Document):
 
 	def before_submit(self):
 		self.validate_total_against_donation()
-		add_budget_allocations_from_doc(self)
 
 	def validate_total_against_donation(self):
 		donation_doc = frappe.get_doc("Donation", self.donation)
@@ -55,26 +54,6 @@ def get_total_allocated_amount(donation_name, exclude_allocation=None):
 
 	allocations = frappe.get_all("Donation Allocation", filters=filters, fields=["total_amount"])
 	return sum(flt(alloc.total_amount) for alloc in allocations)
-
-
-def add_budget_allocations_from_doc(doc):
-	"""
-	Inserts new rows into the 'donation_allocations' child table of Budget documents
-	for items in Donation Allocation where recipient_type == 'Budget'.
-	"""
-	for item in doc.items:
-		if item.recipient_type == "Budget":
-			frappe.get_doc({
-				"doctype": "Budget Donation Allocation Item",  
-				"parent": item.recipient,                
-				"parenttype": "Budget",
-				"parentfield": "donation_allocations",   
-				"donation_allocation": doc.name, 
-				"donation": doc.donation, 
-				"account": item.account, 
-				"donor": doc.donor,
-				"amount": item.amount
-			}).insert(ignore_permissions=True)
 
 
 @frappe.whitelist()
