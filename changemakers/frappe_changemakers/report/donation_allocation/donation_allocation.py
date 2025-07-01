@@ -46,6 +46,7 @@ class DonationDistributionReport:
             {"label": "Percentage", "fieldname": "percentage", "fieldtype": "Percent", "width": 150},
             {"label": "Recipient Type", "fieldname": "recipient_type", "fieldtype": "Data", "width": 150},
             {"label": "Recipient", "fieldname": "recipient", "fieldtype": "Dynamic Link", "options": "recipient_type", "width": 150},
+            {"label": "General/ Admin", "fieldname": "general_admin", "fieldtype": "Data", "width": 150},
             {"label": "Project", "fieldname": "project", "fieldtype": "Link", "options": "Project", "width": 150},
             {"label": "Remarks", "fieldname": "remarks", "fieldtype": "Text", "width": 200},
         ]
@@ -67,7 +68,6 @@ class DonationDistributionReport:
         if filters.get("donor"):
             frappe_filters["donor"] = filters.get("donor")
 
-        # Dynamic Recipient filters
         if filters.get("recipient_type"):
             item_filters["recipient_type"] = filters["recipient_type"]
 
@@ -77,7 +77,7 @@ class DonationDistributionReport:
                 "Student": "student",
                 "Learning Centre": "learning_centre",
                 "Budget": "budget",
-                "Employee": "employee"
+                "Employee": "employee",
             }
 
             specific_fieldname = recipient_field_map.get(recipient_type)
@@ -85,6 +85,10 @@ class DonationDistributionReport:
                 recipient_value = filters.get(specific_fieldname)
                 if recipient_value:
                     item_filters["recipient"] = recipient_value
+
+        if filters.get("general_admin"):
+            item_filters["general_admin"] = ["like", f"%{filters['general_admin']}%"]
+
 
         if filters.get("project"):
             item_filters["project"] = filters["project"]
@@ -110,7 +114,7 @@ class DonationDistributionReport:
         items = frappe.get_all(
             "Donation Allocation Item",
             filters=item_filters,
-            fields=["parent", "amount", "percentage", "recipient_type", "recipient", "project"],
+            fields=["parent", "amount", "percentage", "recipient_type", "recipient", "project", "general_admin"], 
             order_by="parent, idx"
         )
 
@@ -180,7 +184,8 @@ class DonationDistributionReport:
                         "percentage": first_item.percentage,
                         "recipient_type": first_item.recipient_type,
                         "recipient": first_item.recipient,
-                        "project": first_item.project
+                        "project": first_item.project,
+                        "general_admin": first_item.general_admin 
                     })
 
             data.append(row)
@@ -192,7 +197,8 @@ class DonationDistributionReport:
                     "distribution": "", "distribution_date": "", "total_amount": "",
                     "amount": item.amount, "percentage": item.percentage,
                     "recipient_type": item.recipient_type, "recipient": item.recipient,
-                    "project": item.project, "remarks": "", "indent": 1
+                    "project": item.project, "remarks": "", "indent": 1,
+                    "general_admin": item.general_admin 
                 })
 
             for dist in distributions[1:]:
@@ -209,7 +215,8 @@ class DonationDistributionReport:
                     "is_group": 1, "bold": 0, "indent": 1,
                     "amount": first_item.amount, "percentage": first_item.percentage,
                     "recipient_type": first_item.recipient_type, "recipient": first_item.recipient,
-                    "project": first_item.project
+                    "project": first_item.project,
+                    "general_admin": first_item.general_admin 
                 }
 
                 data.append(dist_row)
@@ -221,7 +228,8 @@ class DonationDistributionReport:
                         "distribution": "", "distribution_date": "", "total_amount": "",
                         "amount": item.amount, "percentage": item.percentage,
                         "recipient_type": item.recipient_type, "recipient": item.recipient,
-                        "project": item.project, "remarks": "", "indent": 2
+                        "project": item.project, "remarks": "", "indent": 2,
+                        "general_admin": item.general_admin 
                     })
 
         return data

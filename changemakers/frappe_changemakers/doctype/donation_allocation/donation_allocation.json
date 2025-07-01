@@ -11,9 +11,9 @@
   "donor",
   "column_break_otbo",
   "date",
+  "total_amount",
   "donation_total_paid_amount",
   "donation_unallocated_amount",
-  "total_amount",
   "accounting_dimensions_section",
   "project",
   "dimension_col_break",
@@ -85,13 +85,14 @@
    "reqd": 1
   },
   {
+   "description": "The total amount being allocated to various recepients or budget items from this donation.",
    "fieldname": "total_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
-   "label": "Total Amount",
-   "read_only": 1
+   "label": "Total Allocation Amount",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_qzhm",
@@ -127,37 +128,37 @@
    "in_standard_filter": 1,
    "label": "Project",
    "options": "Project",
-   "reqd": 1,
    "search_index": 1
   },
   {
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
-   "options": "Cost Center",
-   "reqd": 1
+   "options": "Cost Center"
   },
   {
    "fieldname": "dimension_col_break",
    "fieldtype": "Column Break"
   },
   {
+   "description": "The total amount that has already been paid by the donor for the linked donation.\n\n",
    "fetch_from": "donation.total_amount_paid",
    "fieldname": "donation_total_paid_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
-   "label": "Donation Total Paid Amount",
+   "label": "Total Amount Paid by Donor",
    "read_only": 1
   },
   {
+   "description": "The remaining amount from the donation that has not yet been allocated.",
    "fieldname": "donation_unallocated_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
-   "label": "Donation Unallocated Amount",
+   "label": "Unallocated Balance",
    "read_only": 1
   }
  ],
@@ -165,7 +166,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-19 09:11:56.777867",
+ "modified": "2025-07-01 11:41:26.293412",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Allocation",

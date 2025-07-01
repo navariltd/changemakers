@@ -110,6 +110,7 @@ def create_food_stock_entries(project, bom, beneficiaries):
 
     for b in beneficiaries:
         beneficiary_id = b.get("beneficiary")
+        beneficiary_no = frappe.db.get_value("Beneficiary", beneficiary_id, "beneficiary_no") if beneficiary_id else None
         if not beneficiary_id:
             frappe.msgprint(_(f"Skipping beneficiary entry with missing 'beneficiary' ID: {b}"))
             continue
@@ -127,6 +128,7 @@ def create_food_stock_entries(project, bom, beneficiaries):
         se.branch = project_doc.custom_branch
         se.cost_center = project_doc.cost_center
         se.custom_beneficiary = beneficiary_id
+        se.beneficiary_no = beneficiary_no
 
         if from_warehouse:
             se.from_warehouse = from_warehouse

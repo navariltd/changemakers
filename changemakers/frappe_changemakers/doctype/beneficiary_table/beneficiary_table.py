@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class BudgetDonationAllocationItem(Document):
+class BeneficiaryTable(Document):
 	pass
