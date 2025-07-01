@@ -17,8 +17,19 @@ frappe.ui.form.on("Donation Allocation", {
 		calculate_unallocated_amount(frm);
 	},
 
-	payment_entry(frm) {
-		console.log("Payment Entry changed:", frm.doc.payment_entry);
+	total_amount(frm) {
+		if (
+			frm.doc.total_amount &&
+			frm.doc.donation_unallocated_amount &&
+			flt(frm.doc.total_amount) > flt(frm.doc.donation_unallocated_amount)
+		) {
+			frappe.msgprint(
+				__(
+					"Total Allocation Amount cannot be greater than the Unallocated Balance."
+				)
+			);
+			frm.set_value("total_amount", "");
+		}
 	},
 
 	donation(frm) {
