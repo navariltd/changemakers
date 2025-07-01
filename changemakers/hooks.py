@@ -85,6 +85,7 @@ website_route_rules = [
 doctype_js = {
     "Stock Entry": "frappe_changemakers/overrides/stock_entry.js",
     "Project": "frappe_changemakers/overrides/project.js",
+    "Payment Entry": "frappe_changemakers/overrides/payment_entry.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
