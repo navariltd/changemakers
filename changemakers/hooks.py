@@ -43,6 +43,8 @@ fixtures = [
                 (
                     "Project",
                     "Stock Entry",
+                    "Budget",
+                    "Task"
                 ),
             ],
             ["is_system_generated", "=", 0],
