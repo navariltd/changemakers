@@ -132,6 +132,7 @@ function open_distribution_modal(frm) {
 								bom: values.bom,
 								beneficiaries: values.beneficiaries,
 							},
+							freeze: true,
 							callback: function (res) {
 								if (res.message) {
 									frappe.msgprint(
