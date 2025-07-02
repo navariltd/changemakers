@@ -1,4 +1,5 @@
 [pre_model_sync]
+changemakers.frappe_changemakers.patches.clear_custom_fields
 
 [post_model_sync]
 changemakers.frappe_changemakers.patches.school_links # 6
