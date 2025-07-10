@@ -58,7 +58,7 @@ def get_columns(filters=None):
         {
             "fieldname": "variance_amount",
             "fieldtype": "Currency",
-            "label": "Balance After Donation",
+            "label": "Balance after Donation",
             "width": 200,
         },
         {
@@ -397,10 +397,25 @@ def get_data(filters=None):
             )
             total_actual_amount_for_budget += actual_amount_for_account
 
-            # Recalculate variance_amount as "Balance Remaining" for accounts
-            balance_remaining_for_account = (
-                account.budget_amount - actual_amount_for_account
+            # Get total donations specifically for this account within this budget
+            total_donations_for_account = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(
+                    Sum(BudgetDonationAllocationItem.amount).as_("total_donated_amount")
+                )
+                .where(BudgetDonationAllocationItem.parent == budget.budget_name)
+                .where(BudgetDonationAllocationItem.parenttype == "Budget")
+                .where(BudgetDonationAllocationItem.account == account.account)
+                .run(as_dict=True)[0]["total_donated_amount"]
+                or 0
             )
+
+            # Calculate variance_amount for individual accounts: actual_amount - total_donations_for_account
+            variance_for_account = (
+                actual_amount_for_account - total_donations_for_account
+            )
+
+            # Budget Variance for account is still Budget allocated amount - actual amounts
             budget_variance_for_account = (
                 account.budget_amount - actual_amount_for_account
             )
@@ -413,7 +428,7 @@ def get_data(filters=None):
                     "budget_account": account.account,
                     "budget_amount": account.budget_amount,
                     "actual_amount": actual_amount_for_account,
-                    "variance_amount": balance_remaining_for_account,
+                    "variance_amount": variance_for_account,  # Updated calculation for individual accounts
                     "total_donations": "",  # Only for main budget row
                     "budget_variance": budget_variance_for_account,
                     "months_distributed": "",
@@ -422,8 +437,8 @@ def get_data(filters=None):
                 }
             )
 
-        # "Balance Remaining" = actual_amount_for_budget - total_donations_for_budget
-        balance_remaining_for_budget = (
+        # "Balance after Donation" for the main budget row (actual_amount - total_donations)
+        balance_after_donation_for_budget = (
             total_actual_amount_for_budget - total_donations_for_budget
         )
 
@@ -440,7 +455,7 @@ def get_data(filters=None):
                 "budget_account": "",
                 "budget_amount": total_budget_amount,
                 "actual_amount": total_actual_amount_for_budget,
-                "variance_amount": balance_remaining_for_budget,
+                "variance_amount": balance_after_donation_for_budget,  # Updated calculation for main budget row
                 "total_donations": total_donations_for_budget,
                 "budget_variance": budget_variance_for_budget,
                 "months_distributed": months_distributed,
