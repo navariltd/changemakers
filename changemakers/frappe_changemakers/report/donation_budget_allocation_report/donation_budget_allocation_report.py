@@ -414,7 +414,7 @@ def get_data(filters=None):
                     "budget_account": account.account,
                     "budget_amount": account.budget_amount,
                     "actual_amount": actual_amount_for_account,
-                    "variance_amount": balance_remaining_for_account,  # Using previous variance calculation for accounts for now
+                    "variance_amount": balance_remaining_for_account,
                     "total_donations": "",  # Only for main budget row
                     "budget_variance": budget_variance_for_account,
                     "months_distributed": "",
@@ -425,7 +425,9 @@ def get_data(filters=None):
 
         # "Balance Remaining" = actual_amount_for_budget - total_donations_for_budget
         balance_remaining_for_budget = (
-            total_actual_amount_for_budget - total_donations_for_budget
+            0
+            if total_donations_for_budget == 0
+            else (total_actual_amount_for_budget - total_donations_for_budget)
         )
 
         # Budget Variance = Budget allocated amount - actual amounts
