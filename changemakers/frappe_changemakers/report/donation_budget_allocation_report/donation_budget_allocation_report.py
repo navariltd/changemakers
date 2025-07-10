@@ -58,7 +58,7 @@ def get_columns(filters=None):
         {
             "fieldname": "variance_amount",
             "fieldtype": "Currency",
-            "label": "Balance after Donation",
+            "label": "Balance After Donation",
             "width": 200,
         },
         {
@@ -401,7 +401,6 @@ def get_data(filters=None):
             balance_remaining_for_account = (
                 account.budget_amount - actual_amount_for_account
             )
-
             budget_variance_for_account = (
                 account.budget_amount - actual_amount_for_account
             )
@@ -425,9 +424,7 @@ def get_data(filters=None):
 
         # "Balance Remaining" = actual_amount_for_budget - total_donations_for_budget
         balance_remaining_for_budget = (
-            0
-            if total_donations_for_budget == 0
-            else (total_actual_amount_for_budget - total_donations_for_budget)
+            total_actual_amount_for_budget - total_donations_for_budget
         )
 
         # Budget Variance = Budget allocated amount - actual amounts
