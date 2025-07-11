@@ -57,6 +57,33 @@ def get_columns(filters=None):
             "width": 150,
         },
         {
+            "fieldname": "donor",
+            "fieldtype": "Link",
+            "label": "Donor",
+            "options": "Donor",
+            "width": 200,
+        },
+        {
+            "fieldname": "donation",
+            "fieldtype": "Link",
+            "label": "Donation",
+            "options": "Donation",
+            "width": 200,
+        },
+        {
+            "fieldname": "allocation",
+            "fieldtype": "Link",
+            "label": "Donation Allocation",
+            "options": "Donation Allocation",
+            "width": 200,
+        },
+        {
+            "fieldname": "amount",
+            "fieldtype": "Currency",
+            "label": "Allocated Amount",
+            "width": 200,
+        },
+        {
             "fieldname": "actual_amount",
             "fieldtype": "Currency",
             "label": "Actual Amount",
@@ -166,6 +193,12 @@ def get_data(filters=None):
     final_report_data = []
     fiscal_year_cache = {}
 
+    # Get sorted months for populating empty values in allocation rows
+    sorted_months_labels = _get_sorted_months_from_fiscal_years(filters)
+    allocation_month_empty_data = {
+        frappe.scrub(month_label): "" for month_label in sorted_months_labels
+    }
+
     for budget in budgets:
         fiscal_year_dates = _get_fiscal_year_dates(
             budget.fiscal_year, fiscal_year_cache
@@ -188,7 +221,8 @@ def get_data(filters=None):
         budget_against_name = _get_budget_against_name(budget)
 
         total_actual_amount_for_budget = 0
-        current_budget_accounts_data = []
+        current_budget_accounts_data = []  # To hold account rows
+        current_budget_allocations_data = []  # To hold allocation rows
 
         total_donations_for_budget = _get_total_donations_for_budget(budget.budget_name)
 
@@ -227,7 +261,7 @@ def get_data(filters=None):
 
             current_budget_accounts_data.append(
                 {
-                    "budget_name": "",  # These fields are intentionally empty for child rows
+                    "budget_name": "",
                     "budget_against": "",
                     "name": "",
                     "budget_account": account.account,
@@ -238,9 +272,39 @@ def get_data(filters=None):
                     "budget_variance": budget_variance_for_account,
                     "months_distributed": "",
                     "percentage": "",
+                    "donor": "",  # Empty for account row
+                    "donation": "",  # Empty for account row
+                    "allocation": "",  # Empty for account row
+                    "amount": "",  # Empty for account row
                     **account_monthly_amounts,
                 }
             )
+
+            # Fetch and append Allocation Rows
+            allocations = _get_donation_allocations_for_account(
+                budget.budget_name, account.account, filters.get("donation_allocation")
+            )
+            for alloc in allocations:
+                current_budget_allocations_data.append(
+                    {
+                        "budget_name": "",
+                        "budget_against": "",
+                        "name": "",
+                        "donor": alloc.donor,
+                        "donation": alloc.donation,
+                        "allocation": alloc.donation_allocation,
+                        "amount": alloc.amount,
+                        "budget_account": "",
+                        "budget_amount": "",
+                        "actual_amount": "",
+                        "variance_amount": "",
+                        "total_donations": "",
+                        "budget_variance": "",
+                        "months_distributed": "",
+                        "percentage": "",
+                        **allocation_month_empty_data,
+                    }
+                )
 
         balance_after_donation_for_budget = (
             total_actual_amount_for_budget - total_donations_for_budget
@@ -262,10 +326,17 @@ def get_data(filters=None):
                 "budget_variance": budget_variance_for_budget,
                 "months_distributed": months_distributed,
                 "percentage": percentage_avg,
+                "donor": "",  # Empty for main budget row
+                "donation": "",  # Empty for main budget row
+                "allocation": "",  # Empty for main budget row
+                "amount": "",  # Empty for main budget row
                 **month_data_amounts,
             }
         )
         final_report_data.extend(current_budget_accounts_data)
+        final_report_data.extend(
+            current_budget_allocations_data
+        )  # Add allocation rows here
 
     return final_report_data
 
@@ -333,7 +404,62 @@ def _get_filtered_budgets(filters):
             )
             budgets_query = budgets_query.where(Budget.name.isin(budgets_with_account))
 
+        if filters.get("donor"):
+            budgets_with_donor = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(BudgetDonationAllocationItem.parent)
+                .where(BudgetDonationAllocationItem.donor == filters["donor"])
+                .distinct()
+            )
+            budgets_query = budgets_query.where(Budget.name.isin(budgets_with_donor))
+
+        if filters.get("donation"):
+            budgets_with_donation = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(BudgetDonationAllocationItem.parent)
+                .where(BudgetDonationAllocationItem.donation == filters["donation"])
+                .distinct()
+            )
+            budgets_query = budgets_query.where(Budget.name.isin(budgets_with_donation))
+
+        if filters.get("donation_allocation"):
+            budgets_with_allocation = (
+                frappe.qb.from_(BudgetDonationAllocationItem)
+                .select(BudgetDonationAllocationItem.parent)
+                .where(
+                    BudgetDonationAllocationItem.donation_allocation
+                    == filters["donation_allocation"]
+                )
+                .distinct()
+            )
+            budgets_query = budgets_query.where(
+                Budget.name.isin(budgets_with_allocation)
+            )
+
     return budgets_query.run(as_dict=True)
+
+
+def _get_donation_allocations_for_account(
+    budget_name, account_name, filter_allocation=None
+):
+    """Fetches donation allocation items for a given budget and account."""
+    allocations_query = (
+        frappe.qb.from_(BudgetDonationAllocationItem)
+        .select(
+            BudgetDonationAllocationItem.donation_allocation,
+            BudgetDonationAllocationItem.amount,
+            BudgetDonationAllocationItem.donor,
+            BudgetDonationAllocationItem.donation,
+        )
+        .where(BudgetDonationAllocationItem.parent == budget_name)
+        .where(BudgetDonationAllocationItem.parenttype == "Budget")
+        .where(BudgetDonationAllocationItem.account == account_name)
+    )
+    if filter_allocation:
+        allocations_query = allocations_query.where(
+            BudgetDonationAllocationItem.donation_allocation == filter_allocation
+        )
+    return allocations_query.run(as_dict=True)
 
 
 def _get_fiscal_year_dates(fiscal_year_name, fiscal_year_cache):
