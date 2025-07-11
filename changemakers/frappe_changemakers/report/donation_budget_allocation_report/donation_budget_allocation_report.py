@@ -253,7 +253,7 @@ def get_data(filters=None):
             )
 
             variance_for_account = (
-                actual_amount_for_account - total_donations_for_account
+                total_donations_for_account - actual_amount_for_account
             )
             budget_variance_for_account = (
                 account.budget_amount - actual_amount_for_account
@@ -307,7 +307,7 @@ def get_data(filters=None):
                 )
 
         balance_after_donation_for_budget = (
-            total_actual_amount_for_budget - total_donations_for_budget
+            total_donations_for_budget - total_actual_amount_for_budget
         )
         budget_variance_for_budget = (
             total_budget_amount - total_actual_amount_for_budget
