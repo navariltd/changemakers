@@ -270,8 +270,10 @@ def get_data(filters=None):
                 budget.cost_center,
                 budget.program,
             )
-            
-            print(f"Actual amount for account {account.account}: {actual_amount_for_account}")  # Debugging line
+
+            print(
+                f"Actual amount for account {account.account}: {actual_amount_for_account}"
+            )  # Debugging line
 
             total_actual_amount_for_budget += actual_amount_for_account
 
@@ -515,7 +517,9 @@ def _get_filtered_budgets(filters):
     return budgets_query.run(as_dict=True)
 
 
-def _get_donation_allocation_items_for_account(budget_name, account_name, filter_allocation_name=None):
+def _get_donation_allocation_items_for_account(
+    budget_name, account_name, filter_allocation_name=None
+):
     """
     Retrieve donation allocation items for a specific budget and account.
 
@@ -832,7 +836,14 @@ def _get_actual_expenses_for_account(
     """
     query = (
         frappe.qb.from_(GL_Entry)
-        .select((Sum(GL_Entry.debit) - Sum(GL_Entry.credit)).as_("net_actual_amount"))
+        .select(
+            GL_Entry.name,
+            GL_Entry.account,
+            GL_Entry.posting_date,
+            GL_Entry.debit,
+            GL_Entry.credit,
+            (GL_Entry.debit - GL_Entry.credit).as_("net_actual_amount"),
+        )
         .where(GL_Entry.account == account)
         .where(GL_Entry.posting_date >= start_date)
         .where(GL_Entry.posting_date <= end_date)
@@ -847,23 +858,26 @@ def _get_actual_expenses_for_account(
         "Program": GL_Entry.program,
     }
 
-    dimension_value = None
-    if budget_against_type == "Employee":
-        dimension_value = employee
-    elif budget_against_type == "Project":
-        dimension_value = project
-    elif budget_against_type == "Task":
-        dimension_value = task
-    elif budget_against_type == "Cost Center":
-        dimension_value = cost_center
-    elif budget_against_type == "Program":
-        dimension_value = program
+    # TODO: Uncomment and implement the dimension filtering logic if needed
+    # dimension_value = None
+    # if budget_against_type == "Employee":
+    #     dimension_value = employee
+    # elif budget_against_type == "Project":
+    #     dimension_value = project
+    # elif budget_against_type == "Task":
+    #     dimension_value = task
+    # elif budget_against_type == "Cost Center":
+    #     dimension_value = cost_center
+    # elif budget_against_type == "Program":
+    #     dimension_value = program
 
-    if budget_against_type in dimension_map and dimension_value:
-        query = query.where(dimension_map[budget_against_type] == dimension_value)
+    # if budget_against_type in dimension_map and dimension_value:
+    #     query = query.where(dimension_map[budget_against_type] == dimension_value)
 
     result = query.run(as_dict=True)
-    
-    print(f"Net actual amount query result for account {account}: {result}")  # Debugging line
 
-    return (result[0]["net_actual_amount"] if result and result[0]["net_actual_amount"] is not None else 0)
+    return (
+        result[0]["net_actual_amount"]
+        if result and result[0]["net_actual_amount"] is not None
+        else 0
+    )
