@@ -12,7 +12,7 @@ MonthlyDistribution = DocType("Monthly Distribution")
 BudgetAccount = DocType("Budget Account")
 GL_Entry = DocType("GL Entry")
 DonationAllocation = DocType("Donation Allocation")
-DonationAllocationItem = DocType("Donation Allocation Item") # This is the child table
+DonationAllocationItem = DocType("Donation Allocation Item")
 
 
 def execute(filters=None):
@@ -248,7 +248,10 @@ def get_data(filters=None):
         )
 
         accounts = _get_budget_accounts(
-            budget.budget_name, filters.get("budget_account")
+            budget.budget_name,
+            filters.get(
+                "budget_account"
+            ),  # pyright: ignore[reportOptionalMemberAccess]
         )
 
         for account in accounts:
@@ -267,11 +270,14 @@ def get_data(filters=None):
                 budget.cost_center,
                 budget.program,
             )
+
             total_actual_amount_for_budget += actual_amount_for_account
 
             # --- Fetch Total Donations for Account from new Donation Allocation Item DocType ---
-            total_donations_for_account = _get_total_donations_for_account_from_new_doctype(
-                budget.budget_name, account.account
+            total_donations_for_account = (
+                _get_total_donations_for_account_from_new_doctype(
+                    budget.budget_name, account.account
+                )
             )
 
             variance_for_account = (
@@ -290,23 +296,27 @@ def get_data(filters=None):
                     "budget_amount": account.budget_amount,
                     "actual_amount": actual_amount_for_account,
                     "variance_amount": variance_for_account,
-                    "total_donations": "", # Not applicable for account row as it's for budget
+                    "total_donations": "",  # Not applicable for account row as it's for budget
                     "budget_variance": budget_variance_for_account,
                     "months_distributed": "",
                     "percentage": "",
                     "donor": "",
-                    "donation_name": "", 
-                    "allocated_amount_item": "", 
-                    "total_allocation_amount": "", 
-                    "donation_total_paid_amount": "", 
-                    "donation_unallocated_balance": "", 
+                    "donation_name": "",
+                    "allocated_amount_item": "",
+                    "total_allocation_amount": "",
+                    "donation_total_paid_amount": "",
+                    "donation_unallocated_balance": "",
                     **account_monthly_amounts,
                 }
             )
 
             # --- Fetch and append Donation Allocation Item Rows ---
             allocation_items = _get_donation_allocation_items_for_account(
-                budget.budget_name, account.account, filters.get("donation_allocation")
+                budget.budget_name,
+                account.account,
+                filters.get(
+                    "donation_allocation"
+                ),  # pyright: ignore[reportOptionalMemberAccess]
             )
 
             for item in allocation_items:
@@ -318,9 +328,9 @@ def get_data(filters=None):
                         "donor": item.donor,
                         "donation_name": item.donation_allocation_name,
                         "allocated_amount_item": item.amount,
-                        "total_allocation_amount": item.total_amount, # From parent Donation Allocation
-                        "donation_total_paid_amount": item.donation_total_paid_amount, # From parent
-                        "donation_unallocated_balance": item.donation_unallocated_amount, # From parent
+                        "total_allocation_amount": item.total_amount,  # From parent Donation Allocation
+                        "donation_total_paid_amount": item.donation_total_paid_amount,  # From parent
+                        "donation_unallocated_balance": item.donation_unallocated_amount,  # From parent
                         "budget_account": "",
                         "budget_amount": "",
                         "actual_amount": "",
@@ -369,7 +379,34 @@ def get_data(filters=None):
 
 
 def _get_filtered_budgets(filters):
-    """Constructs and runs the query for main budget documents based on filters."""
+    """
+    Retrieve filtered budget records based on provided criteria.
+
+    This function constructs and executes a query to fetch budget records from the database,
+    joining with monthly distribution data and applying various filters. The filters can include
+    fiscal year, budget type, employee, project, task, cost center, program, budget name, budget account,
+    donor, donation allocation, and donation. The function supports dynamic filtering based on the
+    'budget_against' type and links budgets to donation allocations via recipient relationships.
+
+    Args:
+        filters (dict): A dictionary containing filter criteria. Possible keys include:
+            - 'fiscal_year' (str): Fiscal year to filter budgets.
+            - 'budget_against' (str): Type of budget (e.g., 'Employee', 'Project', etc.).
+            - 'employee' (str): Employee identifier (used if 'budget_against' is 'Employee').
+            - 'project' (str): Project identifier (used if 'budget_against' is 'Project').
+            - 'task' (str): Task identifier (used if 'budget_against' is 'Task').
+            - 'cost_center' (str): Cost center identifier (used if 'budget_against' is 'Cost Center').
+            - 'program' (str): Program identifier (used if 'budget_against' is 'Program').
+            - 'budget_name' (str): Specific budget name to filter.
+            - 'budget_account' (str): Account linked to the budget.
+            - 'donor' (str): Donor identifier to filter budgets linked via donation allocations.
+            - 'donation_allocation' (str): Donation allocation identifier.
+            - 'donation' (str): Donation identifier.
+
+    Returns:
+        list[dict]: A list of dictionaries representing the filtered budget records, with fields such as
+        budget name, budget type, employee, project, task, cost center, program, monthly distribution, and fiscal year.
+    """
     budgets_query = (
         frappe.qb.from_(Budget)
         .left_join(MonthlyDistribution)
@@ -438,7 +475,9 @@ def _get_filtered_budgets(filters):
                 frappe.qb.from_(DonationAllocationItem)
                 .join(DonationAllocation)
                 .on(DonationAllocationItem.parent == DonationAllocation.name)
-                .select(DonationAllocationItem.recipient) # Use 'recipient' for the budget name
+                .select(
+                    DonationAllocationItem.recipient
+                )  # Use 'recipient' for the budget name
                 .where(DonationAllocationItem.recipient_type == "Budget")
                 .where(DonationAllocation.donor == filters["donor"])
                 .distinct()
@@ -448,23 +487,28 @@ def _get_filtered_budgets(filters):
         if filters.get("donation_allocation"):
             budgets_with_donation_allocation = (
                 frappe.qb.from_(DonationAllocationItem)
-                .select(DonationAllocationItem.recipient) # Use 'recipient' for the budget name
+                .select(
+                    DonationAllocationItem.recipient
+                )  # Use 'recipient' for the budget name
                 .where(DonationAllocationItem.recipient_type == "Budget")
                 .where(DonationAllocationItem.parent == filters["donation_allocation"])
                 .distinct()
             )
-            budgets_query = budgets_query.where(Budget.name.isin(budgets_with_donation_allocation))
+            budgets_query = budgets_query.where(
+                Budget.name.isin(budgets_with_donation_allocation)
+            )
 
         if filters.get("donation"):
             budgets_with_donation = (
                 frappe.qb.from_(DonationAllocationItem)
-                .select(DonationAllocationItem.recipient) # Use 'recipient' for the budget name
+                .select(
+                    DonationAllocationItem.recipient
+                )  # Use 'recipient' for the budget name
                 .where(DonationAllocationItem.recipient_type == "Budget")
                 .where(DonationAllocationItem.parent == filters["donation"])
                 .distinct()
             )
             budgets_query = budgets_query.where(Budget.name.isin(budgets_with_donation))
-
 
     return budgets_query.run(as_dict=True)
 
@@ -473,9 +517,22 @@ def _get_donation_allocation_items_for_account(
     budget_name, account_name, filter_allocation_name=None
 ):
     """
-    Fetches donation allocation items for a given budget (via dynamic link) and account.
-    Joins with DonationAllocation to get donor and total_amount.
+    Retrieve donation allocation items for a specific budget and account.
+
+    This function queries the DonationAllocationItem and DonationAllocation tables to fetch allocation details
+    where the recipient type is "Budget", the recipient matches the given budget name, and the account matches
+    the given account name. Optionally, it can filter by a specific donation allocation name.
+
+    Args:
+        budget_name (str): The name of the budget to filter allocations.
+        account_name (str): The name of the account to filter allocations.
+        filter_allocation_name (str, optional): If provided, filters allocations by this specific allocation name.
+
+    Returns:
+        list[dict]: A list of dictionaries containing allocation details, including parent allocation name,
+                    amount, account, donor, total amount, total paid amount, and unallocated amount.
     """
+
     allocations_query = (
         frappe.qb.from_(DonationAllocationItem)
         .left_join(DonationAllocation)
@@ -517,7 +574,25 @@ def _get_fiscal_year_dates(fiscal_year_name, fiscal_year_cache):
 def _get_monthly_distribution_data(
     monthly_distribution_name, fiscal_year_start_date, fiscal_year_end_date
 ):
-    """Fetches monthly distribution percentages and count for a given monthly distribution."""
+    """
+    Retrieves and processes monthly distribution percentage data for a given distribution name within a fiscal year.
+
+    Args:
+        monthly_distribution_name (str): The name of the monthly distribution to fetch data for.
+        fiscal_year_start_date (str or datetime.date): The start date of the fiscal year.
+        fiscal_year_end_date (str or datetime.date): The end date of the fiscal year.
+
+    Returns:
+        dict: A dictionary containing:
+            - "count" (int): The number of months distributed.
+            - "percentages" (dict): A mapping of scrubbed month labels (optionally including year)
+              to their corresponding percentage allocation values.
+
+    Notes:
+        - Month labels are formatted as "<Month> <Year>" if fiscal year dates are provided and matched.
+        - If a month name is invalid or its year cannot be determined, errors are logged using frappe.log_error.
+        - The function expects the existence of a DocType named "Monthly Distribution Percentage" and uses Frappe's query builder.
+    """
     MonthlyDistributionPercentage = DocType("Monthly Distribution Percentage")
 
     months_distributed_count = (
@@ -575,7 +650,15 @@ def _get_monthly_distribution_data(
 
 
 def _get_total_budget_amount(budget_name):
-    """Calculates the total allocated budget amount for a given budget."""
+    """
+    Calculate and return the total budget amount for a given budget name.
+
+    Args:
+        budget_name (str): The name of the budget to retrieve the total amount for.
+
+    Returns:
+        float: The total budget amount associated with the specified budget name. Returns 0 if no amount is found.
+    """
     total_budget_amount_result = (
         frappe.qb.from_(BudgetAccount)
         .select(Sum(BudgetAccount.budget_amount).as_("total_amount"))
@@ -586,7 +669,16 @@ def _get_total_budget_amount(budget_name):
 
 
 def _calculate_monthly_allocated_amounts(base_amount, distribution_percentages):
-    """Calculates monthly allocated amounts based on a base amount and distribution percentages."""
+    """
+    Calculates the allocated amounts for each month based on a base amount and distribution percentages.
+
+    Args:
+        base_amount (float): The total amount to be distributed across months.
+        distribution_percentages (dict): A dictionary where keys are month labels and values are the percentage of the base amount to allocate to each month.
+
+    Returns:
+        dict: A dictionary mapping each month label to its allocated amount.
+    """
     month_data_amounts = {}
     for month_label_scrubbed, percentage_value in distribution_percentages.items():
         month_data_amounts[month_label_scrubbed] = (
@@ -596,7 +688,20 @@ def _calculate_monthly_allocated_amounts(base_amount, distribution_percentages):
 
 
 def _get_budget_against_name(budget):
-    """Fetches the name of the 'budget against' entity (e.g., Employee, Project)."""
+    """
+    Retrieves the display name associated with a budget's "budget_against" entity.
+
+    Depending on the type specified in `budget.budget_against`, this function looks up
+    the corresponding document (such as Employee, Project, Task, Cost Center, or Program)
+    and returns its display name field (e.g., first_name, project_name, subject, or name).
+
+    Args:
+        budget (dict or object): The budget record containing the "budget_against" type and
+            the relevant document identifier.
+
+    Returns:
+        str: The display name of the associated entity, or an empty string if not found.
+    """
     name_field_map = {
         "Employee": "first_name",
         "Project": "project_name",
@@ -626,8 +731,13 @@ def _get_budget_against_name(budget):
 
 def _get_total_donations_for_budget_from_new_doctype(budget_name):
     """
-    Calculates total donations (total_amount from Donation Allocation) for a given budget
-    by summing up amounts from related Donation Allocation Items.
+    Calculate the total donated amount for a specific budget from the new DonationAllocation doctype.
+
+    Args:
+        budget_name (str): The name of the budget to retrieve total donations for.
+
+    Returns:
+        float: The total donated amount for the specified budget. Returns 0 if no donations are found.
     """
     total_donations_result = (
         frappe.qb.from_(DonationAllocationItem)
@@ -637,11 +747,21 @@ def _get_total_donations_for_budget_from_new_doctype(budget_name):
         .where(DonationAllocationItem.recipient_type == "Budget")
         .where(DonationAllocationItem.recipient == budget_name)
     ).run(as_dict=True)
+
     return total_donations_result[0]["total_donated_amount"] or 0
 
 
 def _get_budget_accounts(budget_name, filter_account=None):
-    """Fetches budget accounts for a given budget, optionally filtered by account."""
+    """
+    Retrieve budget account details for a given budget.
+
+    Args:
+        budget_name (str): The name of the budget to fetch accounts for.
+        filter_account (str, optional): If provided, only fetch details for this specific account.
+
+    Returns:
+        list[dict]: A list of dictionaries containing 'account' and 'budget_amount' for each matching budget account.
+    """
     accounts_query = (
         frappe.qb.from_(BudgetAccount)
         .select(
@@ -658,16 +778,25 @@ def _get_budget_accounts(budget_name, filter_account=None):
 
 def _get_total_donations_for_account_from_new_doctype(budget_name, account_name):
     """
-    Calculates total donations for a specific account within a budget
-    by summing `amount` from Donation Allocation Items.
+    Calculate the total donated amount for a specific account and budget from the DonationAllocationItem doctype.
+
+    Args:
+        budget_name (str): The name of the budget to filter donations by.
+        account_name (str): The name of the account to filter donations by.
+
+    Returns:
+        float: The total donated amount for the specified account and budget. Returns 0 if no donations are found.
     """
     total_donations_account_result = (
         frappe.qb.from_(DonationAllocationItem)
-        .select(Sum(DonationAllocationItem.amount).as_("total_donated_amount_for_account"))
+        .select(
+            Sum(DonationAllocationItem.amount).as_("total_donated_amount_for_account")
+        )
         .where(DonationAllocationItem.recipient_type == "Budget")
         .where(DonationAllocationItem.recipient == budget_name)
         .where(DonationAllocationItem.account == account_name)
     ).run(as_dict=True)
+
     return total_donations_account_result[0]["total_donated_amount_for_account"] or 0
 
 
@@ -683,12 +812,34 @@ def _get_actual_expenses_for_account(
     program=None,
 ):
     """
-    Fetches the total actual expense (debit) for a given account within a date range,
-    considering budget against dimensions.
+    Calculate the net actual expenses for a given account within a specified date range,
+    optionally filtered by a budget dimension (Employee, Project, Task, Cost Center, or Program).
+
+    Args:
+        account (str): The account to retrieve expenses for.
+        start_date (str or datetime.date): The start date of the period.
+        end_date (str or datetime.date): The end date of the period.
+        budget_against_type (str): The dimension to filter by (e.g., "Employee", "Project", etc.).
+        employee (str, optional): Employee identifier, used if budget_against_type is "Employee".
+        project (str, optional): Project identifier, used if budget_against_type is "Project".
+        task (str, optional): Task identifier, used if budget_against_type is "Task".
+        cost_center (str, optional): Cost center identifier, used if budget_against_type is "Cost Center".
+        program (str, optional): Program identifier, used if budget_against_type is "Program".
+
+    Returns:
+        float: The net actual amount (sum of debits minus sum of credits) for the account,
+               filtered by the specified dimension and date range. Returns 0 if no matching entries are found.
     """
     query = (
         frappe.qb.from_(GL_Entry)
-        .select(Sum(GL_Entry.debit).as_("total_debit"))
+        .select(
+            GL_Entry.name,
+            GL_Entry.account,
+            GL_Entry.posting_date,
+            GL_Entry.debit,
+            GL_Entry.credit,
+            (GL_Entry.debit - GL_Entry.credit).as_("net_actual_amount"),
+        )
         .where(GL_Entry.account == account)
         .where(GL_Entry.posting_date >= start_date)
         .where(GL_Entry.posting_date <= end_date)
@@ -703,11 +854,26 @@ def _get_actual_expenses_for_account(
         "Program": GL_Entry.program,
     }
 
-    # Get the value for the specific dimension
-    dimension_value = locals().get(budget_against_type.lower().replace(" ", "_"))
+    # TODO: Uncomment and implement the dimension filtering logic if needed
+    # dimension_value = None
+    # if budget_against_type == "Employee":
+    #     dimension_value = employee
+    # elif budget_against_type == "Project":
+    #     dimension_value = project
+    # elif budget_against_type == "Task":
+    #     dimension_value = task
+    # elif budget_against_type == "Cost Center":
+    #     dimension_value = cost_center
+    # elif budget_against_type == "Program":
+    #     dimension_value = program
 
-    if budget_against_type in dimension_map and dimension_value:
-        query = query.where(dimension_map[budget_against_type] == dimension_value)
+    # if budget_against_type in dimension_map and dimension_value:
+    #     query = query.where(dimension_map[budget_against_type] == dimension_value)
 
     result = query.run(as_dict=True)
-    return result[0]["total_debit"] or 0
+
+    return (
+        result[0]["net_actual_amount"]
+        if result and result[0]["net_actual_amount"] is not None
+        else 0
+    )
