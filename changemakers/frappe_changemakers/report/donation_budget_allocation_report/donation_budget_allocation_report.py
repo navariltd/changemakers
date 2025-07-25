@@ -271,10 +271,6 @@ def get_data(filters=None):
                 budget.program,
             )
 
-            print(
-                f"Actual amount for account {account.account}: {actual_amount_for_account}"
-            )  # Debugging line
-
             total_actual_amount_for_budget += actual_amount_for_account
 
             # --- Fetch Total Donations for Account from new Donation Allocation Item DocType ---
