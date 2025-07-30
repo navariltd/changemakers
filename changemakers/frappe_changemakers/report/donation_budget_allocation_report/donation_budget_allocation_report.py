@@ -10,7 +10,6 @@ from frappe.query_builder.functions import Count, Sum
 Budget = DocType("Budget")
 MonthlyDistribution = DocType("Monthly Distribution")
 BudgetAccount = DocType("Budget Account")
-GL_Entry = DocType("GL Entry")
 DonationAllocation = DocType("Donation Allocation")
 DonationAllocationItem = DocType("Donation Allocation Item")
 
@@ -96,27 +95,9 @@ def get_columns(filters=None):
             "width": 150,
         },
         {
-            "fieldname": "actual_amount",
-            "fieldtype": "Currency",
-            "label": "Actual Amount",
-            "width": 150,
-        },
-        {
-            "fieldname": "variance_amount",
-            "fieldtype": "Currency",
-            "label": "Balance after Donation",
-            "width": 200,
-        },
-        {
             "fieldname": "total_donations",
             "fieldtype": "Currency",
             "label": "Total Donations (Budget)",
-            "width": 150,
-        },
-        {
-            "fieldname": "budget_variance",
-            "fieldtype": "Currency",
-            "label": "Budget Variance",
             "width": 150,
         },
         {
@@ -238,7 +219,6 @@ def get_data(filters=None):
         percentage_avg = 100 / months_distributed if months_distributed > 0 else 0
         budget_against_name = _get_budget_against_name(budget)
 
-        total_actual_amount_for_budget = 0
         current_budget_accounts_data = []  # To hold account rows
         current_budget_allocations_data = []  # To hold allocation item rows
 
@@ -249,9 +229,7 @@ def get_data(filters=None):
 
         accounts = _get_budget_accounts(
             budget.budget_name,
-            filters.get(
-                "budget_account"
-            ),  # pyright: ignore[reportOptionalMemberAccess]
+            filters.get("budget_account") if filters else None,
         )
 
         for account in accounts:
@@ -259,32 +237,11 @@ def get_data(filters=None):
                 account.budget_amount, distribution_dict_percentages
             )
 
-            actual_amount_for_account = _get_actual_expenses_for_account(
-                account.account,
-                start_date,
-                end_date,
-                budget.budget_against,
-                budget.employee,
-                budget.project,
-                budget.task,
-                budget.cost_center,
-                budget.program,
-            )
-
-            total_actual_amount_for_budget += actual_amount_for_account
-
             # --- Fetch Total Donations for Account from new Donation Allocation Item DocType ---
             total_donations_for_account = (
                 _get_total_donations_for_account_from_new_doctype(
                     budget.budget_name, account.account
                 )
-            )
-
-            variance_for_account = (
-                total_donations_for_account - actual_amount_for_account
-            )
-            budget_variance_for_account = (
-                account.budget_amount - actual_amount_for_account
             )
 
             current_budget_accounts_data.append(
@@ -294,10 +251,7 @@ def get_data(filters=None):
                     "name": "",
                     "budget_account": account.account,
                     "budget_amount": account.budget_amount,
-                    "actual_amount": actual_amount_for_account,
-                    "variance_amount": variance_for_account,
                     "total_donations": "",  # Not applicable for account row as it's for budget
-                    "budget_variance": budget_variance_for_account,
                     "months_distributed": "",
                     "percentage": "",
                     "donor": "",
@@ -314,9 +268,7 @@ def get_data(filters=None):
             allocation_items = _get_donation_allocation_items_for_account(
                 budget.budget_name,
                 account.account,
-                filters.get(
-                    "donation_allocation"
-                ),  # pyright: ignore[reportOptionalMemberAccess]
+                filters.get("donation_allocation") if filters else None,
             )
 
             for item in allocation_items:
@@ -333,22 +285,12 @@ def get_data(filters=None):
                         "donation_unallocated_balance": item.donation_unallocated_amount,  # From parent
                         "budget_account": "",
                         "budget_amount": "",
-                        "actual_amount": "",
-                        "variance_amount": "",
                         "total_donations": "",
-                        "budget_variance": "",
                         "months_distributed": "",
                         "percentage": "",
                         **allocation_month_empty_data,
                     }
                 )
-
-        balance_after_donation_for_budget = (
-            total_donations_for_budget - total_actual_amount_for_budget
-        )
-        budget_variance_for_budget = (
-            total_budget_amount - total_actual_amount_for_budget
-        )
 
         final_report_data.append(
             {
@@ -357,10 +299,7 @@ def get_data(filters=None):
                 "name": budget_against_name,
                 "budget_account": "",
                 "budget_amount": total_budget_amount,
-                "actual_amount": total_actual_amount_for_budget,
-                "variance_amount": balance_after_donation_for_budget,
                 "total_donations": total_donations_for_budget,
-                "budget_variance": budget_variance_for_budget,
                 "months_distributed": months_distributed,
                 "percentage": percentage_avg,
                 "donor": "",
@@ -612,6 +551,7 @@ def _get_monthly_distribution_data(
     ).run(as_dict=True)
 
     distribution_dict_percentages = {}
+
     for row in distribution_rows:
         month_label = row["month"]
         if fiscal_year_start_date and fiscal_year_end_date:
@@ -771,8 +711,10 @@ def _get_budget_accounts(budget_name, filter_account=None):
         .where(BudgetAccount.parent == budget_name)
         .where(BudgetAccount.parenttype == "Budget")
     )
+
     if filter_account:
         accounts_query = accounts_query.where(BudgetAccount.account == filter_account)
+
     return accounts_query.run(as_dict=True)
 
 
@@ -798,82 +740,3 @@ def _get_total_donations_for_account_from_new_doctype(budget_name, account_name)
     ).run(as_dict=True)
 
     return total_donations_account_result[0]["total_donated_amount_for_account"] or 0
-
-
-def _get_actual_expenses_for_account(
-    account,
-    start_date,
-    end_date,
-    budget_against_type,
-    employee=None,
-    project=None,
-    task=None,
-    cost_center=None,
-    program=None,
-):
-    """
-    Calculate the net actual expenses for a given account within a specified date range,
-    optionally filtered by a budget dimension (Employee, Project, Task, Cost Center, or Program).
-
-    Args:
-        account (str): The account to retrieve expenses for.
-        start_date (str or datetime.date): The start date of the period.
-        end_date (str or datetime.date): The end date of the period.
-        budget_against_type (str): The dimension to filter by (e.g., "Employee", "Project", etc.).
-        employee (str, optional): Employee identifier, used if budget_against_type is "Employee".
-        project (str, optional): Project identifier, used if budget_against_type is "Project".
-        task (str, optional): Task identifier, used if budget_against_type is "Task".
-        cost_center (str, optional): Cost center identifier, used if budget_against_type is "Cost Center".
-        program (str, optional): Program identifier, used if budget_against_type is "Program".
-
-    Returns:
-        float: The net actual amount (sum of debits minus sum of credits) for the account,
-               filtered by the specified dimension and date range. Returns 0 if no matching entries are found.
-    """
-    query = (
-        frappe.qb.from_(GL_Entry)
-        .select(
-            GL_Entry.name,
-            GL_Entry.account,
-            GL_Entry.posting_date,
-            GL_Entry.debit,
-            GL_Entry.credit,
-            (GL_Entry.debit - GL_Entry.credit).as_("net_actual_amount"),
-        )
-        .where(GL_Entry.account == account)
-        .where(GL_Entry.posting_date >= start_date)
-        .where(GL_Entry.posting_date <= end_date)
-        .where(GL_Entry.docstatus == 1)  # Only consider submitted GL Entries
-    )
-
-    dimension_map = {
-        "Employee": GL_Entry.employee,
-        "Project": GL_Entry.project,
-        "Task": GL_Entry.task,
-        "Cost Center": GL_Entry.cost_center,
-        "Program": GL_Entry.program,
-    }
-
-    # TODO: Uncomment and implement the dimension filtering logic if needed
-    # dimension_value = None
-    # if budget_against_type == "Employee":
-    #     dimension_value = employee
-    # elif budget_against_type == "Project":
-    #     dimension_value = project
-    # elif budget_against_type == "Task":
-    #     dimension_value = task
-    # elif budget_against_type == "Cost Center":
-    #     dimension_value = cost_center
-    # elif budget_against_type == "Program":
-    #     dimension_value = program
-
-    # if budget_against_type in dimension_map and dimension_value:
-    #     query = query.where(dimension_map[budget_against_type] == dimension_value)
-
-    result = query.run(as_dict=True)
-
-    return (
-        result[0]["net_actual_amount"]
-        if result and result[0]["net_actual_amount"] is not None
-        else 0
-    )
