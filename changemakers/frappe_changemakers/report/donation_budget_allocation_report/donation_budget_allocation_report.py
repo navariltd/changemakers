@@ -260,6 +260,7 @@ def get_data(filters=None):
                     "total_allocation_amount": "",
                     "donation_total_paid_amount": "",
                     "donation_unallocated_balance": "",
+                    "indent": 1,  # Indent account rows under budget
                     **account_monthly_amounts,
                 }
             )
@@ -288,6 +289,7 @@ def get_data(filters=None):
                         "total_donations": "",
                         "months_distributed": "",
                         "percentage": "",
+                        "indent": 2,  # Indent allocation items under accounts
                         **allocation_month_empty_data,
                     }
                 )
@@ -308,6 +310,7 @@ def get_data(filters=None):
                 "total_allocation_amount": "",
                 "donation_total_paid_amount": "",
                 "donation_unallocated_balance": "",
+                "indent": 0,  # Top-level budget rows
                 **month_data_amounts,
             }
         )
