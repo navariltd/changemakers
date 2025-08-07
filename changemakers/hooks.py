@@ -44,7 +44,8 @@ fixtures = [
                     "Project",
                     "Stock Entry",
                     "Budget",
-                    "Task"
+                    "Task",
+                    "Issue",
                 ),
             ],
             ["is_system_generated", "=", 0],
@@ -53,10 +54,7 @@ fixtures = [
     },
 ]
 
-accounting_dimension_doctypes = [
-    "Beneficiary",
-    "Donor"
-]
+accounting_dimension_doctypes = ["Beneficiary", "Donor"]
 
 # Includes in <head>
 # ------------------
@@ -81,7 +79,7 @@ website_route_rules = [
 # webform_include_css = {"doctype": "public/css/doctype.css"}
 
 # include js in page
-# page_js = {"page" : "public/js/file.js"} 
+# page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
 doctype_js = {
