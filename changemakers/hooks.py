@@ -165,7 +165,10 @@ doc_events = {
         "on_trash": [
             "changemakers.frappe_changemakers.doctype.changemakers_user_profile.changemakers_user_profile.delete_user_profile",
         ],
-    }
+    },
+    "ToDo": {
+        "before_save": "changemakers.controllers.issue.before_save",
+    },
 }
 
 # Scheduled Tasks
