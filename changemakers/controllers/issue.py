@@ -2,7 +2,20 @@ import frappe
 
 
 def before_save(doc, method=None):
-    # Check if the Todo is an assignment for an Issue
+    """
+    Hook function to be called before saving a ToDo document related to an Issue.
+    - If the ToDo is an assignment (status 'Open') for an Issue
+        appends the assigned user's details to the Issue's custom_assigned_paralegals table.
+    - If the ToDo's status changes to 'Cancelled',
+        removes the user from the Issue's custom_assigned_paralegals table and deletes
+        the corresponding Paralegal User record.
+    Args:
+        doc: The ToDo document being saved.
+        method: Optional method argument (not used).
+    Returns:
+        None
+    """
+    # Check if the ToDo is an assignment for an Issue
     if doc.reference_type != "Issue":
         return
 
