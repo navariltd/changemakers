@@ -3,6 +3,24 @@ import frappe
 
 @frappe.whitelist()
 def get_case(requestor_id=None, requestor_phone=None):
+    """
+    Retrieve case details based on requestor's ID or phone number.
+
+    Args:
+        requestor_id (str, optional): The ID number of the requestor. Defaults to None.
+        requestor_phone (str, optional): The phone number of the requestor. Defaults to None.
+
+    Returns:
+        dict: A dictionary containing:
+            - success (bool): Indicates if the case was found.
+            - message (str, optional): Error message if the case was not found or input is invalid.
+            - case_name (str, optional): The name of the case if found.
+            - status (str, optional): The status of the case ("Open" if status is "New").
+            - assigned_paralegals (list, optional): List of assigned paralegals with their user and phone details.
+
+    Notes:
+        Either 'requestor_id' or 'requestor_phone' must be provided.
+    """
     if not requestor_id and not requestor_phone:
         return {
             "success": False,
