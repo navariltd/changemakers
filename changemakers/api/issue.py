@@ -32,7 +32,7 @@ def get_case(requestor_id=None, requestor_phone=None):
     return {
         "success": True,
         "case_name": case_name,
-        "status": status,
+        "status": "Open" if status == "New" else status,
         "assigned_paralegals": [p for p in paralegals],
     }
 
@@ -44,6 +44,7 @@ def create_case(
     description,
     county,
     title,
+    type,
     birth_certificate_type,
     requestor_service_rating=None,
 ):
@@ -71,11 +72,15 @@ def create_case(
             "success": False,
             "message": "'requestor_id' or 'requestor_phone' must be provided.",
         }
-
-    title = "Legal Identity Help"
+    
+    if not title:
+        return {"success": False, "message": "'title' must be provided."}
 
     if not county:
         return {"success": False, "message": "'county' must be provided."}
+
+    if not type:
+        return {"success": False, "message": "'type' must be provided."}
 
     if not requestor_service_rating:
         requestor_service_rating = 0
@@ -94,19 +99,15 @@ def create_case(
             "id_number": requestor_id,
             "requestor_phone": requestor_phone,
             "description": description,
-            "title": title,
-            "type": "Civil Case",
+            "title": title.title(),
+            "type": type.title(),
             "status": "New",
             "requestor_service_rating": requestor_service_rating,
             "birth_certificate_type": birth_certificate_type,
-            "county": county,
+            "county": county.title(),
         }
     )
 
     new_case.insert()
 
-    return {
-        "success": True,
-        "case_name": new_case.name,
-        "case_title": new_case.title
-    }
+    return {"success": True, "case_name": new_case.name, "case_title": new_case.title}
