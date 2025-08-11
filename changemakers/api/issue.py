@@ -2,21 +2,19 @@ import frappe
 
 
 @frappe.whitelist()
-def get_case(reporter_id=None, reporter_phone=None):
-    if not reporter_id and not reporter_phone:
+def get_case(requestor_id=None, requestor_phone=None):
+    if not requestor_id and not requestor_phone:
         return {
             "success": False,
-            "message": "Either 'reporter_id' or 'reporter_phone' must be provided.",
+            "message": "Either 'requestor_id' or 'requestor_phone' must be provided.",
         }
 
     case_name = None
-    if reporter_id:
+    if requestor_id:
+        case_name = frappe.db.get_value("Case", {"requestor_id": requestor_id}, "name")
+    elif requestor_phone:
         case_name = frappe.db.get_value(
-            "Case", {"user_document_number": reporter_id}, "name"
-        )
-    elif reporter_phone:
-        case_name = frappe.db.get_value(
-            "Case", {"requestor_phone": reporter_phone}, "name"
+            "Case", {"requestor_phone": requestor_phone}, "name"
         )
 
     if not case_name:
