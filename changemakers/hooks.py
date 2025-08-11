@@ -46,6 +46,7 @@ fixtures = [
                     "Budget",
                     "Task",
                     "Issue",
+                    "Case"
                 ),
             ],
             ["is_system_generated", "=", 0],
