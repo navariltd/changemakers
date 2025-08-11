@@ -11,7 +11,7 @@ def get_case(requestor_id=None, requestor_phone=None):
 
     case_name = None
     if requestor_id:
-        case_name = frappe.db.get_value("Case", {"requestor_id": requestor_id}, "name")
+        case_name = frappe.db.get_value("Case", {"id_number": requestor_id}, "name")
     elif requestor_phone:
         case_name = frappe.db.get_value(
             "Case", {"requestor_phone": requestor_phone}, "name"
@@ -20,7 +20,7 @@ def get_case(requestor_id=None, requestor_phone=None):
     if not case_name:
         return {
             "success": False,
-            "message": "No issue found with the provided details.",
+            "message": "No case found with the provided details.",
         }
 
     status = frappe.db.get_value("Case", case_name, "status")
