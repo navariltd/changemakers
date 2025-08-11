@@ -40,14 +40,7 @@ fixtures = [
             [
                 "dt",
                 "in",
-                (
-                    "Project",
-                    "Stock Entry",
-                    "Budget",
-                    "Task",
-                    "Issue",
-                    "Case"
-                ),
+                ("Project", "Stock Entry", "Budget", "Task", "Issue", "Case"),
             ],
             ["is_system_generated", "=", 0],
             ["module", "=", "Frappe Changemakers"],
@@ -168,7 +161,7 @@ doc_events = {
         ],
     },
     "ToDo": {
-        "before_save": "changemakers.controllers.issue.before_save",
+        "before_save": "changemakers.controllers.case.before_save",
     },
 }
 
