@@ -174,6 +174,7 @@ Successful response
     "success": true,
     "case_name": "132",
     "status": "Open",
+    "type": "Civil Case",
     "assigned_paralegals": [
       { "full_name": "Paralegal One", "phone": "+254700000001" },
       { "full_name": "Paralegal Two", "phone": "+254700000002" }

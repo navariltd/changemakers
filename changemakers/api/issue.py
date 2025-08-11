@@ -128,4 +128,4 @@ def create_case(
 
     new_case.insert()
 
-    return {"success": True, "case_name": new_case.name, "case_title": new_case.title}
+    return {"success": True, "case_name": new_case.name, "case_title": new_case.title, "type": new_case.type}
