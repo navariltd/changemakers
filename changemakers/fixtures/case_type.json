@@ -3,6 +3,22 @@
   "docstatus": 0,
   "doctype": "Case Type",
   "is_enabled": 1,
+  "modified": "2025-06-18 12:33:32.301113",
+  "name": "Civil Case",
+  "type": "Civil Case"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Case Type",
+  "is_enabled": 1,
+  "modified": "2025-06-26 11:05:38.354492",
+  "name": "Environment & Land Case",
+  "type": "Environment & Land Case"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Case Type",
+  "is_enabled": 1,
   "modified": "2023-06-18 01:22:55.445919",
   "name": "Shelter",
   "type": "Shelter"
