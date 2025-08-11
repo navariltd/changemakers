@@ -44,7 +44,7 @@ def get_case(requestor_id=None, requestor_phone=None):
     status = frappe.db.get_value("Case", case_name, "status")
 
     paralegals = frappe.get_all(
-        "Paralegal User", filters={"parent": case_name}, fields=["user", "phone"]
+        "Paralegal User", filters={"parent": case_name}, fields=["full_name", "phone"]
     )
 
     return {
