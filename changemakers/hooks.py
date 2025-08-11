@@ -40,7 +40,7 @@ fixtures = [
             [
                 "dt",
                 "in",
-                ("Project", "Stock Entry", "Budget", "Task", "Issue", "Case"),
+                ("Project", "Stock Entry", "Budget", "Task", "Case"),
             ],
             ["is_system_generated", "=", 0],
             ["module", "=", "Frappe Changemakers"],
