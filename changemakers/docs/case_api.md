@@ -187,8 +187,8 @@ Validation errors (examples)
 - Missing fields:
   - `"'requestor_id' or 'requestor_phone' must be provided."` (both are required in practice)
   - `"'title' must be provided."`
-  - `"'county' must be provided."`
-  - `"'type' must be provided."`
+  - `"'county' must be provided and must be included in the system's County list."`
+  - `"'type' must be provided and must always be 'Civil Case'."`
 - Invalid `birth_certificate_type`:
   - `"'birth_certificate_type' must be either 'New Born Registration' or 'Late Registration'."`
 
@@ -205,7 +205,7 @@ curl -X POST \
 		"description": "Birth certificate assistance required.",
 		"county": "nairobi",
 		"title": "legal identity help",
-		"type": "birth certificate",
+		"type": "Civil Case",
 		"birth_certificate_type": "late registration",
 		"requestor_service_rating": 4
 	}'
@@ -217,7 +217,7 @@ Successful response
 {
   "message": {
     "success": true,
-    "case_name": "CASE-0002",
+    "case_name": "132",
     "case_title": "Legal Identity Help"
   }
 }
