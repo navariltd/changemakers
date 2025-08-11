@@ -7,63 +7,29 @@ Base URL
 
 Authentication
 
-- Requires an authenticated Frappe session.
-  - Session: use the logged-in session cookie (sid).
-
-- Access Authorization Cookies by logging in with user credentials.
+- Requires an authenticated API Key.
 
 Content Types
 
-- POST with `application/json`.
+- POST/GET with `application/json`.
 
 ---
 
-## POST /api/method/login
+## How to Generate User API Key
 
-Login to obtain an authorization token.
+1. Log in to the Haki na Sheria platform.
+2. Select your user profile.
+3. Click on "My Settings".
+4. Click on "Generate API Key".
+5. Copy the generated API key and keep it secure.
 
-### Request
+---
 
-- Method: POST
-- URL: `/api/method/login`
-- Body Parameters:
-  - `usr` (string, required) — the username
-  - `pwd` (string, required) — the password
-
-### Response
-
-- `message` (string): Indicates the result of the login attempt. May be empty on successful login.
-- `home_page` (string): URL of the home page the user will be redirected to after logging in. May be empty.
-- `full_name` (string): Full name of the user. May also be empty.
-
-Example successful response:
-
-```json
-{
-    "message": "",
-    "home_page": "/app/home",
-    "full_name": "Jane Doe"
-}
-```
-
-Authorization cookies will be set on response object on successful login.
-
-Example failed response:
-
-```json
-{
-    "message": "Invalid login credentials",
-    "home_page": "",
-    "full_name": ""
-}
-```
-
-
-## POST /api/method/changemakers.api.issue.get_case
+## GET /api/method/changemakers.api.issue.get_case
 
 Retrieve a Case by the requestor’s ID number or phone number.
 
-- Methods: POST
+- Methods: GET
 - URL: `/api/method/changemakers.api.issue.get_case`
 - Auth: Required
 
@@ -94,18 +60,18 @@ GET (query string)
 
 ```bash
 curl -X GET \
-	"https://your-frappe-host/api/method/changemakers.api.issue.get_case?requestor_id=12345678" \
-	-H "Authorization: token <api_key>:<api_secret>"
+    "BASE_URL/api/method/changemakers.api.issue.get_case?requestor_id=12345678" \
+    -H "Authorization: token <api_key>:<api_secret>"
 ```
 
-POST (JSON)
+GET (JSON)
 
 ```bash
 curl --location 'https://staging-haki-na-sheria.m.frappe.cloud/api/method/changemakers.api.issue.get_case' \
     --header 'Content-Type: application/json' \
-    --header 'Cookie: full_name=<username>; sid=<sid retrieved from login>; system_user=yes; user_id=<user id set from login>; user_image=' \
+    --header 'Authorization: token <api_key>:<api_secret>' \
     --data '{
-        "requestor_phone": "793-583-4161"
+        "requestor_phone": "712345678"
     }'
 ```
 
@@ -115,22 +81,11 @@ Successful response
 {
   "message": {
     "success": true,
-    "case_name": "CASE-0001",
+    "case_name": "8001",
     "status": "Open",
     "assigned_paralegals": [
       { "user": "paralegal1@example.com", "phone": "+254700000001" }
     ]
-  }
-}
-```
-
-Not found response
-
-```json
-{
-  "message": {
-    "success": false,
-    "message": "No case found with the provided details."
   }
 }
 ```
@@ -196,19 +151,19 @@ Example
 
 ```bash
 curl -X POST \
-	"https://your-frappe-host/api/method/changemakers.api.issue.create_case" \
-	-H "Content-Type: application/json" \
-	-H "Cookie: full_name=<username>; sid=<sid retrieved from login>; system_user=yes; user_id=<user id set from login>; user_image=" \
-	-d '{
-		"requestor_id": "12345678",
-		"requestor_phone": "+254700000000",
-		"description": "Birth certificate assistance required.",
-		"county": "nairobi",
-		"title": "legal identity help",
-		"type": "Civil Case",
-		"birth_certificate_type": "late registration",
-		"requestor_service_rating": 4
-	}'
+    "BASE_URL/api/method/changemakers.api.issue.create_case" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: token <api_key>:<api_secret>" \
+    -d '{
+        "requestor_id": "12345678",
+        "requestor_phone": "+254700000000",
+        "description": "Birth certificate assistance required.",
+        "county": "nairobi",
+        "title": "legal identity help",
+        "type": "Civil Case",
+        "birth_certificate_type": "late registration",
+        "requestor_service_rating": 4
+    }'
 ```
 
 Successful response
@@ -218,7 +173,11 @@ Successful response
   "message": {
     "success": true,
     "case_name": "132",
-    "case_title": "Legal Identity Help"
+    "status": "Open",
+    "assigned_paralegals": [
+      { "full_name": "Paralegal One", "phone": "+254700000001" },
+      { "full_name": "Paralegal Two", "phone": "+254700000002" }
+    ]
   }
 }
 ```
