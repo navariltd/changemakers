@@ -13,7 +13,7 @@ def get_case(requestor_id=None, requestor_phone=None):
     Returns:
         dict: A dictionary containing:
             - success (bool): Indicates if the case was found.
-            - message (str, optional): Error message if the case was not found or input is invalid.
+            - error (str, optional): Error error if the case was not found or input is invalid.
             - case_name (str, optional): The name of the case if found.
             - status (str, optional): The status of the case ("Open" if status is "New").
             - assigned_paralegals (list, optional): List of assigned paralegals with their user and phone details.
@@ -24,7 +24,7 @@ def get_case(requestor_id=None, requestor_phone=None):
     if not requestor_id and not requestor_phone:
         return {
             "success": False,
-            "message": "Either 'requestor_id' or 'requestor_phone' must be provided.",
+            "error": "Either 'requestor_id' or 'requestor_phone' must be provided.",
         }
 
     case_name = None
@@ -38,13 +38,13 @@ def get_case(requestor_id=None, requestor_phone=None):
     if not case_name:
         return {
             "success": False,
-            "message": "No case found with the provided details.",
+            "error": "No case found with the provided details.",
         }
 
     status = frappe.db.get_value("Case", case_name, "status")
 
     paralegals = frappe.get_all(
-        "Paralegal User", filters={"parent": case_name}, fields=["user", "phone"]
+        "Paralegal User", filters={"parent": case_name}, fields=["full_name", "phone"]
     )
 
     return {
@@ -81,24 +81,27 @@ def create_case(
     Returns:
         dict: A dictionary containing:
             - "success" (bool): Indicates if the case was created successfully.
-            - "message" (str, optional): Error message if creation failed.
+            - "error" (str, optional): Error error if creation failed.
             - "case_name" (str, optional): Name of the created case if successful.
             - "case_title" (str, optional): Title of the created case if successful.
     """
     if not requestor_id or not requestor_phone:
         return {
             "success": False,
-            "message": "'requestor_id' or 'requestor_phone' must be provided.",
+            "error": "'requestor_id' or 'requestor_phone' must be provided.",
         }
-    
+
     if not title:
-        return {"success": False, "message": "'title' must be provided."}
+        return {"success": False, "error": "'title' must be provided."}
 
     if not county:
-        return {"success": False, "message": "'county' must be provided."}
+        return {
+            "success": False,
+            "error": "'county' must be provided and must be included in the system's County list.",
+        }
 
     if not type:
-        return {"success": False, "message": "'type' must be provided."}
+        return {"success": False, "error": "'type' must be provided."}
 
     if not requestor_service_rating:
         requestor_service_rating = 0
@@ -108,7 +111,7 @@ def create_case(
     if birth_certificate_type not in ["New Born Registration", "Late Registration"]:
         return {
             "success": False,
-            "message": "'birth_certificate_type' must be either 'New Born Registration' or 'Late Registration'.",
+            "error": "'birth_certificate_type' must be either 'New Born Registration' or 'Late Registration'.",
         }
 
     new_case = frappe.get_doc(
@@ -128,4 +131,9 @@ def create_case(
 
     new_case.insert()
 
-    return {"success": True, "case_name": new_case.name, "case_title": new_case.title}
+    return {
+        "success": True,
+        "case_name": new_case.name,
+        "case_title": new_case.title,
+        "case_type": new_case.type,
+    }
