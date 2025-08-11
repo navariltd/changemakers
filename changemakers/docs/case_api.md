@@ -54,15 +54,7 @@ Validation and Behavior
 - If no matching case: `success=false` with a message.
 - If found: `success=true` with case details; `assigned_paralegals` array may be empty if no paralegal is assigned to the case.
 
-Examples
-
-GET (query string)
-
-```bash
-curl -X GET \
-    "BASE_URL/api/method/changemakers.api.issue.get_case?requestor_id=12345678" \
-    -H "Authorization: token <api_key>:<api_secret>"
-```
+Example
 
 GET (JSON)
 
@@ -96,7 +88,7 @@ Invalid input response
 {
   "message": {
     "success": false,
-    "message": "Either 'requestor_id' or 'requestor_phone' must be provided."
+    "error": "Either 'requestor_id' or 'requestor_phone' must be provided."
   }
 }
 ```
@@ -145,24 +137,23 @@ Validation errors (examples)
   - `"'county' must be provided and must be included in the system's County list."`
   - `"'type' must be provided and must always be 'Civil Case'."`
 - Invalid `birth_certificate_type`:
-  - `"'birth_certificate_type' must be either 'New Born Registration' or 'Late Registration'."`
+  - `"'birth_certificate_type' must be either 'New Born Registration' or 'Late Registration', if provided."`
 
 Example
 
 ```bash
 curl -X POST \
-    "BASE_URL/api/method/changemakers.api.issue.create_case" \
+    "https://staging-haki-na-sheria.m.frappe.cloud/api/method/changemakers.api.issue.create_case" \
     -H "Content-Type: application/json" \
     -H "Authorization: token <api_key>:<api_secret>" \
     -d '{
-        "requestor_id": "12345678",
+        "requestor_id": "",
         "requestor_phone": "+254700000000",
-        "description": "Birth certificate assistance required.",
-        "county": "nairobi",
+        "description": "I cannot access any ID Registration offices.",
+        "county": "Garissa",
         "title": "legal identity help",
         "type": "Civil Case",
-        "birth_certificate_type": "late registration",
-        "requestor_service_rating": 4
+        "requestor_service_rating": 0.4
     }'
 ```
 
@@ -170,26 +161,57 @@ Successful response
 
 ```json
 {
-  "message": {
-    "success": true,
-    "case_name": "132",
-    "status": "Open",
-    "type": "Civil Case",
-    "assigned_paralegals": [
-      { "full_name": "Paralegal One", "phone": "+254700000001" },
-      { "full_name": "Paralegal Two", "phone": "+254700000002" }
-    ]
-  }
+  "success": true,
+  "case_name": "132",
+  "status": "Open",
+  "case_title": "Legal Identity Help",
+  "case_type": "Civil Case"
 }
 ```
 
-Validation failure response
+### Validation failure responses
+
+#### Missing requestor information
 
 ```json
 {
   "message": {
     "success": false,
-    "message": "'birth_certificate_type' must be either 'New Born Registration' or 'Late Registration'."
+    "error": "'requestor_id' or 'requestor_phone' must be provided."
+  }
+}
+```
+
+#### Missing title
+
+
+```json
+{
+  "message": {
+    "success": false,
+    "error": "'title' must be provided."
+  }
+}
+```
+
+#### Missing county
+
+```json
+{
+  "message": {
+    "success": false,
+    "error": "'county' must be provided and must be included in the system's County list."
+  }
+}
+```
+
+#### Missing type
+
+```json
+{
+  "message": {
+    "success": false,
+    "error": "'type' must be provided."
   }
 }
 ```
