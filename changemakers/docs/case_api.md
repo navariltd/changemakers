@@ -35,9 +35,8 @@ Retrieve a Case by the requestor’s ID number or phone number.
 
 Parameters
 
-- `requestor_id` (string, optional)
-- `requestor_phone` (string, optional)
-- At least one of `requestor_id` or `requestor_phone` must be provided.
+- `requestor_id` (string, optional if `requestor_phone` is not provided)
+- `requestor_phone` (string, optional if `requestor_id` is not provided)
 
 Response (200 OK)
 
@@ -46,7 +45,7 @@ Response (200 OK)
 - `case_name` (string, optional)
 - `status` (string, optional) — returns "Open" if stored status is "New"; otherwise the stored status
 - `assigned_paralegals` (array, optional)
-  - Items: `{ "user": string, "phone": string }`
+  - Items: `{ "full_name": string, "phone": string }`
 
 Validation and Behavior
 
@@ -63,7 +62,7 @@ curl --location 'https://staging-haki-na-sheria.m.frappe.cloud/api/method/change
     --header 'Content-Type: application/json' \
     --header 'Authorization: token <api_key>:<api_secret>' \
     --data '{
-        "requestor_phone": "712345678"
+        "requestor_phone": "0712345678"
     }'
 ```
 
@@ -76,7 +75,7 @@ Successful response
     "case_name": "8001",
     "status": "Open",
     "assigned_paralegals": [
-      { "user": "paralegal1@example.com", "phone": "+254700000001" }
+      { "full_name": "Paralegal One", "phone": "+254700000001" }
     ]
   }
 }
