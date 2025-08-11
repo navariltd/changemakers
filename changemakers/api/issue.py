@@ -16,7 +16,7 @@ def get_case(reporter_id=None, reporter_phone=None):
         )
     elif reporter_phone:
         case_name = frappe.db.get_value(
-            "Case", {"phone_number": reporter_phone}, "name"
+            "Case", {"requestor_phone": reporter_phone}, "name"
         )
 
     if not case_name:
@@ -25,15 +25,15 @@ def get_case(reporter_id=None, reporter_phone=None):
             "message": "No issue found with the provided details.",
         }
 
-    status = frappe.db.get_value("Issue", case_name, "status")
+    status = frappe.db.get_value("Case", case_name, "status")
 
     paralegals = frappe.get_all(
-        "Paralegal User", filters={"parent": case_name}, fields=["user"]
+        "Paralegal User", filters={"parent": case_name}, fields=["user", "phone"]
     )
 
     return {
         "success": True,
         "case_name": case_name,
         "status": status,
-        "assigned_paralegals": [p["user"] for p in paralegals],
+        "assigned_paralegals": [p for p in paralegals],
     }

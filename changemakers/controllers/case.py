@@ -5,9 +5,9 @@ def before_save(doc, method=None):
     """
     Hook function to be called before saving a ToDo document related to an Case.
     - If the ToDo is an assignment (status 'Open') for an Case
-        appends the assigned user's details to the Case's custom_assigned_paralegals table.
+        appends the assigned user's details to the Case's assigned_paralegals table.
     - If the ToDo's status changes to 'Cancelled',
-        removes the user from the Case's custom_assigned_paralegals table and deletes
+        removes the user from the Case's assigned_paralegals table and deletes
         the corresponding Paralegal User record.
     Args:
         doc: The ToDo document being saved.
@@ -22,7 +22,7 @@ def before_save(doc, method=None):
     parent_case = frappe.get_doc("Case", doc.reference_name)
 
     # Handle a new assignment (Todo status is 'Open')
-    if parent_case.status == "Open":
+    if parent_case.status != "Closed":
         user_details = frappe.db.get_value(
             "User", doc.allocated_to, ["full_name", "phone"], as_dict=True
         )
