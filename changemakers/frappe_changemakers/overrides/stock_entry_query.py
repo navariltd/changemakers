@@ -56,7 +56,7 @@ def get_distribution_data(project):
 			"status": "Active",
 			"name": ["not in", list(used_beneficiaries_set)]
 		},
-		fields=["name as beneficiary"]
+		fields=["name as beneficiary", "beneficiary_no", "full_name"]
 	)
 
 	return {
@@ -66,7 +66,7 @@ def get_distribution_data(project):
  
 
 @frappe.whitelist()
-def create_food_stock_entries(project, bom, beneficiaries):
+def create_food_stock_entries(project, bom, beneficiaries, warehouse=None):
     """
     Creates a unique Stock Entry of type 'Distribution' for each beneficiary,
     populating it with items from the specified Bill of Materials (BOM).
@@ -94,17 +94,14 @@ def create_food_stock_entries(project, bom, beneficiaries):
     if not bom_items:
         frappe.throw(_("No BOM items found for the selected BOM."))
 
-    from_warehouse = None
-    if project_doc.custom_branch:
+    from_warehouse = warehouse
+    if project_doc.custom_branch and not from_warehouse:
         warehouse = frappe.get_value("Warehouse", {"name": ["like", f"%{project_doc.custom_branch}%"]}, "name")
         if warehouse:
             from_warehouse = warehouse
         else:
             frappe.msgprint(_(f"No warehouse found matching branch '{project_doc.custom_branch}'. "
                                "Stock Entry will be created without a source warehouse if not explicitly set."))
-    else:
-        frappe.msgprint(_("Project has no custom branch. Stock Entry will be created without a source warehouse."))
-
 
     created_stock_entries = [] 
 
@@ -123,7 +120,7 @@ def create_food_stock_entries(project, bom, beneficiaries):
             continue
 
         se = frappe.new_doc("Stock Entry")
-        se.stock_entry_type = "Distribution"
+        se.stock_entry_type = "Distribution" if frappe.db.exists("Stock Entry Type", "Distribution") else "Material Issue"
         se.project = project
         se.branch = project_doc.custom_branch
         se.cost_center = project_doc.cost_center
