@@ -7,7 +7,7 @@ app_description = "Empowering the people that do good."
 app_email = "hussain@frappe.io"
 app_license = "AGPL"
 
-required_apps = ["erpnext", "education", "non_profit"]
+required_apps = ["erpnext", "non_profit"]
 
 fixtures = [
     "Custom HTML Block",

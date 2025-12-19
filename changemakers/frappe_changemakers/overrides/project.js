@@ -99,6 +99,18 @@ function open_distribution_modal(frm) {
 							}),
 						},
 						{
+							label: "Warehouse",
+							fieldname: "warehouse",
+							fieldtype: "Link",
+							options: "Warehouse",
+							reqd: 1,
+							get_query: () => ({
+								filters: {
+									disabled: 0,
+								},
+							}),
+						},
+						{
 							label: "Beneficiaries",
 							fieldname: "beneficiaries",
 							fieldtype: "Table",
@@ -108,17 +120,28 @@ function open_distribution_modal(frm) {
 							fields: [
 								{
 									fieldname: "beneficiary",
-									label: "Beneficiary",
+									label: "ID",
 									fieldtype: "Link",
 									options: "Beneficiary",
 									in_list_view: 1,
 									reqd: 1,
+									cols: 2,
 									get_query: () => ({
 										filters: {
 											branch: frm.doc.branch,
 											status: "Active",
 										},
 									}),
+								},
+								{
+									fieldname: "full_name",
+									label: "Full Name",
+									fieldtype: "Data",
+									in_list_view: 1,
+									reqd: 1,
+									read_only: 1,
+									cols: 4,
+									get_value: (d) => d.beneficiary_full_name,
 								},
 							],
 						},
@@ -131,6 +154,7 @@ function open_distribution_modal(frm) {
 								project: frm.doc.name,
 								bom: values.bom,
 								beneficiaries: values.beneficiaries,
+								warehouse: values.warehouse,
 							},
 							freeze: true,
 							callback: function (res) {
