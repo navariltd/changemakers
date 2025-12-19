@@ -92,6 +92,8 @@
    "in_preview": 1,
    "in_standard_filter": 1,
    "label": "Total Allocation Amount",
+   "non_negative": 1,
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -166,7 +168,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-07-01 11:41:26.293412",
+ "modified": "2025-12-19 12:48:44.118466",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Allocation",

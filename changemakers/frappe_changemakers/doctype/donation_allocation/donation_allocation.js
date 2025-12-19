@@ -13,6 +13,10 @@ frappe.ui.form.on("Donation Allocation", {
 		}
 	},
 
+	before_save: function (frm) {
+		update_total_amount(frm);
+	},
+
 	donation_total_paid_amount(frm) {
 		calculate_unallocated_amount(frm);
 	},
@@ -47,6 +51,10 @@ frappe.ui.form.on("Donation Allocation Item", {
 		refresh_field("account", cdn, "items");
 	},
 
+	amount: function (frm, cdt, cdn) {
+		update_total_amount(frm);
+	},
+
 	items_add: function (frm, cdt, cdn) {
 		if (frm.doc.payment_entry) {
 			frappe.model.set_value(
@@ -56,6 +64,12 @@ frappe.ui.form.on("Donation Allocation Item", {
 				frm.doc.payment_entry
 			);
 		}
+
+		update_total_amount(frm);
+	},
+
+	items_remove: function (frm, cdt, cdn) {
+		update_total_amount(frm);
 	},
 });
 
@@ -226,4 +240,12 @@ function calculate_unallocated_amount(frm) {
 			}
 		},
 	});
+}
+
+function update_total_amount(frm) {
+	let total = 0;
+	(frm.doc.items || []).forEach((row) => {
+		total += flt(row.amount || 0);
+	});
+	frm.set_value("total_amount", total);
 }
