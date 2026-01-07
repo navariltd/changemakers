@@ -1,50 +1,44 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:county_name",
- "creation": "2025-08-08 10:36:29.126658",
+ "autoname": "field:sub_county_name",
+ "creation": "2026-01-07 12:30:49.524292",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "county_name",
-  "country"
+  "sub_county_name",
+  "county",
+  "column_break_ngso"
  ],
  "fields": [
   {
-   "fieldname": "county_name",
+   "fieldname": "sub_county_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "County Name",
+   "label": "Sub County Name",
    "reqd": 1,
    "unique": 1
   },
   {
-   "fieldname": "country",
+   "fieldname": "county",
    "fieldtype": "Link",
-   "label": "Country",
-   "options": "Country",
+   "in_list_view": 1,
+   "label": "County",
+   "options": "County",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ngso",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [
-  {
-   "group": "County",
-   "link_doctype": "Sub County",
-   "link_fieldname": "county"
-  },
-  {
-   "group": "Ward",
-   "link_doctype": "Ward",
-   "link_fieldname": "county"
-  }
- ],
- "modified": "2026-01-07 12:37:25.122989",
+ "links": [],
+ "modified": "2026-01-07 12:34:32.784407",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
- "name": "County",
+ "name": "Sub County",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -62,6 +56,7 @@
   }
  ],
  "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
