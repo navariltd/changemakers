@@ -7,7 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "county",
+  "sub_county",
   "zone"
  ],
  "fields": [
@@ -19,15 +19,16 @@
    "options": "Zone"
   },
   {
-   "fieldname": "county",
+   "fieldname": "sub_county",
    "fieldtype": "Link",
-   "label": "County",
-   "options": "County"
+   "label": "Sub County",
+   "options": "Sub County",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-07 12:36:56.391571",
+ "modified": "2026-01-14 13:09:23.447017",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Ward",
