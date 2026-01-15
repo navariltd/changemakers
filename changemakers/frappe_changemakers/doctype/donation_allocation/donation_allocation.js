@@ -40,6 +40,7 @@ frappe.ui.form.on("Donation Allocation", {
 		calculate_unallocated_amount(frm);
 	},
 });
+
 frappe.ui.form.on("Donation Allocation Item", {
 	recipient_type: function (frm, cdt, cdn) {
 		setup_account_query_for_row(frm, cdt, cdn);
@@ -245,6 +246,7 @@ function calculate_unallocated_amount(frm) {
 function update_total_amount(frm) {
 	let total = 0;
 	(frm.doc.items || []).forEach((row) => {
+		row.amount = flt(row.rate || 0) * flt(row.qty || 0);
 		total += flt(row.amount || 0);
 	});
 	frm.set_value("total_amount", total);

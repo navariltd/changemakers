@@ -91,10 +91,11 @@
   "previous_beneficiary_details",
   "tab_5_tab",
   "family_information_section",
+  "household_size",
   "marital_status",
-  "spouses_name",
   "column_break_31",
   "fathers_name",
+  "spouses_name",
   "section_break_fhbu",
   "has_dependents",
   "dependants",
@@ -778,6 +779,11 @@
   {
    "fieldname": "course_section",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "household_size",
+   "fieldtype": "Int",
+   "label": "Household Size"
   }
  ],
  "image_field": "image",
@@ -809,7 +815,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2025-05-17 15:03:01.194174",
+ "modified": "2026-01-15 12:36:20.965189",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
@@ -927,7 +933,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "row_format": "Dynamic",
  "search_fields": "age,zone,ward,habitation",
  "show_title_field_in_link": 1,

@@ -1,0 +1,198 @@
+{
+ "actions": [],
+ "allow_copy": 1,
+ "creation": "2026-01-15 12:20:27.787660",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "allocation_section",
+  "column_break_16",
+  "donation",
+  "donor",
+  "project",
+  "cost_center",
+  "column_break_vkxq",
+  "company",
+  "from_date",
+  "to_date",
+  "donation_allocation_policy",
+  "allocation_items_section",
+  "items",
+  "total_amount",
+  "quick_filters_section",
+  "collector",
+  "gender",
+  "column_break1",
+  "beneficiary_no",
+  "household_size",
+  "advanced_filters_section",
+  "filter_list",
+  "select_beneficiaries_section",
+  "beneficiaries_html"
+ ],
+ "fields": [
+  {
+   "default": "Today",
+   "depends_on": "eval:doc.dates_based_on != 'Joining Date'",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "mandatory_depends_on": "eval:doc.dates_based_on == 'Custom Range'",
+   "read_only_depends_on": "eval:doc.dates_based_on == 'Leave Period'"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "mandatory_depends_on": "eval:doc.dates_based_on != 'Leave Period'",
+   "read_only_depends_on": "eval:doc.dates_based_on == 'Leave Period'"
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quick_filters_section",
+   "fieldtype": "Section Break",
+   "label": "Quick Filters"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "remember_last_selected_value": 1
+  },
+  {
+   "fieldname": "column_break1",
+   "fieldtype": "Column Break",
+   "width": "50%"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "advanced_filters_section",
+   "fieldtype": "Section Break",
+   "label": "Advanced Filters"
+  },
+  {
+   "fieldname": "filter_list",
+   "fieldtype": "HTML",
+   "label": "Filter List"
+  },
+  {
+   "fieldname": "allocation_section",
+   "fieldtype": "Section Break",
+   "label": "Allocation Details"
+  },
+  {
+   "fieldname": "beneficiaries_html",
+   "fieldtype": "HTML",
+   "label": "Beneficiaries HTML",
+   "read_only": 1
+  },
+  {
+   "fieldname": "beneficiary_no",
+   "fieldtype": "Data",
+   "label": "Beneficiary No"
+  },
+  {
+   "fieldname": "collector",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Collector",
+   "options": "Collector"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "household_size",
+   "fieldtype": "Int",
+   "label": "Household Size"
+  },
+  {
+   "fieldname": "column_break_vkxq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "donation_allocation_policy",
+   "fieldtype": "Link",
+   "label": "Donation Allocation Policy",
+   "options": "Donation Allocation Policy"
+  },
+  {
+   "fieldname": "select_beneficiaries_section",
+   "fieldtype": "Section Break",
+   "label": "Select Beneficiaries"
+  },
+  {
+   "fieldname": "donation",
+   "fieldtype": "Link",
+   "label": "Donation",
+   "options": "Donation",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "donation.donor",
+   "fieldname": "donor",
+   "fieldtype": "Link",
+   "label": "Donor",
+   "options": "Donation"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "allocation_items_section",
+   "fieldtype": "Section Break",
+   "label": "Allocation Items"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Donation Allocation Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount",
+   "read_only": 1
+  }
+ ],
+ "hide_toolbar": 1,
+ "icon": "fa fa-cog",
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-01-15 13:40:34.004095",
+ "modified_by": "Administrator",
+ "module": "Frappe Changemakers",
+ "name": "Donation Allocation Panel",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "HR User",
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
