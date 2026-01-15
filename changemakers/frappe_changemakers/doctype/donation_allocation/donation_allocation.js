@@ -1,7 +1,7 @@
 frappe.ui.form.on("Donation Allocation", {
 	refresh(frm) {
-		if (!frm.doc.date) {
-			frm.set_value("date", frappe.datetime.get_today());
+		if (!frm.doc.from_date) {
+			frm.set_value("from_date", frappe.datetime.get_today());
 		}
 
 		handle_temp_values_from_local_storage(frm);
