@@ -48,7 +48,12 @@ fixtures = [
     },
 ]
 
-accounting_dimension_doctypes = ["Beneficiary", "Donor"]
+accounting_dimension_doctypes = [
+    "Beneficiary",
+    "Donor",
+    "Donation Allocation",
+    "Donation Allocation Item",
+]
 
 # Includes in <head>
 # ------------------
