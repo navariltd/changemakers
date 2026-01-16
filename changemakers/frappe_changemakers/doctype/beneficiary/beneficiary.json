@@ -12,42 +12,43 @@
   "first_name",
   "last_name",
   "full_name",
-  "recruitment_phase",
-  "branch",
-  "student",
   "column_break_3",
   "beneficiary_no",
+  "beneficiary_type",
+  "column_break_4",
   "gender",
   "dob",
   "age",
-  "donor",
-  "beneficiary_type",
-  "column_break_4",
-  "collector",
-  "phone_number",
-  "email",
-  "religion",
-  "social_category",
-  "languages_known",
+  "recruitment_section",
+  "recruitment_phase",
+  "column_break_qgbq",
+  "branch",
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break",
+  "donor",
   "section_break_vzck",
   "created_by",
   "section_break_uwdz",
   "bottom_save_button",
   "address_contact_tab",
-  "address_html",
   "column_break_ifez",
   "contact_html",
+  "column_break_sytn",
+  "address_html",
+  "section_break_epas",
+  "email",
+  "phone_number",
+  "column_break_flhe",
+  "native_full_address",
   "location_section",
   "state",
   "district",
+  "column_break_kcuc",
   "zone",
   "ward",
+  "column_break_xrsq",
   "habitation",
-  "section_break_myup",
-  "native_full_address",
   "point_of_contact_section",
   "poc_name",
   "column_break_23",
@@ -73,19 +74,27 @@
   "course_level",
   "identity_tab",
   "identity_section",
-  "ethnicity",
-  "nationality",
+  "languages_known",
+  "religion",
+  "column_break_stbz",
   "residency",
+  "nationality",
   "column_break_17",
   "place_of_birth",
-  "is_identity_proof_available",
+  "ethnicity",
+  "social_category",
   "section_break_glmz",
+  "is_identity_proof_available",
   "identity_proofs",
   "tab_4_tab",
   "health_section",
   "disability_condition",
   "column_break_24",
   "chronic_illness",
+  "native_place_section",
+  "native_state",
+  "column_break_iefk",
+  "native_district",
   "history_section",
   "has_history",
   "previous_beneficiary_details",
@@ -106,16 +115,21 @@
   "section_break_bsgr",
   "housing_description",
   "tab_6_tab",
+  "supplier",
+  "create_supplier",
+  "create_bank_account",
+  "column_break_zvdz",
+  "student",
+  "column_break_uvuj",
+  "collector",
+  "section_break_zarq",
   "status",
   "replaced_by",
+  "column_break_tvlz",
   "activation_date",
   "archive_date",
-  "column_break_tvlz",
+  "column_break_zfbd",
   "archive_reason",
-  "native_place_section",
-  "native_state",
-  "column_break_iefk",
-  "native_district",
   "education_section",
   "education_level",
   "is_employeed",
@@ -259,15 +273,13 @@
    "in_standard_filter": 1,
    "label": "Age",
    "non_negative": 1,
-   "reqd": 1,
    "search_index": 1
   },
   {
    "fieldname": "gender",
    "fieldtype": "Link",
    "label": "Gender",
-   "options": "Gender",
-   "reqd": 1
+   "options": "Gender"
   },
   {
    "default": "Unknown",
@@ -384,10 +396,6 @@
    "fieldtype": "Link",
    "label": "District",
    "options": "District"
-  },
-  {
-   "fieldname": "section_break_myup",
-   "fieldtype": "Section Break"
   },
   {
    "description": "Include block, GP, village or any other identifier info",
@@ -546,6 +554,7 @@
    "no_copy": 1
   },
   {
+   "depends_on": "eval: doc.archive_date",
    "fieldname": "archive_reason",
    "fieldtype": "Small Text",
    "label": "Archive reason"
@@ -631,8 +640,7 @@
   {
    "fieldname": "dob",
    "fieldtype": "Date",
-   "label": "Date of Birth",
-   "reqd": 1
+   "label": "Date of Birth"
   },
   {
    "allow_in_quick_entry": 1,
@@ -675,9 +683,9 @@
   },
   {
    "fieldname": "beneficiary_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Beneficiary Type",
-   "options": "\nStudent\nTeacher\nOthers"
+   "options": "Beneficiary Type"
   },
   {
    "fieldname": "residency",
@@ -784,6 +792,73 @@
    "fieldname": "household_size",
    "fieldtype": "Int",
    "label": "Household Size"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "column_break_sytn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_zvdz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_uvuj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_stbz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "recruitment_section",
+   "fieldtype": "Section Break",
+   "label": "Recruitment"
+  },
+  {
+   "fieldname": "column_break_qgbq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_zarq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_epas",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_flhe",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_kcuc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_xrsq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: !doc.supplier",
+   "fieldname": "create_supplier",
+   "fieldtype": "Button",
+   "label": "Create Supplier"
+  },
+  {
+   "fieldname": "column_break_zfbd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.supplier",
+   "fieldname": "create_bank_account",
+   "fieldtype": "Button",
+   "label": "Create Bank Account"
   }
  ],
  "image_field": "image",
@@ -815,7 +890,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2026-01-15 12:36:20.965189",
+ "modified": "2026-01-16 14:42:17.013231",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",

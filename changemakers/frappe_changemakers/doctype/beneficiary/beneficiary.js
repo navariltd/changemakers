@@ -92,7 +92,62 @@ frappe.ui.form.on("Beneficiary", {
 			}
 		}
 
+		if (frm.doc.supplier) {
+			frappe.db
+				.count("Bank Account", {
+					filters: {
+						party_type: "Supplier",
+						party: frm.doc.supplier,
+					},
+				})
+				.then((count) => {
+					if (count > 0) {
+						frm.set_df_property("create_bank_account", "hidden", 1);
+					}
+				});
+		}
+
 		calculate_and_set_age(frm);
+	},
+
+	create_supplier: (frm) => {
+		frm.call({
+			method: "create_supplier",
+			doc: frm.doc,
+			callback: function (r) {
+				if (r.message) {
+					frappe.msgprint("Supplier " + r.message + " created.");
+				}
+			},
+		});
+	},
+
+	create_bank_account: (frm) => {
+		if (frm.doc.supplier) {
+			frappe.db
+				.count("Bank Account", {
+					filters: {
+						party_type: "Supplier",
+						party: frm.doc.supplier,
+					},
+				})
+				.then((count) => {
+					if (count === 0) {
+						frappe.new_doc("Bank Account", {
+							party_type: "Supplier",
+							party: frm.doc.supplier,
+						});
+					} else {
+						frappe.msgprint(
+							__("Bank Account already exists for this Supplier.")
+						);
+					}
+				});
+		} else {
+			frappe.msgprint(
+				__("Please create Supplier before creating Bank Account.")
+			);
+		}
 	},
 
 	recruitment_phase: (frm) => {

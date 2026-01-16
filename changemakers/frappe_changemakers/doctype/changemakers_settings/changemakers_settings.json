@@ -11,6 +11,7 @@
   "enable_food_distribution",
   "column_break_kltk",
   "generate_supplier_when_learning_center_is_created",
+  "generate_supplier_when_beneficiary_is_created",
   "beneficiary_section",
   "manage_beneficiary_lifecycle",
   "allow_beneficiary_status_editing",
@@ -55,7 +56,7 @@
    "default": "0",
    "fieldname": "generate_supplier_when_learning_center_is_created",
    "fieldtype": "Check",
-   "label": "Generate Supplier When Learning Center Is Created"
+   "label": "Generate Supplier When Learning Center is Created"
   },
   {
    "fieldname": "column_break_kltk",
@@ -81,12 +82,18 @@
    "fieldtype": "Link",
    "label": "Default Beneficiary Status",
    "options": "Beneficiary Status"
+  },
+  {
+   "default": "0",
+   "fieldname": "generate_supplier_when_beneficiary_is_created",
+   "fieldtype": "Check",
+   "label": "Generate Supplier When Beneficiary is Created"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-05-17 12:50:35.503747",
+ "modified": "2026-01-16 14:05:51.849982",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers Settings",

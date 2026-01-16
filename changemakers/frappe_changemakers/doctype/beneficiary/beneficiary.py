@@ -41,6 +41,8 @@ class Beneficiary(Document):
             if user and user != frappe.session.user:  
                 frappe.delete_doc("User", user, ignore_permissions=True)
 
+        if settings.generate_supplier_when_beneficiary_is_created:
+            self.create_supplier()
         
     def before_save(self):
         self.set_created_by()
@@ -75,7 +77,7 @@ class Beneficiary(Document):
             )
 
     def validate_age(self):
-        if not (self.age < 120):
+        if self.age and not (self.age < 120):
             frappe.throw(f"Value of {frappe.bold('Age')} should be less than 120!")
 
     def validate_phone_number_fields(self):
@@ -96,6 +98,28 @@ class Beneficiary(Document):
 
     def onload(self):
         load_address_and_contact(self)
+
+    @frappe.whitelist()
+    def create_supplier(self):
+        if self.supplier:
+            return
+        
+        if not frappe.db.exists("Supplier Group", "Beneficiary"):
+            supplier_group = frappe.new_doc("Supplier Group")
+            supplier_group.supplier_group_name = "Beneficiary"
+            supplier_group.flags.ignore_permissions = True
+            supplier_group.insert()
+
+        supplier = frappe.new_doc("Supplier")
+        supplier.supplier_name = self.full_name
+        supplier.supplier_type = "Individual"
+        supplier.supplier_group = "Beneficiary"
+
+        supplier.flags.ignore_permissions = True
+        supplier.insert()
+        self.supplier = supplier.name
+        self.save()
+        return supplier.name
 
 
 def generate_beneficiary_no(doc):

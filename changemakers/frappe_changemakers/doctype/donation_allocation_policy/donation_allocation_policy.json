@@ -12,7 +12,9 @@
   "effective_from",
   "effective_to",
   "section_break_qlvo",
-  "notes"
+  "notes",
+  "section_break_abbx",
+  "criteria"
  ],
  "fields": [
   {
@@ -50,12 +52,22 @@
    "fieldname": "notes",
    "fieldtype": "Text Editor",
    "label": "Notes"
+  },
+  {
+   "fieldname": "section_break_abbx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "criteria",
+   "fieldtype": "Table",
+   "label": "Criteria",
+   "options": "Donation Allocation Criteria"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-15 11:53:53.813792",
+ "modified": "2026-01-15 14:59:08.511167",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Allocation Policy",
