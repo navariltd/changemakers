@@ -18,9 +18,13 @@ class DonationAllocationPanel(Document):
             advanced_filters = json.loads(advanced_filters)
 
         query_filters = {}
-        for key in ["collector", "gender", "beneficiary_no", "household_size"]:
+        for key in ["collector", "gender", "beneficiary_no"]:
             if getattr(self, key, None) not in (None, ""):
                 query_filters[key] = getattr(self, key)
+        
+        household_size = getattr(self, "household_size", None)
+        if household_size and household_size > 0:
+            query_filters["household_size"] = household_size
 
         if advanced_filters:
             for key, value in advanced_filters.items():
