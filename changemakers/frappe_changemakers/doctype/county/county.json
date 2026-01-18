@@ -7,7 +7,8 @@
  "engine": "InnoDB",
  "field_order": [
   "county_name",
-  "country"
+  "country",
+  "county_abbreviation"
  ],
  "fields": [
   {
@@ -25,6 +26,12 @@
    "label": "Country",
    "options": "Country",
    "reqd": 1
+  },
+  {
+   "fieldname": "county_abbreviation",
+   "fieldtype": "Data",
+   "label": "County Abbreviation",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
@@ -41,7 +48,7 @@
    "link_fieldname": "county"
   }
  ],
- "modified": "2026-01-07 12:37:25.122989",
+ "modified": "2026-01-18 11:11:08.845547",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "County",
