@@ -2,11 +2,15 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 import json
+import csv
+from io import StringIO, BytesIO
+from frappe.utils.xlsxutils import make_xlsx
 
 
-class DonationAllocationPanel(Document):
+class DonationAllocationTool(Document):
 
     @frappe.whitelist()
     def get_beneficiaries(self, advanced_filters=None):
@@ -76,3 +80,52 @@ class DonationAllocationPanel(Document):
 
         frappe.msgprint(f"Allocated donations to {len(beneficiaries)} beneficiaries")
         return {"success": True}
+
+
+
+    @frappe.whitelist()
+    def download_beneficiary_template(self, file_type="csv"):
+
+        meta = frappe.get_meta("Donation Allocation Beneficiary")
+        headers = [
+            f.fieldname for f in meta.fields
+            if f.fieldtype not in ("Section Break", "Column Break", "HTML", "Table")
+            and f.fieldname not in ("name", "parent", "parentfield", "parenttype", "idx", "creation", "modified", "owner", "docstatus")
+        ]
+
+        sample_rows = []
+        for row in (self.beneficiaries or [])[:5]:
+            sample_rows.append([getattr(row, h, "") or "" for h in headers])
+
+        if not sample_rows:
+            sample_rows = [["" for _ in headers] for _ in range(5)]
+
+        if file_type.lower() == "csv":
+            output = StringIO()
+            writer = csv.writer(output)
+            writer.writerow(headers)
+            writer.writerows(sample_rows)
+            filedata = output.getvalue().encode("utf-8")
+            filename = "donation_beneficiary_template.csv"
+
+        elif file_type.lower() in ["xlsx", "excel"]:
+            data = [headers] + sample_rows
+            xlsx_file = make_xlsx(data, sheet_name="Beneficiaries")
+            filedata = xlsx_file.getvalue()
+            filename = "donation_beneficiary_template.xlsx"
+
+        else:
+            frappe.throw(_("Invalid file type. Only CSV or Excel supported"))
+
+        file_doc = frappe.get_doc({
+            "doctype": "File",
+            "file_name": filename,
+            "attached_to_doctype": "Donation Allocation Tool",
+            "attached_to_name": self.name or "",
+            "content": filedata,
+            "is_private": 0,
+        })
+        file_doc.insert(ignore_permissions=True)
+        return file_doc.file_url
+
+

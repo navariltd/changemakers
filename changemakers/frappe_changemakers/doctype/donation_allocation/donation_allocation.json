@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
+  "allocation_type",
   "recipient_type",
   "recipient",
   "donation",
@@ -89,7 +90,6 @@
    "in_standard_filter": 1,
    "label": "Total Allocation Amount",
    "non_negative": 1,
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -106,10 +106,11 @@
    "fieldtype": "Section Break"
   },
   {
+   "depends_on": "eval: doc.allocation_type == \"Items\"",
    "fieldname": "items",
    "fieldtype": "Table",
-   "options": "Donation Allocation Item",
-   "reqd": 1
+   "mandatory_depends_on": "eval: doc.allocation_type == \"Items\"",
+   "options": "Donation Allocation Item"
   },
   {
    "fieldname": "accounting_dimensions_section",
@@ -204,13 +205,20 @@
    "fieldtype": "Link",
    "label": "Donation Allocation Policy",
    "options": "Donation Allocation Policy"
+  },
+  {
+   "fieldname": "allocation_type",
+   "fieldtype": "Select",
+   "label": "Allocation Type",
+   "options": "\nCash\nItems",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-15 12:11:31.110060",
+ "modified": "2026-01-16 16:01:00.504325",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Allocation",

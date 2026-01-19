@@ -1,12 +1,14 @@
 {
  "actions": [],
  "allow_copy": 1,
+ "autoname": "naming_series:",
  "creation": "2026-01-15 12:20:27.787660",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "allocation_section",
   "column_break_16",
+  "naming_series",
   "allocation_type",
   "donation",
   "donor",
@@ -35,9 +37,17 @@
   "select_beneficiaries_section",
   "beneficiaries_html",
   "beneficiaries",
-  "total_amount"
+  "total_amount",
+  "amended_from"
  ],
  "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "DON-ALL-.YYYY.-."
+  },
   {
    "default": "Today",
    "depends_on": "eval:doc.dates_based_on != 'Joining Date'",
@@ -218,16 +228,27 @@
    "fieldname": "total_items_amount",
    "fieldtype": "Currency",
    "label": "Total Items Amount"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Donation Allocation Tool",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
- "hide_toolbar": 1,
- "icon": "fa fa-cog",
- "issingle": 1,
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2026-01-16 15:28:48.413119",
+ "modified": "2026-01-19 10:24:41.875942",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
- "name": "Donation Allocation Panel",
+ "name": "Donation Allocation Tool",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
