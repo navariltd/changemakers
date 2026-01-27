@@ -26,6 +26,7 @@
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break",
+  "section_break_axct",
   "donor",
   "section_break_vzck",
   "created_by",
@@ -222,7 +223,6 @@
   {
    "fieldname": "location_section",
    "fieldtype": "Section Break",
-   "hidden": 1,
    "label": "Location"
   },
   {
@@ -614,10 +614,10 @@
   },
   {
    "fieldname": "donor",
-   "fieldtype": "Table MultiSelect",
+   "fieldtype": "Table",
    "label": "Donor",
    "no_copy": 1,
-   "options": "Donor Table",
+   "options": "Beneficiary Donor Assignment",
    "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
   },
   {
@@ -859,6 +859,10 @@
    "fieldname": "create_bank_account",
    "fieldtype": "Button",
    "label": "Create Bank Account"
+  },
+  {
+   "fieldname": "section_break_axct",
+   "fieldtype": "Section Break"
   }
  ],
  "image_field": "image",
@@ -890,11 +894,11 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2026-01-16 14:42:17.013231",
+ "modified": "2026-01-27 13:32:06.319797",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
