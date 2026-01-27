@@ -18,7 +18,9 @@
   "default_beneficiary_status",
   "column_break_rewa",
   "enable_student_creation_on_beneficiary",
-  "enable_programme_details"
+  "enable_programme_details",
+  "default_accounts_section",
+  "beneficiary_accounts"
  ],
  "fields": [
   {
@@ -88,12 +90,23 @@
    "fieldname": "generate_supplier_when_beneficiary_is_created",
    "fieldtype": "Check",
    "label": "Generate Supplier When Beneficiary is Created"
+  },
+  {
+   "fieldname": "default_accounts_section",
+   "fieldtype": "Section Break",
+   "label": "Default Accounts"
+  },
+  {
+   "fieldname": "beneficiary_accounts",
+   "fieldtype": "Table",
+   "label": "Beneficiary Accounts",
+   "options": "Party Account"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-01-16 14:05:51.849982",
+ "modified": "2026-01-27 12:17:07.469740",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers Settings",
