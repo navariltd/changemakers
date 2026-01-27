@@ -10,34 +10,21 @@ from io import StringIO, BytesIO
 from frappe.utils.xlsxutils import make_xlsx
 
 
-class DonationAllocationTool(Document):
+class DonationDisbursementEntry(Document):
+    def before_save(self):
+        total_amount = 0
+        for row in self.beneficiaries or []:
+            total_amount += row.amount or 0
+        self.total_amount = total_amount
 
     @frappe.whitelist()
     def get_beneficiaries(self, advanced_filters=None):
         """
         Return list of beneficiaries matching filters for datatable display.
-        Filters can include: company, branch, collector, gender, household_size, beneficiary_no
         """
-        if isinstance(advanced_filters, str):
-            advanced_filters = json.loads(advanced_filters)
-
-        query_filters = {}
-        for key in ["collector", "gender", "beneficiary_no"]:
-            if getattr(self, key, None) not in (None, ""):
-                query_filters[key] = getattr(self, key)
-        
-        household_size = getattr(self, "household_size", None)
-        if household_size and household_size > 0:
-            query_filters["household_size"] = household_size
-
-        if advanced_filters:
-            for key, value in advanced_filters.items():
-                if value not in (None, ""):
-                    query_filters[key] = value
-
-        beneficiaries = frappe.get_all(
+        return frappe.get_list(
             "Beneficiary",
-            filters=query_filters,
+            filters=self.get_filters() + (advanced_filters or []),
             fields=[
                 "beneficiary_no",
                 "full_name",
@@ -46,10 +33,27 @@ class DonationAllocationTool(Document):
                 "household_size",
                 "name",
             ],
-            order_by="full_name asc",
         )
 
-        return beneficiaries
+    def get_filters(self):
+        filter_fields = [
+                "state", 
+                "beneficiary_type", 
+                "district", 
+                "zone", 
+                "branch", 
+                "donor"
+            ]
+        filters = [["status", "=", "Active"]]
+
+        for d in filter_fields:
+            if self.get(d):
+                if d == "donor":
+                    filters.append(["Beneficiary Donor Assignment", "donor", "=", self.get(d)])
+                else:
+                    filters.append([d, "=", self.get(d)])
+        return filters
+
 
     @frappe.whitelist()
     def allocate_beneficiaries(self, beneficiaries):
@@ -81,12 +85,10 @@ class DonationAllocationTool(Document):
         frappe.msgprint(f"Allocated donations to {len(beneficiaries)} beneficiaries")
         return {"success": True}
 
-
-
     @frappe.whitelist()
     def download_beneficiary_template(self, file_type="csv"):
 
-        meta = frappe.get_meta("Donation Allocation Beneficiary")
+        meta = frappe.get_meta("Beneficiary Disbursement Entry Party")
         headers = [
             f.fieldname for f in meta.fields
             if f.fieldtype not in ("Section Break", "Column Break", "HTML", "Table")
@@ -120,7 +122,7 @@ class DonationAllocationTool(Document):
         file_doc = frappe.get_doc({
             "doctype": "File",
             "file_name": filename,
-            "attached_to_doctype": "Donation Allocation Tool",
+            "attached_to_doctype": "Donation Disbursement Entry",
             "attached_to_name": self.name or "",
             "content": filedata,
             "is_private": 0,

@@ -53,6 +53,7 @@ accounting_dimension_doctypes = [
     "Donor",
     "Donation Allocation",
     "Donation Allocation Item",
+    "Donation Disbursement Entry",
 ]
 
 # Includes in <head>
