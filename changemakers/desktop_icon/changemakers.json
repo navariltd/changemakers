@@ -9,12 +9,13 @@
  "idx": 0,
  "label": "Changemakers",
  "link_to": "Changemakers",
- "link_type": "Workspace",
+ "link_type": "Workspace Sidebar",
  "logo_url": "/assets/changemakers/cm_logo_with_bg.png",
- "modified": "2026-01-08 14:04:13.145741",
+ "modified": "2026-01-26 14:37:43.098060",
  "modified_by": "Administrator",
  "name": "Changemakers",
  "owner": "Administrator",
+ "restrict_removal": 0,
  "roles": [],
  "standard": 1
 }
