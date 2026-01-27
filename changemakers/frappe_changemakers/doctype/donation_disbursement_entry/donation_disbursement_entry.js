@@ -97,11 +97,7 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 						let child = frm.add_child("beneficiaries");
 
 						child.beneficiary = ben.name;
-						child.beneficiary_name = ben.full_name;
 						child.beneficiary_no = ben.beneficiary_no;
-						child.collector = ben.collector;
-						child.household_size = ben.household_size;
-
 						child.item_code = item_row.item_code;
 						child.qty = item_row.qty || 0;
 						child.rate = item_row.rate || 0;

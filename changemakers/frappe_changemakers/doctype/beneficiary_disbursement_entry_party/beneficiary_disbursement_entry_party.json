@@ -7,16 +7,14 @@
  "engine": "InnoDB",
  "field_order": [
   "beneficiary",
-  "beneficiary_name",
   "beneficiary_no",
-  "collector",
-  "household_size",
+  "mode_of_payment",
   "column_break_pbpz",
   "item_code",
   "qty",
+  "column_break_rvbp",
   "rate",
-  "amount",
-  "mode_of_payment"
+  "amount"
  ],
  "fields": [
   {
@@ -31,22 +29,6 @@
    "reqd": 1
   },
   {
-   "columns": 2,
-   "fetch_from": "beneficiary.beneficiary_no",
-   "fieldname": "beneficiary_no",
-   "fieldtype": "Data",
-   "label": "Beneficiary No",
-   "read_only": 1
-  },
-  {
-   "columns": 1,
-   "fieldname": "household_size",
-   "fieldtype": "Int",
-   "label": "Household Size",
-   "non_negative": 1,
-   "read_only": 1
-  },
-  {
    "fieldname": "amount",
    "fieldtype": "Currency",
    "in_filter": 1,
@@ -58,25 +40,8 @@
    "read_only": 1
   },
   {
-   "columns": 1,
-   "fieldname": "collector",
-   "fieldtype": "Data",
-   "label": "Collector",
-   "read_only": 1
-  },
-  {
    "fieldname": "column_break_pbpz",
    "fieldtype": "Column Break"
-  },
-  {
-   "columns": 2,
-   "fetch_from": "beneficiary.full_name",
-   "fieldname": "beneficiary_name",
-   "fieldtype": "Data",
-   "in_filter": 1,
-   "in_preview": 1,
-   "label": "Beneficiary Name",
-   "read_only": 1
   },
   {
    "default": "1",
@@ -117,13 +82,23 @@
    "in_standard_filter": 1,
    "label": "Item",
    "options": "Item"
+  },
+  {
+   "fieldname": "column_break_rvbp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "beneficiary_no",
+   "fieldtype": "Data",
+   "label": "Beneficiary No",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-27 15:43:49.178947",
+ "modified": "2026-01-27 17:45:48.181675",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary Disbursement Entry Party",

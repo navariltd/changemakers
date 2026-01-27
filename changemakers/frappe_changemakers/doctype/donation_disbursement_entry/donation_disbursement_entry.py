@@ -22,18 +22,23 @@ class DonationDisbursementEntry(Document):
         """
         Return list of beneficiaries matching filters for datatable display.
         """
-        return frappe.get_list(
+        beneficiaries = frappe.get_list(
             "Beneficiary",
             filters=self.get_filters() + (advanced_filters or []),
             fields=[
-                "beneficiary_no",
-                "full_name",
-                "collector",
-                "gender",
-                "household_size",
                 "name",
             ],
         )
+        if self.donor:
+            for ben in beneficiaries:
+                beneficiary_no = frappe.get_value(
+                    "Beneficiary Donor Assignment",
+                    {"parent": ben.name, "parentfield": "donor", "parenttype": "Beneficiary", "donor": self.donor},
+                    ["beneficiary_no"],
+                )
+                ben.beneficiary_no = beneficiary_no if beneficiary_no else None
+                
+        return beneficiaries
 
     def get_filters(self):
         filter_fields = [
