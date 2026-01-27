@@ -7,7 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "column_break_adjg",
-  "item",
+  "item_code",
   "qty",
   "uom",
   "column_break_rqny",
@@ -69,17 +69,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "item",
-   "fieldtype": "Link",
-   "in_filter": 1,
-   "in_list_view": 1,
-   "in_preview": 1,
-   "in_standard_filter": 1,
-   "label": "Item",
-   "options": "Item",
-   "reqd": 1
-  },
-  {
    "default": "1",
    "fieldname": "qty",
    "fieldtype": "Float",
@@ -122,16 +111,27 @@
    "fieldname": "description",
    "fieldtype": "Small Text",
    "label": "Description"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-15 13:34:06.203116",
+ "modified": "2026-01-27 15:43:31.156197",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
- "name": "Donation Allocation Item",
+ "name": "Beneficiary Disbursement Entry Item",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

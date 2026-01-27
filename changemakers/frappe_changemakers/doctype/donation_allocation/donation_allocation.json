@@ -110,7 +110,7 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "mandatory_depends_on": "eval: doc.allocation_type == \"Items\"",
-   "options": "Donation Allocation Item"
+   "options": "Beneficiary Disbursement Entry Item"
   },
   {
    "fieldname": "accounting_dimensions_section",
