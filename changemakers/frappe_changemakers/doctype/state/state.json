@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "prompt",
  "creation": "2022-10-13 12:20:44.496570",
@@ -35,7 +36,7 @@
    "link_fieldname": "state"
   }
  ],
- "modified": "2023-01-27 18:35:30.159233",
+ "modified": "2026-01-28 07:16:02.907474",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "State",
@@ -156,6 +157,7 @@
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
