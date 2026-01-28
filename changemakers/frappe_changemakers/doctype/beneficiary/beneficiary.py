@@ -43,6 +43,10 @@ class Beneficiary(Document):
 
         if settings.generate_supplier_when_beneficiary_is_created:
             self.create_supplier()
+
+    def on_trash(self):
+        if self.supplier:
+            frappe.db.set_value("Supplier", self.supplier, "disabled", 1)
         
     def before_save(self):
         self.set_created_by()
@@ -103,6 +107,12 @@ class Beneficiary(Document):
     def create_supplier(self):
         if self.supplier:
             return
+        
+        existing_supplier = frappe.db.get_value("Supplier", {"supplier_name": self.full_name})
+        if existing_supplier:
+            self.supplier = existing_supplier
+            self.save()
+            return existing_supplier
         
         if not frappe.db.exists("Supplier Group", "Beneficiary"):
             supplier_group = frappe.new_doc("Supplier Group")
