@@ -33,7 +33,7 @@ class DonationDisbursementEntry(Document):
             for ben in beneficiaries:
                 beneficiary_no = frappe.get_value(
                     "Beneficiary Donor Assignment",
-                    {"parent": ben.name, "parentfield": "donor", "parenttype": "Beneficiary", "donor": self.donor},
+                    {"parent": ben.name, "parentfield": "donors", "parenttype": "Beneficiary", "donor": self.donor},
                     ["beneficiary_no"],
                 )
                 ben.beneficiary_no = beneficiary_no if beneficiary_no else None
