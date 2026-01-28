@@ -20,11 +20,14 @@
   "donation_allocation_policy",
   "section_break_eynd",
   "sales_order",
-  "column_break_bcor",
-  "account",
-  "source_warehouse",
   "column_break_nvhm",
   "mode_of_payment",
+  "column_break_bcor",
+  "source_warehouse",
+  "accounts_section",
+  "paid_from",
+  "column_break_xmyu",
+  "paid_to",
   "accounting_dimensions_section",
   "cost_center",
   "column_break_qxej",
@@ -269,13 +272,6 @@
    "label": "Distribute Items Equally"
   },
   {
-   "depends_on": "eval: doc.allocation_type == \"Cash\"",
-   "fieldname": "account",
-   "fieldtype": "Link",
-   "label": "GL Account",
-   "options": "Account"
-  },
-  {
    "depends_on": "eval: doc.allocation_type == \"Items\"",
    "fieldname": "source_warehouse",
    "fieldtype": "Link",
@@ -306,13 +302,37 @@
    "fieldtype": "JSON",
    "hidden": 1,
    "label": "Saved Filters"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "accounts_section",
+   "fieldtype": "Section Break",
+   "label": "Accounts"
+  },
+  {
+   "depends_on": "eval: doc.allocation_type == \"Cash\"",
+   "fieldname": "paid_from",
+   "fieldtype": "Link",
+   "label": "Account Paid From",
+   "options": "Account"
+  },
+  {
+   "fieldname": "column_break_xmyu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.allocation_type == \"Cash\"",
+   "fieldname": "paid_to",
+   "fieldtype": "Link",
+   "label": "Account Paid To",
+   "options": "Account"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-27 16:43:55.889691",
+ "modified": "2026-01-28 09:45:39.185727",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Disbursement Entry",
