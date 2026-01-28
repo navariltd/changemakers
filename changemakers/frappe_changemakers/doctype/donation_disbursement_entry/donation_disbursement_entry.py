@@ -188,6 +188,7 @@ class DonationDisbursementEntry(Document):
                     "project": self.project,
                     "paid_amount": row.amount,
                     "received_amount": row.amount,
+                    "donation_disbursement_entry": self.name,
                     "remarks": f"Donation disbursement to beneficiary {row.beneficiary}",
                 }
             )
@@ -235,6 +236,7 @@ class DonationDisbursementEntry(Document):
                     "posting_date": today(),
                     "cost_center": self.cost_center,
                     "project": self.project,
+                    "donation_disbursement_entry": self.name,
                     "items": items,
                 }
             )
