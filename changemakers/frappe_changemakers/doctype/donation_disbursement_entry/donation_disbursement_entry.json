@@ -331,8 +331,24 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2026-01-28 09:45:39.185727",
+ "links": [
+  {
+   "group": "Disbursement",
+   "link_doctype": "Payment Entry",
+   "link_fieldname": "donation_disbursement_entry"
+  },
+  {
+   "group": "Disbursement",
+   "link_doctype": "Stock Entry",
+   "link_fieldname": "donation_disbursement_entry"
+  },
+  {
+   "group": "Invoice",
+   "link_doctype": "Sales Invoice",
+   "link_fieldname": "donation_disbursement_entry"
+  }
+ ],
+ "modified": "2026-01-28 13:03:27.348398",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Disbursement Entry",
