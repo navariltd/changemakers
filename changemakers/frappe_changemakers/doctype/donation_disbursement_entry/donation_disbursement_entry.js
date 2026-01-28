@@ -15,11 +15,21 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 			frm.set_value("from_date", frappe.datetime.nowdate());
 		}
 
-		frm.set_query("account", function () {
+		frm.set_query("paid_to", function () {
 			return {
 				filters: {
 					account_type: "Payable",
 					root_type: "Liability",
+					is_group: 0,
+					company: frm.doc.company,
+				},
+			};
+		});
+
+		frm.set_query("paid_from", function () {
+			return {
+				filters: {
+					account_type: ["in", ["Bank", "Cash"]],
 					is_group: 0,
 					company: frm.doc.company,
 				},
@@ -285,20 +295,19 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 			allow_multiple: false,
 			on_success: (file) => {
 				frm.call({
-					method: "upload_beneficiary_list",
+					method: "upload_beneficiaries",
 					doc: frm.doc,
 					args: { file_url: file.file_url },
 					freeze: true,
 					freeze_message: __("Processing file..."),
 					callback: function (r) {
-						if (r.message) {
+						if (r.message.mapped_items.length) {
 							frm.clear_table("beneficiaries");
-							r.message.forEach((d) => {
+							r.message.mapped_items.forEach((d) => {
 								let row = frm.add_child("beneficiaries");
 								Object.assign(row, d);
 							});
 							frm.refresh_field("beneficiaries");
-							update_total_amount(frm);
 						}
 					},
 				});

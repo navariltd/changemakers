@@ -4,16 +4,19 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils import today
 import json
 import csv
 from io import StringIO, BytesIO
 from frappe.utils.xlsxutils import make_xlsx
 
+from ....utils.data import extract_data_from_file, get_doctype_headers
 
 class DonationDisbursementEntry(Document):
     def before_save(self):
         total_amount = 0
         for row in self.beneficiaries or []:
+            row.amount = (row.qty or 0) * (row.rate or 0)
             total_amount += row.amount or 0
         self.total_amount = total_amount
 
@@ -92,13 +95,7 @@ class DonationDisbursementEntry(Document):
 
     @frappe.whitelist()
     def download_beneficiary_template(self, file_type="csv"):
-
-        meta = frappe.get_meta("Beneficiary Disbursement Entry Party")
-        headers = [
-            f.fieldname for f in meta.fields
-            if f.fieldtype not in ("Section Break", "Column Break", "HTML", "Table")
-            and f.fieldname not in ("name", "parent", "parentfield", "parenttype", "idx", "creation", "modified", "owner", "docstatus")
-        ]
+        headers = get_doctype_headers("Beneficiary Disbursement Entry Party")
 
         sample_rows = []
         for row in (self.beneficiaries or [])[:5]:
@@ -134,5 +131,71 @@ class DonationDisbursementEntry(Document):
         })
         file_doc.insert(ignore_permissions=True)
         return file_doc.file_url
+    
+    @frappe.whitelist()
+    def upload_beneficiaries(self, file_url):
+        headers = get_doctype_headers("Beneficiary Disbursement Entry Party")
+        rows = extract_data_from_file(file_url)
+        
+        rows_to_upload = [r for r in rows if not r.get("beneficiary")]
+        
+        from ..beneficiary.beneficiary import upload_beneficiary_list
+        
+        upload_results = {"beneficiaries": [], "errors": []}
+        if rows_to_upload:
+            upload_results = upload_beneficiary_list(file_url, donor=self.donor)
+
+        mapped_rows = []
+        
+        for idx, row in enumerate(rows):
+            beneficiary_id = row.get("beneficiary")
+            
+            if not beneficiary_id and idx < len(upload_results.get("beneficiaries", [])):
+                beneficiary_id = upload_results["beneficiaries"][idx]
+
+            mapped_row = {}
+            for header in headers:
+                mapped_row[header] = row.get(header, "")
+            
+            mapped_row["beneficiary"] = beneficiary_id
+            mapped_rows.append(mapped_row)
+
+        return {
+            "mapped_items": mapped_rows,
+            "errors": upload_results.get("errors", [])
+        }
+    
+    @frappe.whitelist()
+    def make_payment_entries(self):
+        for row in self.beneficiaries:
+            if row.payment_entry:
+                continue
+
+            supplier = frappe.get_value("Beneficiary", row.beneficiary, "supplier")
+
+            payment_entry = frappe.get_doc(
+                {
+                    "doctype": "Payment Entry",
+                    "payment_type": "Pay",
+                    "party_type": "Supplier",
+                    "party": supplier,
+                    "paid_from": self.paid_from,
+                    "paid_to": self.paid_to,
+                    "company": self.company,
+                    "posting_date": today(),
+                    "mode_of_payment": self.mode_of_payment,
+                    "cost_center": self.cost_center,
+                    "project": self.project,
+                    "paid_amount": row.amount,
+                    "received_amount": row.amount,
+                    "remarks": f"Donation disbursement to beneficiary {row.beneficiary}",
+                }
+            )
+            payment_entry.insert(ignore_permissions=True)
+            row.payment_entry = payment_entry.name
+
+        self.save()
+        self.submit()
+        frappe.msgprint(f"Payment Entries created for {len(self.beneficiaries)} beneficiaries")
 
 
