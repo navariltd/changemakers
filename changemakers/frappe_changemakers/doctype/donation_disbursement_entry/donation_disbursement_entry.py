@@ -198,4 +198,53 @@ class DonationDisbursementEntry(Document):
         self.submit()
         frappe.msgprint(f"Payment Entries created for {len(self.beneficiaries)} beneficiaries")
 
+    @frappe.whitelist()
+    def make_stock_entries(self):
+        beneficiaries_by_beneficiary = {}
+        for row in self.beneficiaries:
+            if row.stock_entry:
+                continue
+            
+            beneficiary = row.beneficiary
+            
+            if beneficiary not in beneficiaries_by_beneficiary:
+                beneficiaries_by_beneficiary[beneficiary] = []
+            beneficiaries_by_beneficiary[beneficiary].append(row)
+
+        for beneficiary, rows in beneficiaries_by_beneficiary.items():
+            items = [
+                {
+                    "item_code": row.item_code,
+                    "qty": row.qty,
+                    "uom": row.uom,
+                    "basic_rate": row.rate,
+                    "amount": row.amount,
+                    "s_warehouse": self.source_warehouse,
+                }
+                for row in rows
+            ]
+
+            stock_entry = frappe.get_doc(
+                {
+                    "doctype": "Stock Entry",
+                    "stock_entry_type": "Material Issue",
+                    "from_warehouse": self.source_warehouse,
+                    "beneficiary": beneficiary,
+                    "supplier": frappe.get_value("Beneficiary", beneficiary, "supplier"),
+                    "company": self.company,
+                    "posting_date": today(),
+                    "cost_center": self.cost_center,
+                    "project": self.project,
+                    "items": items,
+                }
+            )
+            stock_entry.insert(ignore_permissions=True)
+            
+            for row in rows:
+                row.stock_entry = stock_entry.name
+
+        self.save()
+        self.submit()
+        frappe.msgprint(f"Stock Entries created for {len(beneficiaries_by_beneficiary)} beneficiary(ies)")
+
 

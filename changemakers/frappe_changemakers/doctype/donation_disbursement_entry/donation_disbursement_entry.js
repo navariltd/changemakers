@@ -111,6 +111,7 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 						child.item_code = item_row.item_code;
 						child.qty = item_row.qty || 0;
 						child.rate = item_row.rate || 0;
+						child.uom = item_row.uom;
 						child.amount =
 							(item_row.qty || 0) * (item_row.rate || 0);
 
