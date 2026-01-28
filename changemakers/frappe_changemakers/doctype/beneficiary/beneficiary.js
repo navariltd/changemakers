@@ -8,30 +8,35 @@ frappe.ui.form.on("Beneficiary", {
 		frm.toggle_display("address_html", !frm.is_new());
 		frm.toggle_display("contact_html", !frm.is_new());
 
+		frm.toggle_display(
+			"create_supplier",
+			!frm.doc.supplier && !frm.doc.__islocal,
+		);
+
 		const settings = await frappe.db.get_doc(
 			settingsDoctypeName,
-			settingsDoctypeName
+			settingsDoctypeName,
 		);
 
 		frm.set_df_property(
 			"status",
 			"read_only",
-			settings?.allow_beneficiary_status_editing ? 0 : 1
+			settings?.allow_beneficiary_status_editing ? 0 : 1,
 		);
 		frm.set_df_property(
 			"beneficiary_no",
 			"read_only",
-			settings?.allow_beneficiary_status_editing ? 0 : 1
+			settings?.allow_beneficiary_status_editing ? 0 : 1,
 		);
 		frm.set_df_property(
 			"programme_section",
 			"hidden",
-			settings?.enable_programme_details ? 0 : 1
+			settings?.enable_programme_details ? 0 : 1,
 		);
 		frm.set_df_property(
 			"course_section",
 			"hidden",
-			settings?.enable_programme_details ? 0 : 1
+			settings?.enable_programme_details ? 0 : 1,
 		);
 
 		if (
@@ -52,10 +57,10 @@ frappe.ui.form.on("Beneficiary", {
 						() => {
 							create_case(
 								"Local Administration Acknowledgement",
-								frm
+								frm,
 							);
 						},
-						"Create"
+						"Create",
 					);
 				}
 
@@ -71,7 +76,7 @@ frappe.ui.form.on("Beneficiary", {
 					frm.add_custom_button(
 						"Replacement",
 						() => open_replacement_form(frm),
-						"Create"
+						"Create",
 					);
 				}
 
@@ -85,7 +90,7 @@ frappe.ui.form.on("Beneficiary", {
 						frm.add_custom_button(
 							caseType,
 							() => create_case(caseType, frm),
-							"Create"
+							"Create",
 						);
 					});
 				}
@@ -139,13 +144,15 @@ frappe.ui.form.on("Beneficiary", {
 						});
 					} else {
 						frappe.msgprint(
-							__("Bank Account already exists for this Supplier.")
+							__(
+								"Bank Account already exists for this Supplier.",
+							),
 						);
 					}
 				});
 		} else {
 			frappe.msgprint(
-				__("Please create Supplier before creating Bank Account.")
+				__("Please create Supplier before creating Bank Account."),
 			);
 		}
 	},
@@ -156,7 +163,7 @@ frappe.ui.form.on("Beneficiary", {
 				.get_value(
 					"Recruitment Phase",
 					frm.doc.recruitment_phase,
-					"branch"
+					"branch",
 				)
 				.then((r) => {
 					if (r.message) {

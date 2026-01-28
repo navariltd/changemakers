@@ -8,6 +8,9 @@ from frappe.model.document import Document
 from frappe.query_builder import Field
 from frappe.utils import cint
 
+from ....utils.data import extract_data_from_file
+
+
 from changemakers.utils.data import is_valid_indian_phone_number
 
 class Beneficiary(Document):
@@ -43,6 +46,10 @@ class Beneficiary(Document):
 
         if settings.generate_supplier_when_beneficiary_is_created:
             self.create_supplier()
+
+    def on_trash(self):
+        if self.supplier:
+            frappe.db.set_value("Supplier", self.supplier, "disabled", 1)
         
     def before_save(self):
         self.set_created_by()
@@ -104,6 +111,16 @@ class Beneficiary(Document):
         if self.supplier:
             return
         
+        existing_supplier = frappe.db.get_value("Supplier", {"supplier_name": self.full_name})
+        if existing_supplier:
+            supplier = frappe.get_doc("Supplier", existing_supplier)
+            if supplier.disabled:
+                supplier.disabled = 0
+                supplier.save()
+            self.supplier = existing_supplier
+            self.save()
+            return existing_supplier
+        
         if not frappe.db.exists("Supplier Group", "Beneficiary"):
             supplier_group = frappe.new_doc("Supplier Group")
             supplier_group.supplier_group_name = "Beneficiary"
@@ -152,3 +169,111 @@ def generate_beneficiary_no(doc):
     beneficiary_no = f"{recruitment_phase.beneficiary_number_series}{formatted_number}"
 
     return beneficiary_no
+
+
+@frappe.whitelist()
+def upload_beneficiary_list(file_url, donor=None):
+    doctype = "Beneficiary"
+    rows = extract_data_from_file(file_url)
+    
+    errors = []
+    processed = []
+
+    meta = frappe.get_meta(doctype)
+    valid_fields = {df.fieldname for df in meta.fields}
+    donor_field = "donor"
+    beneficiary_no_field = "beneficiary_no"
+    bank_fields = {"bank_name", "bank_branch_name", "bank_account_number", "account_holder_name"}
+
+    for idx, row in enumerate(rows, start=2):
+        row = {k: v for k, v in row.items() if v is not None and str(v).strip() != ""}
+        if not row:
+            continue
+
+        beneficiary = None
+        
+        try:
+            if row.get("name") and frappe.db.exists(doctype, row.get("name")):
+                beneficiary = frappe.get_doc(doctype, row.get("name"))
+            elif row.get("id_number") and frappe.db.exists(doctype, {"id_number": row.get("id_number")}):
+                ben_name = frappe.db.get_value(doctype, {"id_number": row.get("id_number")})
+                beneficiary = frappe.get_doc(doctype, ben_name)
+            else:
+                beneficiary = frappe.new_doc(doctype)
+        except Exception as e:
+            errors.append({"row": idx, "error": str(e)})
+            continue
+
+        for field, value in row.items():
+            if field in (donor_field, beneficiary_no_field) or field in bank_fields or field == "name":
+                continue
+            
+            if field in valid_fields:
+                try:
+                    beneficiary.set(field, value)
+                except Exception as e:
+                    errors.append({"row": idx, "field": field, "error": str(e)})
+            else:
+                errors.append({"row": idx, "field": field, "error": f"Field '{field}' missing"})
+
+        try:
+            beneficiary.save(ignore_permissions=True)
+        except Exception as e:
+            errors.append({"row": idx, "error": str(e)})
+            continue
+
+        row_donor = row.get(donor_field) or donor
+        beneficiary_no = row.get(beneficiary_no_field)
+        
+        if row_donor and beneficiary_no:
+            try:
+                donor_ref = row_donor
+                if not frappe.db.exists("Donor", row_donor):
+                    donor_ref = frappe.db.get_value("Donor", {"donor_name": row_donor}) or row_donor
+                
+                exists = False
+                for d in beneficiary.get("donors") or []:
+                    if d.donor == donor_ref:
+                        d.beneficiary_no = beneficiary_no
+                        exists = True
+                        break
+                if not exists:
+                    beneficiary.append("donors", {"donor": donor_ref, "beneficiary_no": beneficiary_no})
+                beneficiary.save(ignore_permissions=True)
+            except Exception as e:
+                errors.append({"row": idx, "field": "donors", "error": str(e)})
+        elif (row_donor or beneficiary_no):
+            errors.append({"row": idx, "error": "Donor and beneficiary_no required together"})
+
+        bank_data = {f: row.get(f) for f in bank_fields if row.get(f)}
+        if bank_data:
+            try:
+                if len(bank_data) < len(bank_fields):
+                    missing = bank_fields - bank_data.keys()
+                    errors.append({"row": idx, "error": f"Missing: {', '.join(missing)}"})
+                else:
+                    if not frappe.db.exists("Bank", bank_data["bank_name"]):
+                        bank_doc = frappe.new_doc("Bank")
+                        bank_doc.bank_name = bank_data["bank_name"]
+                        bank_doc.insert(ignore_permissions=True)
+                    
+                    if not frappe.db.exists("Bank Account", {"bank_account_no": bank_data["bank_account_number"]}):
+                        bank_account = frappe.new_doc("Bank Account")
+                        bank_account.bank = bank_data["bank_name"]
+                        bank_account.bank_account_no = bank_data["bank_account_number"]
+                        bank_account.branch_code = bank_data["bank_branch_name"]
+                        bank_account.account_name = bank_data["account_holder_name"]
+                        bank_account.party_type = "Supplier"
+                        bank_account.party = getattr(beneficiary, 'supplier', None)
+                        bank_account.insert(ignore_permissions=True)
+            except Exception as e:
+                errors.append({"row": idx, "field": "bank", "error": str(e)})
+
+        processed.append(beneficiary.name)
+
+    frappe.db.commit()
+
+    return {
+        "beneficiaries": processed,
+        "errors": errors
+    }

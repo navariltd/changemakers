@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestDonationAllocationTool(FrappeTestCase):
+class TestBeneficiaryDisbursementEntryParty(FrappeTestCase):
 	pass

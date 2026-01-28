@@ -26,7 +26,8 @@
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break",
-  "donor",
+  "section_break_axct",
+  "donors",
   "section_break_vzck",
   "created_by",
   "section_break_uwdz",
@@ -79,6 +80,7 @@
   "column_break_stbz",
   "residency",
   "nationality",
+  "id_number",
   "column_break_17",
   "place_of_birth",
   "ethnicity",
@@ -222,7 +224,6 @@
   {
    "fieldname": "location_section",
    "fieldtype": "Section Break",
-   "hidden": 1,
    "label": "Location"
   },
   {
@@ -613,14 +614,6 @@
    "label": "Previous beneficiary details"
   },
   {
-   "fieldname": "donor",
-   "fieldtype": "Table MultiSelect",
-   "label": "Donor",
-   "no_copy": 1,
-   "options": "Donor Table",
-   "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
-  },
-  {
    "collapsible": 1,
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
@@ -859,6 +852,23 @@
    "fieldname": "create_bank_account",
    "fieldtype": "Button",
    "label": "Create Bank Account"
+  },
+  {
+   "fieldname": "section_break_axct",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "donors",
+   "fieldtype": "Table",
+   "label": "Donors",
+   "no_copy": 1,
+   "options": "Beneficiary Donor Assignment",
+   "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
+  },
+  {
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "label": "ID Number"
   }
  ],
  "image_field": "image",
@@ -890,11 +900,11 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2026-01-16 14:42:17.013231",
+ "modified": "2026-01-28 08:24:27.054702",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
