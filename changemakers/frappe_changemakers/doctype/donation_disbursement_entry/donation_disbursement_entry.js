@@ -72,14 +72,28 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 			}
 		}
 
-		if (
-			frm.doc.docstatus === 1 &&
-			frm.doc.entries_created &&
-			!frm.doc.reconciled
-		) {
-			frm.add_custom_button(__("Reconcile Entries"), function () {
-				frm.events.reconcile_disbursement(frm);
-			}).addClass("btn-primary");
+		if (frm.doc.docstatus === 1) {
+			frappe.call({
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "Sales Invoice",
+					fields: ["name"],
+					filters: {
+						donation_disbursement_entry: frm.doc.name,
+					},
+				},
+				callback: function (r) {
+					if (r.message && r.message.length > 0) {
+					} else {
+						frm.add_custom_button(
+							__("Create Sales Invoice"),
+							function () {
+								frm.events.create_sales_invoice(frm);
+							},
+						).addClass("btn-primary");
+					}
+				},
+			});
 		}
 	},
 
@@ -146,14 +160,38 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 		);
 	},
 
-	reconcile_disbursement: function (frm) {
+	create_sales_invoice: function (frm) {
 		frappe.call({
 			doc: frm.doc,
-			method: "reconcile_entries",
+			method: "get_invoice_details",
 			freeze: true,
-			callback: function () {
-				frm.reload_doc();
-				frappe.msgprint(__("Entries Reconciled Successfully"));
+			callback: function (r) {
+				if (!r.message) return;
+
+				const data = r.message;
+
+				frappe.model.with_doctype("Sales Invoice", function () {
+					let new_invoice = frappe.model.get_new_doc("Sales Invoice");
+
+					new_invoice.currency = data.currency;
+					new_invoice.customer = data.customer;
+					new_invoice.donation_disbursement_entry = frm.doc.name;
+					Object.values(data.items).forEach((item) => {
+						let child_row = frappe.model.add_child(
+							new_invoice,
+							"items",
+						);
+
+						child_row.item_code = item.item_code;
+						child_row.item_name = item.item_name;
+						child_row.qty = item.qty;
+						child_row.rate = item.rate;
+						child_row.amount = item.amount;
+						child_row.uom = item.uom;
+					});
+
+					frappe.set_route("Form", "Sales Invoice", new_invoice.name);
+				});
 			},
 		});
 	},

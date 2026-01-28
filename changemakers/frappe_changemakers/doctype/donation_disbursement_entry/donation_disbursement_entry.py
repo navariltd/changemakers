@@ -249,4 +249,71 @@ class DonationDisbursementEntry(Document):
         self.submit()
         frappe.msgprint(f"Stock Entries created for {len(beneficiaries_by_beneficiary)} beneficiary(ies)")
 
+    @frappe.whitelist()
+    def get_invoice_details(self):
+        customer = frappe.get_value("Donor", self.donor, "customer") if self.donor else None
+        if self.allocation_type == "Cash":
+            payment_entries = frappe.get_all(
+                "Payment Entry",
+                filters={"donation_disbursement_entry": self.name, "docstatus": 1},
+                fields=["name", "paid_amount as amount", "paid_from_account_currency"],
+            )
+            total_amount = sum(pe.amount for pe in payment_entries)
+            currency = payment_entries[0].paid_from_account_currency if payment_entries else None
 
+            items_totals = {}
+            if self.items:
+                item = self.items[0]
+                items_totals[item.item_code] = {
+                    "item_code": item.item_code,
+                    "item_name": frappe.get_value("Item", item.item_code, "item_name"),
+                    "amount": total_amount,
+                    "qty": 1,
+                    "uom": item.uom,
+                    "rate": total_amount
+                }
+
+            return {
+                "total_amount": total_amount,
+                "currency": currency,
+                "items": items_totals,
+                "customer": customer,
+            }
+        
+        elif self.allocation_type == "Items":
+            stock_entries = frappe.get_all(
+                "Stock Entry",
+                filters={"donation_disbursement_entry": self.name, "docstatus": 1},
+                fields=["name", "total_outgoing_value as amount"],
+            )
+            total_amount = sum(se.amount for se in stock_entries)
+
+            items_totals = {}
+            for se in stock_entries:
+                items = frappe.get_all(
+                    "Stock Entry Detail",
+                    filters={"parent": se.name},
+                    fields=["item_code", "item_name", "amount", "qty", "basic_rate", "uom", "s_warehouse as warehouse"],
+                )
+                for item in items:
+                    code = item.item_code
+                    if code not in items_totals:
+                        items_totals[code] = {
+                            "item_code": code,
+                            "item_name": item.item_name,
+                            "uom": item.uom,
+                            "warehouse": item.warehouse,
+                            "amount": 0,
+                            "qty": 0,
+                            "rate": item.basic_rate,
+                        }
+
+                    items_totals[code]["amount"] += item.amount
+                    items_totals[code]["qty"] += item.qty
+                    items_totals[code]["rate"] = item.basic_rate  
+
+            return {
+                "total_amount": total_amount,
+                "items": items_totals,
+                "customer": customer,
+            }
