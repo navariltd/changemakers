@@ -19,15 +19,15 @@ frappe.listview_settings["Beneficiary"] = {
 						freeze_message: __("Processing file..."),
 						callback: function (r) {
 							const result = r.message || {};
-							const processed = result.processed || [];
+							const beneficiaries = result.beneficiaries || [];
 							const errors = result.errors || [];
 
-							if (processed.length) {
+							if (beneficiaries.length) {
 								frappe.show_alert(
 									{
 										message: __(
 											"{0} beneficiaries processed successfully",
-											[processed.length],
+											[beneficiaries.length],
 										),
 										indicator: "green",
 									},
