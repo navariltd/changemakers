@@ -27,7 +27,7 @@
   "cost_center",
   "dimension_col_break",
   "section_break_axct",
-  "donor",
+  "donors",
   "section_break_vzck",
   "created_by",
   "section_break_uwdz",
@@ -80,6 +80,7 @@
   "column_break_stbz",
   "residency",
   "nationality",
+  "id_number",
   "column_break_17",
   "place_of_birth",
   "ethnicity",
@@ -613,14 +614,6 @@
    "label": "Previous beneficiary details"
   },
   {
-   "fieldname": "donor",
-   "fieldtype": "Table",
-   "label": "Donor",
-   "no_copy": 1,
-   "options": "Beneficiary Donor Assignment",
-   "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
-  },
-  {
    "collapsible": 1,
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
@@ -863,6 +856,19 @@
   {
    "fieldname": "section_break_axct",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "donors",
+   "fieldtype": "Table",
+   "label": "Donors",
+   "no_copy": 1,
+   "options": "Beneficiary Donor Assignment",
+   "read_only_depends_on": "frm.doc.status !== \"Replacement Pending\""
+  },
+  {
+   "fieldname": "id_number",
+   "fieldtype": "Data",
+   "label": "ID Number"
   }
  ],
  "image_field": "image",
@@ -894,7 +900,7 @@
    "link_fieldname": "beneficiary"
   }
  ],
- "modified": "2026-01-27 13:32:06.319797",
+ "modified": "2026-01-28 08:24:27.054702",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary",
