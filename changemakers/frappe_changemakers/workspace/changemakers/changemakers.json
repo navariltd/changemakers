@@ -1,6 +1,7 @@
 {
+ "app": "changemakers",
  "charts": [],
- "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"H-e6U8hWgm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Changemakers Settings\",\"col\":4}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"id\":\"7zD8pl7CLK\",\"type\":\"card\",\"data\":{\"card_name\":\" Programs & Education\",\"col\":4}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"eOReRO_Pc0\",\"type\":\"card\",\"data\":{\"card_name\":\" Impact & Metrics\",\"col\":4}},{\"id\":\"CebhoNopem\",\"type\":\"card\",\"data\":{\"card_name\":\"Donations & Contributions\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Health & Medical\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"pJjBJY4itE\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Donation Disbursement Entry\",\"col\":3}},{\"id\":\"H-e6U8hWgm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Changemakers Settings\",\"col\":4}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"id\":\"7zD8pl7CLK\",\"type\":\"card\",\"data\":{\"card_name\":\" Programs & Education\",\"col\":4}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"eOReRO_Pc0\",\"type\":\"card\",\"data\":{\"card_name\":\" Impact & Metrics\",\"col\":4}},{\"id\":\"CebhoNopem\",\"type\":\"card\",\"data\":{\"card_name\":\"Donations & Contributions\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Health & Medical\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
  "creation": "2022-10-13 13:51:43.725589",
  "custom_blocks": [],
  "docstatus": 0,
@@ -290,45 +291,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Donations & Contributions",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Donor",
-   "link_count": 0,
-   "link_to": "Donor",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Donation",
-   "link_count": 0,
-   "link_to": "Donation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Donation Allocation",
-   "link_count": 0,
-   "link_to": "Donation Allocation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Reports",
    "link_count": 6,
    "link_type": "DocType",
@@ -394,9 +356,58 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Donations & Contributions",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Donor",
+   "link_count": 0,
+   "link_to": "Donor",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Donation",
+   "link_count": 0,
+   "link_to": "Donation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Donation Allocation",
+   "link_count": 0,
+   "link_to": "Donation Allocation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Donation Disbursement Entry",
+   "link_count": 0,
+   "link_to": "Donation Disbursement Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2025-06-19 10:56:43.231400",
+ "modified": "2026-01-28 11:37:50.150987",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers",
@@ -419,10 +430,19 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Donation Disbursement Entry",
+   "link_to": "Donation Disbursement Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Changemakers Settings",
    "link_to": "Changemakers Settings",
    "type": "DocType"
   }
  ],
- "title": "Changemakers"
+ "title": "Changemakers",
+ "type": "Workspace"
 }
