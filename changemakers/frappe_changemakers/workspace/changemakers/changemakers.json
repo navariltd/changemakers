@@ -1,7 +1,7 @@
 {
  "app": "changemakers",
  "charts": [],
- "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"pJjBJY4itE\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Donation Disbursement Entry\",\"col\":3}},{\"id\":\"H-e6U8hWgm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Changemakers Settings\",\"col\":4}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"id\":\"7zD8pl7CLK\",\"type\":\"card\",\"data\":{\"card_name\":\" Programs & Education\",\"col\":4}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"eOReRO_Pc0\",\"type\":\"card\",\"data\":{\"card_name\":\" Impact & Metrics\",\"col\":4}},{\"id\":\"CebhoNopem\",\"type\":\"card\",\"data\":{\"card_name\":\"Donations & Contributions\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Health & Medical\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "content": "[{\"id\":\"CecwNbV5Aq\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Frappe Changemakers</span>\",\"col\":12}},{\"id\":\"fP4on4W26W\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"asboRySoyS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"JhoJIvxYwo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Beneficiary\",\"col\":4}},{\"id\":\"pJjBJY4itE\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Donation Disbursement Entry\",\"col\":3}},{\"id\":\"H-e6U8hWgm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Changemakers Settings\",\"col\":4}},{\"id\":\"7znHj1wPAe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"j_2-NL3927\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports &amp; Masters</span>\",\"col\":12}},{\"id\":\"674ks-aO5v\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"id\":\"CebhoNopem\",\"type\":\"card\",\"data\":{\"card_name\":\"Donations & Contributions\",\"col\":4}},{\"id\":\"bah2NGZNN6\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}},{\"id\":\"7zD8pl7CLK\",\"type\":\"card\",\"data\":{\"card_name\":\" Programs & Education\",\"col\":4}},{\"id\":\"R_wvE3WP7g\",\"type\":\"card\",\"data\":{\"card_name\":\"Health & Medical\",\"col\":4}},{\"id\":\"eOReRO_Pc0\",\"type\":\"card\",\"data\":{\"card_name\":\" Impact & Metrics\",\"col\":4}},{\"id\":\"EeW5aA91EY\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"MlRQ2-1l9o\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
  "creation": "2022-10-13 13:51:43.725589",
  "custom_blocks": [],
  "docstatus": 0,
@@ -361,7 +361,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Donations & Contributions",
-   "link_count": 4,
+   "link_count": 6,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -405,9 +405,29 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Invoice",
+   "link_count": 0,
+   "link_to": "Sales Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-28 11:37:50.150987",
+ "modified": "2026-02-02 09:25:51.048795",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Changemakers",
