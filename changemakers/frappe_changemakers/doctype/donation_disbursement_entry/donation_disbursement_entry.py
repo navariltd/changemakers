@@ -18,7 +18,39 @@ class DonationDisbursementEntry(Document):
         for row in self.beneficiaries or []:
             row.amount = (row.qty or 0) * (row.rate or 0)
             total_amount += row.amount or 0
+
+        if self.sales_order:
+            sales_order = frappe.get_doc("Sales Order", self.sales_order)
+
+            item_codes = [item.item_code for item in (self.items or [])]
+            
+            if item_codes:
+                order_items = [
+                    {
+                        "item_code": so_item.item_code,
+                        "item_name": so_item.item_name,
+                        "qty": so_item.qty,
+                        "rate": so_item.rate,
+                        "amount": so_item.amount,
+                        "uom": so_item.uom,
+                    }
+                    for so_item in sales_order.items
+                    if so_item.item_code in item_codes
+                ]
+                
+                order_items_total = sum(item.get("amount", 0) for item in order_items)
+                if total_amount > order_items_total:
+                    frappe.throw(
+                        _("Total disbursement amount {0} exceeds Sales Order total {1}").format(
+                            total_amount, order_items_total
+                        )
+                    )
+            
         self.total_amount = total_amount
+
+    def before_submit(self):
+        if not self.beneficiaries:
+            frappe.throw(_("At least one beneficiary must be allocated before submitting."))
 
     @frappe.whitelist()
     def get_beneficiaries(self, advanced_filters=None):
@@ -194,9 +226,8 @@ class DonationDisbursementEntry(Document):
             )
             payment_entry.insert(ignore_permissions=True)
             row.payment_entry = payment_entry.name
-
+        self.entries_created = True
         self.save()
-        self.submit()
         frappe.msgprint(f"Payment Entries created for {len(self.beneficiaries)} beneficiaries")
 
     @frappe.whitelist()
@@ -245,60 +276,71 @@ class DonationDisbursementEntry(Document):
             for row in rows:
                 row.stock_entry = stock_entry.name
 
+        self.entries_created = True
         self.save()
-        self.submit()
         frappe.msgprint(f"Stock Entries created for {len(beneficiaries_by_beneficiary)} beneficiary(ies)")
 
     @frappe.whitelist()
-    def get_invoice_details(self):
+    def create_sales_invoice(self):
         customer = frappe.get_value("Donor", self.donor, "customer") if self.donor else None
+
+        data = {
+            "items": {},
+            "customer": customer,
+            "currency": None,
+            "total_amount": 0
+        }
+
         if self.allocation_type == "Cash":
             payment_entries = frappe.get_all(
                 "Payment Entry",
-                filters={"donation_disbursement_entry": self.name, "docstatus": 1},
-                fields=["name", "paid_amount as amount", "paid_from_account_currency"],
+                filters={
+                    "donation_disbursement_entry": self.name,
+                    "docstatus": 1
+                },
+                fields=["paid_amount as amount", "paid_from_account_currency"],
             )
-            total_amount = sum(pe.amount for pe in payment_entries)
-            currency = payment_entries[0].paid_from_account_currency if payment_entries else None
 
-            items_totals = {}
+            data["total_amount"] = sum(pe.amount for pe in payment_entries)
+            data["currency"] = payment_entries[0].paid_from_account_currency if payment_entries else None
+
             if self.items:
                 item = self.items[0]
-                items_totals[item.item_code] = {
+                data["items"][item.item_code] = {
                     "item_code": item.item_code,
                     "item_name": frappe.get_value("Item", item.item_code, "item_name"),
-                    "amount": total_amount,
+                    "amount": data["total_amount"],
                     "qty": 1,
                     "uom": item.uom,
-                    "rate": total_amount
+                    "rate": data["total_amount"],
                 }
 
-            return {
-                "total_amount": total_amount,
-                "currency": currency,
-                "items": items_totals,
-                "customer": customer,
-            }
-        
         elif self.allocation_type == "Items":
             stock_entries = frappe.get_all(
                 "Stock Entry",
-                filters={"donation_disbursement_entry": self.name, "docstatus": 1},
+                filters={
+                    "donation_disbursement_entry": self.name,
+                    "docstatus": 1
+                },
                 fields=["name", "total_outgoing_value as amount"],
             )
-            total_amount = sum(se.amount for se in stock_entries)
 
-            items_totals = {}
+            data["total_amount"] = sum(se.amount for se in stock_entries)
+
             for se in stock_entries:
                 items = frappe.get_all(
                     "Stock Entry Detail",
                     filters={"parent": se.name},
-                    fields=["item_code", "item_name", "amount", "qty", "basic_rate", "uom", "s_warehouse as warehouse"],
+                    fields=[
+                        "item_code", "item_name", "amount", "qty",
+                        "basic_rate", "uom", "s_warehouse as warehouse"
+                    ],
                 )
+
                 for item in items:
                     code = item.item_code
-                    if code not in items_totals:
-                        items_totals[code] = {
+                    if code not in data["items"]:
+                        data["items"][code] = {
                             "item_code": code,
                             "item_name": item.item_name,
                             "uom": item.uom,
@@ -308,12 +350,37 @@ class DonationDisbursementEntry(Document):
                             "rate": item.basic_rate,
                         }
 
-                    items_totals[code]["amount"] += item.amount
-                    items_totals[code]["qty"] += item.qty
-                    items_totals[code]["rate"] = item.basic_rate  
+                    data["items"][code]["amount"] += item.amount
+                    data["items"][code]["qty"] += item.qty
+                    data["items"][code]["rate"] = item.basic_rate
 
-            return {
-                "total_amount": total_amount,
-                "items": items_totals,
-                "customer": customer,
-            }
+        else:
+            frappe.throw("Invalid Allocation Type")
+
+        si = frappe.new_doc("Sales Invoice")
+
+        si.flags.ignore_mandatory = True
+        si.flags.ignore_validate = True
+        si.flags.ignore_permissions = True
+        si.flags.ignore_links = True
+
+        si.customer = data["customer"]
+        si.currency = data["currency"]
+        si.donation_disbursement_entry = self.name
+
+        for item in data["items"].values():
+            row = si.append("items", {})
+            row.item_code = item["item_code"]
+            row.item_name = item["item_name"]
+            row.qty = item["qty"]
+            row.rate = item["rate"]
+            row.amount = item["amount"]
+            row.uom = item["uom"]
+            if item.get("warehouse"):
+                row.warehouse = item["warehouse"]
+
+        si.insert(ignore_permissions=True)
+
+        return {
+            "sales_invoice": si.name
+        }

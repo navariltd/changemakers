@@ -84,6 +84,7 @@ website_route_rules = [
 # include js in doctype views
 doctype_js = {
     "Stock Entry": "frappe_changemakers/overrides/stock_entry.js",
+    "Sales Order": "frappe_changemakers/overrides/sales_order.js",
     "Project": "frappe_changemakers/overrides/project.js",
     "Payment Entry": "frappe_changemakers/overrides/payment_entry.js",
 }
