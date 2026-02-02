@@ -314,11 +314,11 @@
    "label": "Accounts"
   },
   {
-   "depends_on": "eval: doc.allocation_type == \"Cash\"",
    "fieldname": "paid_from",
    "fieldtype": "Link",
    "label": "Account Paid From",
-   "options": "Account"
+   "options": "Account",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_xmyu",
@@ -329,6 +329,7 @@
    "fieldname": "paid_to",
    "fieldtype": "Link",
    "label": "Account Paid To",
+   "mandatory_depends_on": "eval: doc.allocation_type == \"Cash\"",
    "options": "Account"
   },
   {
@@ -360,7 +361,7 @@
    "link_fieldname": "donation_disbursement_entry"
   }
  ],
- "modified": "2026-02-02 08:18:14.982435",
+ "modified": "2026-02-02 09:11:58.633905",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Disbursement Entry",

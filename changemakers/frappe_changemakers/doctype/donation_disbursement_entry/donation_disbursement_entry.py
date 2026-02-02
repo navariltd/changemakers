@@ -360,12 +360,10 @@ class DonationDisbursementEntry(Document):
         si = frappe.new_doc("Sales Invoice")
 
         si.flags.ignore_mandatory = True
-        si.flags.ignore_validate = True
         si.flags.ignore_permissions = True
         si.flags.ignore_links = True
 
         si.customer = data["customer"]
-        si.currency = data["currency"]
         si.donation_disbursement_entry = self.name
 
         for item in data["items"].values():
@@ -373,9 +371,12 @@ class DonationDisbursementEntry(Document):
             row.item_code = item["item_code"]
             row.item_name = item["item_name"]
             row.qty = item["qty"]
+            row.stock_qty = item["qty"]
             row.rate = item["rate"]
             row.amount = item["amount"]
             row.uom = item["uom"]
+            row.stock_uom = item["uom"]
+            row.conversion_factor = 1.0
             if item.get("warehouse"):
                 row.warehouse = item["warehouse"]
 
