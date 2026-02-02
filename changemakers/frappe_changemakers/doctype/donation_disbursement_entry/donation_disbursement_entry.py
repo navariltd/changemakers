@@ -215,7 +215,7 @@ class DonationDisbursementEntry(Document):
                     "paid_to": self.paid_to,
                     "company": self.company,
                     "posting_date": today(),
-                    "mode_of_payment": self.mode_of_payment,
+                    "mode_of_payment": row.mode_of_payment,
                     "cost_center": self.cost_center,
                     "project": self.project,
                     "paid_amount": row.amount,
