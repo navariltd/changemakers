@@ -395,6 +395,7 @@ function sync_items_with_sales_order(
 				) {
 					frm.add_child(child_table_field, {
 						[item_field]: so_item.item_code,
+						uom: so_item.uom,
 					});
 				}
 			});

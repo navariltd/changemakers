@@ -84,7 +84,8 @@
    "fieldname": "uom",
    "fieldtype": "Link",
    "label": "UoM",
-   "options": "UOM"
+   "options": "UOM",
+   "reqd": 1
   },
   {
    "fieldname": "rate",
@@ -128,7 +129,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-27 15:43:31.156197",
+ "modified": "2026-02-02 09:07:35.367448",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Beneficiary Disbursement Entry Item",
