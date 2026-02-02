@@ -52,6 +52,7 @@
   "saved_filters",
   "section_break_cqdf",
   "beneficiaries",
+  "entries_created",
   "connections_tab"
  ],
  "fields": [
@@ -135,13 +136,15 @@
    "fieldname": "project",
    "fieldtype": "Link",
    "label": "Project",
-   "options": "Project"
+   "options": "Project",
+   "search_index": 1
   },
   {
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
-   "options": "Cost Center"
+   "options": "Cost Center",
+   "search_index": 1
   },
   {
    "fieldname": "allocation_items_section",
@@ -219,7 +222,8 @@
    "fieldname": "sales_order",
    "fieldtype": "Link",
    "label": "Sales Order",
-   "options": "Sales Order"
+   "options": "Sales Order",
+   "search_index": 1
   },
   {
    "fieldname": "section_break_kvsp",
@@ -326,6 +330,14 @@
    "fieldtype": "Link",
    "label": "Account Paid To",
    "options": "Account"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "entries_created",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Entries created"
   }
  ],
  "grid_page_length": 50,
@@ -348,7 +360,7 @@
    "link_fieldname": "donation_disbursement_entry"
   }
  ],
- "modified": "2026-01-28 13:03:27.348398",
+ "modified": "2026-02-02 07:45:36.096038",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Disbursement Entry",
