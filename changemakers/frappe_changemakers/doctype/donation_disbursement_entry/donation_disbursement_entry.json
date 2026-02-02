@@ -360,7 +360,7 @@
    "link_fieldname": "donation_disbursement_entry"
   }
  ],
- "modified": "2026-02-02 07:45:36.096038",
+ "modified": "2026-02-02 08:18:14.982435",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Donation Disbursement Entry",
@@ -377,6 +377,20 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Non Profit Manager",
    "share": 1,
    "submit": 1,
    "write": 1
