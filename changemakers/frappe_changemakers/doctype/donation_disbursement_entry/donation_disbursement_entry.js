@@ -8,9 +8,6 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 	},
 
 	onload: function (frm) {
-		if (frm.doc.docstatus == 0 && !frm.is_new()) {
-			frm.trigger("render_custom_buttons");
-		}
 		if (!frm.doc.from_date) {
 			frm.set_value("from_date", frappe.datetime.nowdate());
 		}
@@ -49,6 +46,9 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 	},
 
 	refresh: function (frm) {
+		if (frm.doc.docstatus == 0 && !frm.is_new()) {
+			frm.trigger("render_custom_buttons");
+		}
 		if (frm.is_dirty()) {
 			frm.page.set_primary_action(__("Save"), () => frm.save());
 		} else {
@@ -245,26 +245,30 @@ frappe.ui.form.on("Donation Disbursement Entry", {
 	},
 
 	render_custom_buttons: function (frm) {
-		const $wrapper = frm
-			.get_field("beneficiaries")
-			.$wrapper.find(".grid-heading-row");
-		$wrapper.find(".custom-table-actions").remove();
+		const grid_wrapper = frm.get_field("beneficiaries").$wrapper;
+
+		grid_wrapper.find(".custom-table-actions").remove();
+
 		const $btn_container = $(`
-            <div class="custom-table-actions" style="margin-bottom:10px;display:flex;gap:10px;">
-                <button class="btn btn-primary btn-sm btn-download-template">
-                    <i class="fa fa-download"></i> ${__("Download Template")}
-                </button>
-                <button class="btn btn-primary btn-sm btn-upload-list">
-                    <i class="fa fa-upload"></i> ${__("Upload List")}
-                </button>
-            </div>
-        `).prependTo(frm.get_field("beneficiaries").$wrapper);
+		<div class="custom-table-actions" style="margin-bottom:10px;display:flex;gap:10px;">
+			<button type="button" class="btn btn-primary btn-sm btn-download-template">
+				<i class="fa fa-download"></i> ${__("Download Template")}
+			</button>
+			<button type="button" class="btn btn-primary btn-sm btn-upload-list">
+				<i class="fa fa-upload"></i> ${__("Upload List")}
+			</button>
+		</div>
+	`).prependTo(grid_wrapper);
+
 		$btn_container
 			.find(".btn-download-template")
-			.click(() => frm.trigger("download_template_dialog"));
+			.off("click")
+			.on("click", () => frm.trigger("download_template_dialog"));
+
 		$btn_container
 			.find(".btn-upload-list")
-			.click(() => frm.trigger("upload_list"));
+			.off("click")
+			.on("click", () => frm.trigger("upload_list"));
 	},
 
 	download_template_dialog: function (frm) {

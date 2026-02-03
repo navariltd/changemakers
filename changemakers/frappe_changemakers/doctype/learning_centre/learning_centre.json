@@ -157,7 +157,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-17 14:42:33.920761",
+ "modified": "2026-02-03 15:56:07.617869",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Learning Centre",
@@ -209,6 +209,18 @@
    "role": "Program Manager",
    "select": 1,
    "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Non Profit Manager",
+   "share": 1,
+   "write": 1
   }
  ],
  "row_format": "Dynamic",

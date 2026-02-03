@@ -149,7 +149,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-15 20:14:38.797269",
+ "modified": "2026-02-03 15:48:32.703116",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Family Reintegration",
@@ -235,8 +235,21 @@
    "select": 1,
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Non Profit Manager",
+   "share": 1,
+   "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",

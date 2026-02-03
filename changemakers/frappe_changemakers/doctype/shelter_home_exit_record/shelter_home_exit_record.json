@@ -33,11 +33,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-15 20:06:29.524948",
+ "modified": "2026-02-03 15:48:09.664381",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Shelter Home Exit Record",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -94,16 +94,6 @@
    "share": 1
   },
   {
-   "email": 1,
-   "export": 1,
-   "if_owner": 1,
-   "print": 1,
-   "report": 1,
-   "role": "Partner SMT",
-   "share": 1,
-   "write": 1
-  },
-  {
    "create": 1,
    "email": 1,
    "export": 1,
@@ -124,9 +114,22 @@
    "role": "SMT(NGO)-Field Co-ordinator",
    "select": 1,
    "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Non Profit Manager",
+   "share": 1,
+   "write": 1
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

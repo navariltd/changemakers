@@ -322,7 +322,7 @@
    "link_fieldname": "shelter_home"
   }
  ],
- "modified": "2023-02-28 13:58:28.101112",
+ "modified": "2026-02-03 15:50:30.270816",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Shelter Home",
@@ -382,8 +382,21 @@
    "role": "SMT(NGO)-Field Co-ordinator",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Non Profit Manager",
+   "share": 1,
+   "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

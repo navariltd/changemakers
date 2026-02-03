@@ -34,14 +34,9 @@
    "group": "County",
    "link_doctype": "Sub County",
    "link_fieldname": "county"
-  },
-  {
-   "group": "Ward",
-   "link_doctype": "Ward",
-   "link_fieldname": "county"
   }
  ],
- "modified": "2026-01-07 12:37:25.122989",
+ "modified": "2026-02-03 15:58:27.202445",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "County",
@@ -57,6 +52,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Non Profit Manager",
    "share": 1,
    "write": 1
   }
