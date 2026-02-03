@@ -28,7 +28,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-14 13:09:23.447017",
+ "modified": "2026-02-03 15:58:47.509313",
  "modified_by": "Administrator",
  "module": "Frappe Changemakers",
  "name": "Ward",
@@ -144,6 +144,18 @@
    "read": 1,
    "report": 1,
    "role": "Learning Centre POC",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Non Profit Manager",
    "share": 1,
    "write": 1
   }
